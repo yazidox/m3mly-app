@@ -8,6 +8,7 @@ import { LanguageProvider } from "@/lib/i18n/client";
 import { cookies } from "next/headers";
 import { Locale } from "@/lib/i18n/translations";
 import ClientLanguageProvider from "@/components/client-language-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,6 +41,7 @@ export default function RootLayout({
           <LanguageProvider initialLocale={locale}>
             <ClientLanguageProvider />
             {children}
+            <Toaster />
           </LanguageProvider>
         </ThemeProvider>
         <TempoInit />

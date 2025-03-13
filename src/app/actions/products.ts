@@ -14,7 +14,7 @@ export async function requestSample(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return redirect("/sign-in");
+    return { success: false, message: "You must be logged in to request a sample." };
   }
 
   // Extract form data
@@ -47,15 +47,16 @@ export async function requestSample(formData: FormData) {
 
     if (error) {
       console.error("Error creating sample request:", error);
-      return redirect("/dashboard?error=sample_request_failed");
+      return { success: false, message: "Failed to create sample request. Please try again." };
     }
 
     // Revalidate path
     revalidatePath("/dashboard/samples");
-    return redirect("/dashboard/samples?message=sample_requested");
+    
+    return { success: true, message: "Sample request submitted successfully!" };
   } catch (error) {
     console.error("Error in requestSample:", error);
-    return redirect("/dashboard?error=sample_request_failed");
+    return { success: false, message: "An unexpected error occurred. Please try again." };
   }
 }
 
@@ -69,68 +70,72 @@ export async function placeOrder(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return redirect("/sign-in");
+    return { success: false, message: "You must be logged in to place an order." };
   }
 
-  try {
-    // Extract form data
-    const productId = formData.get("product_id") as string;
-    const factoryId = formData.get("factory_id") as string;
-    const fullName = formData.get("full_name") as string;
-    const email = formData.get("email") as string;
-    const phone = formData.get("phone") as string;
-    const company = formData.get("company") as string;
-    const shippingAddress = formData.get("shipping_address") as string;
-    const quantity = parseInt(formData.get("quantity") as string);
-    const color = formData.get("color") as string;
-    const size = formData.get("size") as string;
-    const material = formData.get("material") as string;
-    const notes = formData.get("notes") as string;
+  // Extract form data
+  const productId = formData.get("product_id") as string;
+  const factoryId = formData.get("factory_id") as string;
+  const fullName = formData.get("full_name") as string;
+  const email = formData.get("email") as string;
+  const phone = formData.get("phone") as string;
+  const company = formData.get("company") as string;
+  const shippingAddress = formData.get("shipping_address") as string;
+  const quantity = parseInt(formData.get("quantity") as string);
+  const color = formData.get("color") as string;
+  const size = formData.get("size") as string;
+  const material = formData.get("material") as string;
+  const notes = formData.get("notes") as string;
 
-    // Get product price to calculate total
-    const { data: product } = await supabase
+  try {
+    // First, get the product price
+    const { data: product, error: productError } = await supabase
       .from("products")
       .select("price")
       .eq("id", productId)
       .single();
 
-    const totalPrice = product ? product.price * quantity : 0;
+    if (productError || !product) {
+      console.error("Error fetching product price:", productError);
+      return { success: false, message: "Failed to fetch product price. Please try again." };
+    }
+
+    // Calculate total price
+    const total_price = product.price * quantity;
 
     // Create order in database
-    const { error, data } = await supabase
-      .from("orders")
-      .insert({
-        user_id: user.id,
-        product_id: productId,
-        factory_id: factoryId,
-        full_name: fullName,
-        email,
-        phone,
-        company,
-        shipping_address: shippingAddress,
-        quantity,
-        color,
-        size,
-        material,
-        notes,
-        total_price: totalPrice,
-        status: "pending",
-        payment_status: "unpaid",
-        created_at: new Date().toISOString(),
-      })
-      .select();
+    const { error } = await supabase.from("orders").insert({
+      user_id: user.id,
+      product_id: productId,
+      factory_id: factoryId,
+      full_name: fullName,
+      email,
+      phone,
+      company,
+      shipping_address: shippingAddress,
+      quantity,
+      color,
+      size,
+      material,
+      notes,
+      status: "pending",
+      payment_status: "unpaid",
+      total_price,
+      created_at: new Date().toISOString(),
+    });
 
     if (error) {
       console.error("Error creating order:", error);
-      return redirect("/dashboard?error=order_failed");
+      return { success: false, message: "Failed to place order. Please try again." };
     }
 
     // Revalidate path
-    revalidatePath("/dashboard");
-    return redirect("/dashboard/orders?message=order_placed");
+    revalidatePath("/dashboard/orders");
+    
+    return { success: true, message: "Order placed successfully!" };
   } catch (error) {
     console.error("Error in placeOrder:", error);
-    return redirect("/dashboard?error=order_failed");
+    return { success: false, message: "An unexpected error occurred. Please try again." };
   }
 }
 

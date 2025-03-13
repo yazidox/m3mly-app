@@ -8,9 +8,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import { requestSample } from "@/app/actions/products";
-import { useRouter } from "next/navigation";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { SampleRequestForm } from "@/components/sample-request-form";
 
 export default async function RequestSamplePage({
   params,
@@ -95,7 +95,7 @@ export default async function RequestSamplePage({
                 {product.description}
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
-                {(product.features || []).map((feature, index) => (
+                {(product.features || []).map((feature: string, index: number) => (
                   <span
                     key={index}
                     className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full"
@@ -121,98 +121,11 @@ export default async function RequestSamplePage({
               </div>
             </div>
 
-            <form action={requestSample} className="space-y-6">
-              <input type="hidden" name="product_id" value={product.id} />
-              <input
-                type="hidden"
-                name="factory_id"
-                value={product.factory_id}
-              />
-
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="full_name">Full Name</Label>
-                    <Input
-                      id="full_name"
-                      name="full_name"
-                      defaultValue={userData?.full_name || ""}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      defaultValue={userData?.email || ""}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      defaultValue={userData?.phone || ""}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="company">Company Name</Label>
-                    <Input id="company" name="company" required />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="shipping_address">Shipping Address</Label>
-                  <Textarea
-                    id="shipping_address"
-                    name="shipping_address"
-                    rows={3}
-                    defaultValue={userData?.address || ""}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="quantity">Sample Quantity</Label>
-                  <Input
-                    id="quantity"
-                    name="quantity"
-                    type="number"
-                    min="1"
-                    defaultValue="1"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="notes">Additional Notes</Label>
-                  <Textarea
-                    id="notes"
-                    name="notes"
-                    placeholder="Any specific requirements or questions about the sample"
-                    rows={4}
-                  />
-                </div>
-              </div>
-
-              <Button type="submit" className="w-full">
-                Submit Sample Request
-              </Button>
-
-              <p className="text-xs text-muted-foreground text-center mt-4">
-                By submitting this request, you agree to our terms and
-                conditions. Sample fees may apply depending on the factory's
-                policy.
-              </p>
-            </form>
+            <SampleRequestForm 
+              product={product} 
+              userData={userData} 
+              requestSample={requestSample} 
+            />
           </div>
         </div>
       </div>
