@@ -14,8 +14,11 @@ import {
   Sparkles,
   Factory,
   Tag,
+  ArrowUpRight,
+  ArrowLeft,
 } from "lucide-react";
 import { formatCurrency } from "@/lib/formatters";
+import Navbar from "@/components/navbar";
 
 export default async function ProductsPage({
   searchParams,
@@ -60,42 +63,50 @@ export default async function ProductsPage({
     .select("category")
     .eq("status", "active")
     .is("category", "not.null");
-
-  const uniqueCategories = [
-    ...new Set(
+  const uniqueCategories = Array.from(
+    new Set(
       categories
         ?.map((item) => item.category)
-        .filter((category): category is string => !!category),
-    ),
-  ];
+        .filter((category): category is string => !!category)
+    )
+  );
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="relative overflow-hidden rounded-xl border bg-gradient-to-r from-primary/20 via-primary/10 to-background p-8 shadow-md mb-8">
-        <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-primary/10 blur-3xl"></div>
-        <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-primary/10 blur-3xl"></div>
-
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center shadow-lg">
-              <Package className="h-5 w-5 text-white" />
-            </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-purple-500 text-transparent bg-clip-text">
-              Discover Products
-            </h1>
+      <Navbar />
+      {/* Hero Section */}
+      <section className="relative overflow-hidden rounded-xl mb-12">
+        {/* Background elements */}
+        <div className="absolute inset-0 bg-grid-pattern bg-[length:50px_50px] opacity-5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10" />
+        
+        {/* Animated background shapes */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -left-40 w-96 h-96 bg-primary/15 rounded-full filter blur-3xl opacity-70 animate-blob" />
+          <div className="absolute top-60 -right-20 w-80 h-80 bg-accent/25 rounded-full filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        </div>
+        
+        <div className="relative z-10 py-16 px-8">
+          <div className="mb-6 inline-flex items-center px-4 py-1.5 rounded-full bg-primary/15 text-primary text-sm font-medium backdrop-blur-sm border border-primary/20 shadow-glow">
+            <Package className="w-4 h-4 mr-2" />
+            <span className="relative">Catalogue de produits</span>
           </div>
-          <p className="text-lg text-muted-foreground max-w-2xl mb-6">
-            Browse our collection of high-quality garment products from the best
-            Moroccan manufacturers
+          
+          <h1 className="text-5xl sm:text-6xl font-bold mb-6 tracking-tight leading-tight max-w-3xl">
+            Découvrez nos <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent animate-text-shimmer relative after:absolute after:content-[''] after:bottom-0 after:left-0 after:w-full after:h-[6px] after:bg-gradient-to-r after:from-primary/30 after:to-accent/30 after:-rotate-1">vêtements</span> de qualité supérieure
+          </h1>
+          
+          <p className="text-xl text-muted-foreground max-w-2xl mb-8 leading-relaxed">
+            Parcourez notre collection de vêtements de haute qualité provenant des meilleurs fabricants marocains à des prix imbattables.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1">
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className="relative flex-1 max-w-xl">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <form>
                 <Input
                   name="search"
-                  placeholder="Search products..."
+                  placeholder="Rechercher des produits..."
                   className="pl-9 bg-background/80 backdrop-blur-sm border-primary/20 focus-visible:border-primary/50"
                   defaultValue={searchParams.search || ""}
                 />
@@ -108,37 +119,51 @@ export default async function ProductsPage({
                   type="submit"
                   className="absolute right-1 top-1/2 -translate-y-1/2 h-7 px-3"
                 >
-                  Search
+                  Rechercher
                 </Button>
               </form>
             </div>
+            
             <div className="flex gap-2">
               <Button variant="outline" className="gap-2">
-                <Filter className="h-4 w-4" /> Filter
+                <Filter className="h-4 w-4" /> Filtrer
               </Button>
               <Link href="/factories">
                 <Button variant="secondary" className="gap-2">
-                  <Factory className="h-4 w-4" /> View Factories
+                  <Factory className="h-4 w-4" /> Voir les usines
                 </Button>
               </Link>
             </div>
           </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              href="/dashboard"
+              className="group relative inline-flex items-center px-6 py-3 text-foreground bg-secondary/80 rounded-xl hover:bg-secondary transition-all text-base font-medium border border-border overflow-hidden"
+            >
+              <span className="relative z-10 flex items-center">
+                <ArrowLeft className="mr-2 w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                Retour à l'administration
+              </span>
+              <span className="absolute inset-0 bg-gradient-to-r from-secondary/50 to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </Link>
+          </div>
         </div>
-      </div>
+      </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <div className="lg:col-span-1 space-y-6">
           <Card>
             <CardContent className="p-4">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
-                <Tag className="h-4 w-4 text-primary" /> Categories
+                <Tag className="h-4 w-4 text-primary" /> Catégories
               </h3>
               <div className="space-y-1">
                 <Link
                   href="/products"
                   className={`block px-3 py-2 rounded-md text-sm ${!searchParams.category ? "bg-primary/10 text-primary font-medium" : "hover:bg-muted/50"}`}
                 >
-                  All Products
+                  Tous les produits
                 </Link>
                 {uniqueCategories.map((category) => (
                   <Link
@@ -156,7 +181,7 @@ export default async function ProductsPage({
           <Card>
             <CardContent className="p-4">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-primary" /> Featured
+                <Sparkles className="h-4 w-4 text-primary" /> Produits en vedette
               </h3>
               <div className="space-y-3">
                 {products?.slice(0, 3).map((product) => (
@@ -195,15 +220,15 @@ export default async function ProductsPage({
           <Tabs defaultValue="grid">
             <div className="flex justify-between items-center mb-6">
               <div className="text-sm text-muted-foreground">
-                Showing {products?.length || 0} products
-                {searchParams.category ? ` in ${searchParams.category}` : ""}
+                Affichage de {products?.length || 0} produits
+                {searchParams.category ? ` dans ${searchParams.category}` : ""}
                 {searchParams.search
-                  ? ` matching "${searchParams.search}"`
+                  ? ` correspondant à "${searchParams.search}"`
                   : ""}
               </div>
               <TabsList>
-                <TabsTrigger value="grid">Grid</TabsTrigger>
-                <TabsTrigger value="list">List</TabsTrigger>
+                <TabsTrigger value="grid">Grille</TabsTrigger>
+                <TabsTrigger value="list">Liste</TabsTrigger>
               </TabsList>
             </div>
 
@@ -253,7 +278,7 @@ export default async function ProductsPage({
                               size="sm"
                               className="gap-1 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
                             >
-                              View <ArrowRight className="h-3 w-3" />
+                              Voir <ArrowRight className="h-3 w-3" />
                             </Button>
                           </div>
                         </CardContent>
@@ -265,15 +290,15 @@ export default async function ProductsPage({
                 <div className="text-center py-12 border rounded-lg">
                   <Package className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                   <h3 className="text-lg font-medium mb-2">
-                    No products found
+                    Aucun produit trouvé
                   </h3>
                   <p className="text-muted-foreground max-w-md mx-auto mb-6">
                     {searchParams.search || searchParams.category
-                      ? "Try adjusting your search or filter criteria"
-                      : "There are no products available at the moment"}
+                      ? "Essayez d'ajuster vos critères de recherche ou de filtrage"
+                      : "Il n'y a pas de produits disponibles pour le moment"}
                   </p>
                   <Button asChild>
-                    <Link href="/products">View All Products</Link>
+                    <Link href="/products">Voir tous les produits</Link>
                   </Button>
                 </div>
               )}
@@ -326,7 +351,7 @@ export default async function ProductsPage({
                                 {product.description}
                               </p>
                               <div className="flex flex-wrap gap-2 mt-3">
-                                {product.features?.map((feature, index) => (
+                                {product.features?.map((feature: string, index: number) => (
                                   <Badge
                                     key={index}
                                     variant="outline"
@@ -339,14 +364,14 @@ export default async function ProductsPage({
                             </div>
                             <div className="flex justify-between items-center mt-4 pt-4 border-t border-border/40">
                               <div className="text-sm text-muted-foreground">
-                                Min order: {product.min_order_quantity} units •
-                                Lead time: {product.lead_time} days
+                                Commande min: {product.min_order_quantity} unités •
+                                Délai: {product.lead_time} jours
                               </div>
                               <Button
                                 size="sm"
                                 className="gap-1 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
                               >
-                                View Details <ArrowRight className="h-3 w-3" />
+                                Voir détails <ArrowRight className="h-3 w-3" />
                               </Button>
                             </div>
                           </CardContent>
@@ -359,15 +384,15 @@ export default async function ProductsPage({
                 <div className="text-center py-12 border rounded-lg">
                   <Package className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                   <h3 className="text-lg font-medium mb-2">
-                    No products found
+                    Aucun produit trouvé
                   </h3>
                   <p className="text-muted-foreground max-w-md mx-auto mb-6">
                     {searchParams.search || searchParams.category
-                      ? "Try adjusting your search or filter criteria"
-                      : "There are no products available at the moment"}
+                      ? "Essayez d'ajuster vos critères de recherche ou de filtrage"
+                      : "Il n'y a pas de produits disponibles pour le moment"}
                   </p>
                   <Button asChild>
-                    <Link href="/products">View All Products</Link>
+                    <Link href="/products">Voir tous les produits</Link>
                   </Button>
                 </div>
               )}

@@ -89,9 +89,7 @@ export default async function Dashboard() {
         <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-primary/10 blur-3xl"></div>
 
         <div className="relative z-10 flex items-center gap-4">
-          <div className="h-16 w-16 flex items-center justify-center shadow-lg">
-            <img src="/logo.svg" alt="M3mly Logo" className="h-full w-full" />
-          </div>
+         
           <div>
             <h1
               className="text-4xl font-bold mb-2"
@@ -107,8 +105,8 @@ export default async function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="group hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <Card className="group hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30 overflow-hidden">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 relative">
             <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
               Commandes
             </CardTitle>
@@ -116,13 +114,13 @@ export default async function Dashboard() {
               <ShoppingCart className="h-4 w-4 text-primary" />
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="relative">
             <div className="text-3xl font-bold">{orders?.length || 0}</div>
             <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
               <Clock className="h-3 w-3" /> {pendingOrders} en attente
             </p>
           </CardContent>
-          <CardFooter className="pt-0">
+          <CardFooter className="pt-0 relative">
             <Link
               href="/dashboard/orders"
               className="text-xs text-primary flex items-center hover:underline"
@@ -132,22 +130,23 @@ export default async function Dashboard() {
           </CardFooter>
         </Card>
 
-        <Card className="group hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <Card className="group hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30 overflow-hidden">
+         
+          <CardHeader className="flex flex-row items-center justify-between pb-2 relative">
             <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
-              Demandes d'Échantillons
+              Échantillons
             </CardTitle>
             <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <Package className="h-4 w-4 text-primary" />
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="relative">
             <div className="text-3xl font-bold">{samples?.length || 0}</div>
             <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
               <Clock className="h-3 w-3" /> {pendingSamples} en attente
             </p>
           </CardContent>
-          <CardFooter className="pt-0">
+          <CardFooter className="pt-0 relative">
             <Link
               href="/dashboard/samples"
               className="text-xs text-primary flex items-center hover:underline"
@@ -157,8 +156,8 @@ export default async function Dashboard() {
           </CardFooter>
         </Card>
 
-        <Card className="group hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <Card className="group hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30 overflow-hidden">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 relative">
             <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
               Total Dépensé
             </CardTitle>
@@ -166,7 +165,7 @@ export default async function Dashboard() {
               <CreditCard className="h-4 w-4 text-primary" />
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="relative">
             <div className="text-3xl font-bold">
               {formatCurrency(totalSpent)}
             </div>
@@ -174,7 +173,7 @@ export default async function Dashboard() {
               <TrendingUp className="h-3 w-3" /> Sur toutes les commandes
             </p>
           </CardContent>
-          <CardFooter className="pt-0">
+          <CardFooter className="pt-0 relative">
             <Link
               href="/dashboard/invoices"
               className="text-xs text-primary flex items-center hover:underline"
@@ -184,8 +183,8 @@ export default async function Dashboard() {
           </CardFooter>
         </Card>
 
-        <Card className="group hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <Card className="group hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30 overflow-hidden">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 relative">
             <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
               Prochaine Livraison
             </CardTitle>
@@ -193,20 +192,20 @@ export default async function Dashboard() {
               <Truck className="h-4 w-4 text-primary" />
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="relative">
             <div className="text-3xl font-bold">
               {orders?.find((order) => order.status === "processing")
                 ? new Date(
                     orders.find((order) => order.status === "processing")
                       ?.estimated_delivery || Date.now(),
                   ).toLocaleDateString()
-                : "Aucune livraison"}
+                : "Aucune"}
             </div>
             <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
               <Calendar className="h-3 w-3" /> Arrivée estimée
             </p>
           </CardContent>
-          <CardFooter className="pt-0">
+          <CardFooter className="pt-0 relative">
             <Link
               href="/dashboard/shipments"
               className="text-xs text-primary flex items-center hover:underline"
@@ -220,7 +219,7 @@ export default async function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <Card className="overflow-hidden hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30">
-            <CardHeader className="bg-muted/30">
+            <CardHeader className="bg-gradient-to-r from-primary/10 to-transparent">
               <div className="flex justify-between items-center">
                 <CardTitle className="flex items-center gap-2">
                   <ShoppingCart className="h-5 w-5 text-primary" />
@@ -249,7 +248,7 @@ export default async function Dashboard() {
                       className="flex justify-between items-center p-4 hover:bg-muted/20 transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center overflow-hidden">
+                        <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center overflow-hidden shadow-sm">
                           {order.products?.image ? (
                             <img
                               src={order.products.image}
@@ -268,7 +267,8 @@ export default async function Dashboard() {
                             <Calendar className="h-3 w-3" />
                             {new Date(order.created_at).toLocaleDateString()}
                           </div>
-                          <div className="text-xs text-muted-foreground">
+                          <div className="text-xs text-muted-foreground flex items-center gap-1">
+                            <Factory className="h-3 w-3" />
                             {order.factories?.name}
                           </div>
                         </div>
@@ -290,7 +290,9 @@ export default async function Dashboard() {
                           }
                           className="ml-2"
                         >
-                          {order.status}
+                          {order.status === "completed" ? "Terminé" : 
+                           order.status === "processing" ? "En cours" : 
+                           order.status === "pending" ? "En attente" : order.status}
                         </Badge>
                       </div>
                     </div>
@@ -309,7 +311,7 @@ export default async function Dashboard() {
           </Card>
 
           <Card className="overflow-hidden hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30">
-            <CardHeader className="bg-muted/30">
+            <CardHeader className="bg-gradient-to-r from-primary/10 to-transparent">
               <div className="flex justify-between items-center">
                 <CardTitle className="flex items-center gap-2">
                   <Package className="h-5 w-5 text-primary" />
@@ -338,7 +340,7 @@ export default async function Dashboard() {
                       className="flex justify-between items-center p-4 hover:bg-muted/20 transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center overflow-hidden">
+                        <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center overflow-hidden shadow-sm">
                           {sample.products?.image ? (
                             <img
                               src={sample.products.image}
@@ -375,7 +377,9 @@ export default async function Dashboard() {
                           }
                           className="ml-2"
                         >
-                          {sample.status}
+                          {sample.status === "completed" ? "Terminé" : 
+                           sample.status === "processing" ? "En cours" : 
+                           sample.status === "pending" ? "En attente" : sample.status}
                         </Badge>
                       </div>
                     </div>
@@ -396,7 +400,7 @@ export default async function Dashboard() {
 
         <div className="space-y-6">
           <Card className="border-border/50 hover:shadow-md transition-all duration-300 overflow-hidden">
-            <CardHeader className="bg-muted/30">
+            <CardHeader className="bg-gradient-to-r from-primary/10 to-transparent">
               <CardTitle className="flex items-center gap-2">
                 <UserCircle className="h-5 w-5 text-primary" />
                 Aperçu du Profil
@@ -405,7 +409,7 @@ export default async function Dashboard() {
             </CardHeader>
             <CardContent className="pt-6">
               <div className="flex items-center gap-4 mb-6">
-                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center">
+                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center shadow-md">
                   <UserCircle className="h-10 w-10 text-primary" />
                 </div>
                 <div>
@@ -421,19 +425,19 @@ export default async function Dashboard() {
 
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-medium mb-2 text-sm text-muted-foreground">
-                    ADRESSE DE LIVRAISON
+                  <h4 className="font-medium mb-2 text-sm text-muted-foreground flex items-center gap-1">
+                    <Truck className="h-3 w-3" /> ADRESSE DE LIVRAISON
                   </h4>
-                  <p className="text-sm bg-muted/30 p-3 rounded-md">
+                  <p className="text-sm bg-muted/30 p-3 rounded-md border border-border/30">
                     {userData?.address || "Aucune adresse fournie"}
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-2 text-sm text-muted-foreground">
-                    DÉTAILS DU COMPTE
+                  <h4 className="font-medium mb-2 text-sm text-muted-foreground flex items-center gap-1">
+                    <FileText className="h-3 w-3" /> DÉTAILS DU COMPTE
                   </h4>
                   <div className="space-y-2 text-sm">
-                    <div className="flex justify-between bg-muted/30 p-2 rounded-md">
+                    <div className="flex justify-between bg-muted/30 p-2 rounded-md border border-border/30">
                       <span className="text-muted-foreground">
                         Membre depuis:
                       </span>
@@ -443,13 +447,13 @@ export default async function Dashboard() {
                         ).toLocaleDateString()}
                       </span>
                     </div>
-                    <div className="flex justify-between bg-muted/30 p-2 rounded-md">
+                    <div className="flex justify-between bg-muted/30 p-2 rounded-md border border-border/30">
                       <span className="text-muted-foreground">
                         Type de compte:
                       </span>
                       <span>{userData?.role || "utilisateur"}</span>
                     </div>
-                    <div className="flex justify-between bg-muted/30 p-2 rounded-md">
+                    <div className="flex justify-between bg-muted/30 p-2 rounded-md border border-border/30">
                       <span className="text-muted-foreground">CIN:</span>
                       <span>{userData?.cin || "Non fourni"}</span>
                     </div>
@@ -467,7 +471,7 @@ export default async function Dashboard() {
           </Card>
 
           <Card className="border-border/50 hover:shadow-md transition-all duration-300 overflow-hidden">
-            <CardHeader className="bg-muted/30">
+            <CardHeader className="bg-gradient-to-r from-primary/10 to-transparent">
               <CardTitle className="flex items-center gap-2">
                 <Building className="h-5 w-5 text-primary" />
                 Explorer les Usines
@@ -485,7 +489,7 @@ export default async function Dashboard() {
                       className="p-4 hover:bg-muted/20 transition-colors"
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center overflow-hidden">
+                        <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center overflow-hidden shadow-sm">
                           {factory.image ? (
                             <img
                               src={factory.image}
@@ -498,8 +502,8 @@ export default async function Dashboard() {
                         </div>
                         <div>
                           <div className="font-medium">{factory.name}</div>
-                          <div className="text-xs text-muted-foreground">
-                            {factory.location}
+                          <div className="text-xs text-muted-foreground flex items-center gap-1">
+                            <Store className="h-3 w-3" /> {factory.location}
                           </div>
                         </div>
                       </div>

@@ -58,7 +58,7 @@ export default async function PlaceOrderPage({
           className="inline-flex items-center text-muted-foreground hover:text-foreground mb-6"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Products
+          Retour aux Produits
         </Link>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -72,9 +72,9 @@ export default async function PlaceOrderPage({
                 <ShoppingCart size={20} />
               </div>
               <div>
-                <h2 className="text-2xl font-bold">Place Order</h2>
+                <h2 className="text-2xl font-bold">Passer Commande</h2>
                 <p className="text-muted-foreground">
-                  Fill out the form below to place your bulk order
+                  Remplissez le formulaire ci-dessous pour passer votre commande en gros
                 </p>
               </div>
             </div>

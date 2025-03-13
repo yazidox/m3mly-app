@@ -30,9 +30,18 @@ import {
   AlertCircle,
   Clock,
   CheckCheck,
+  ArrowRight,
+  Sparkles,
+  Wallet,
+  Receipt,
+  Shield,
 } from "lucide-react";
 import { formatCurrency } from "@/lib/formatters";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+
+export const dynamic = "force-dynamic";
 
 export default async function PaymentMethodsPage() {
   const supabase = await createClient();
@@ -158,18 +167,27 @@ export default async function PaymentMethodsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold mb-2">Méthodes de Paiement</h1>
-        <p className="text-muted-foreground">
-          Gérez vos méthodes de paiement et historique de facturation
+    <div className="space-y-8 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden -z-10">
+        <div className="absolute top-40 -left-40 w-96 h-96 bg-primary/10 rounded-full filter blur-3xl opacity-50 animate-blob" />
+        <div className="absolute -bottom-20 right-20 w-80 h-80 bg-accent/15 rounded-full filter blur-3xl opacity-40 animate-blob animation-delay-2000" />
+      </div>
+      
+      <div className="relative">
+       
+        <h1 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">
+          Méthodes de <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent animate-text-shimmer relative after:absolute after:content-[''] after:bottom-0 after:left-0 after:w-full after:h-[6px] after:bg-gradient-to-r after:from-primary/30 after:to-accent/30 after:-rotate-1">Paiement</span>
+        </h1>
+        <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
+          Gérez vos méthodes de paiement et suivez votre historique de facturation
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 space-y-6">
-          <Card>
-            <CardHeader>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="md:col-span-2 space-y-8">
+          <Card className="border border-border shadow-sm hover:shadow-md transition-all duration-300 backdrop-blur-sm overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
               <CardTitle className="flex items-center gap-2">
                 <BanknoteIcon className="h-5 w-5 text-primary" />
                 <span>Vos Méthodes de Paiement</span>
@@ -178,94 +196,107 @@ export default async function PaymentMethodsPage() {
                 Gérez vos méthodes de paiement enregistrées
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               {paymentMethods && paymentMethods.length > 0 ? (
                 <div className="space-y-4">
-                  {paymentMethods.map((method) => (
+                  {paymentMethods.map((method, idx) => (
                     <div
                       key={method.id}
-                      className="flex justify-between items-center p-4 border rounded-md"
+                      className="group p-4 border rounded-md hover:border-primary/20 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 backdrop-blur-sm"
+                      style={{ transitionDelay: `${idx * 50}ms` }}
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="bg-muted/50 p-2 rounded">
-                          {getPaymentMethodIcon(method.type)}
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-3">
+                          <div className="bg-primary/15 text-primary p-3 rounded-full border border-primary/20 group-hover:scale-110 transition-transform duration-300 shadow-glow">
+                            {getPaymentMethodIcon(method.type)}
+                          </div>
+                          <div>
+                            <div className="font-medium flex items-center gap-2">
+                              {method.type === "bank_transfer"
+                                ? "Virement Bancaire"
+                                : method.type === "wafacash"
+                                  ? "WafaCash"
+                                  : method.type}
+                              {method.is_default && (
+                                <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full flex items-center gap-1">
+                                  <CheckCircle className="h-3 w-3" />
+                                  Par défaut
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-sm">
+                              {method.type === "bank_transfer" ? (
+                                <>
+                                  <div>{method.bank_name}</div>
+                                  <div className="text-muted-foreground">
+                                    {method.account_name} •{" "}
+                                    {method.account_number}
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <div>{method.account_name}</div>
+                                  <div className="text-muted-foreground">
+                                    {method.account_number}
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                        <div>
-                          <div className="font-medium flex items-center gap-2">
-                            {method.type === "bank_transfer"
-                              ? "Virement Bancaire"
-                              : method.type === "wafacash"
-                                ? "WafaCash"
-                                : method.type}
-                            {method.is_default && (
-                              <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full flex items-center gap-1">
-                                <CheckCircle className="h-3 w-3" />
-                                Par défaut
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-sm">
-                            {method.type === "bank_transfer" ? (
-                              <>
-                                <div>{method.bank_name}</div>
-                                <div className="text-muted-foreground">
-                                  {method.account_name} •{" "}
-                                  {method.account_number}
-                                </div>
-                              </>
-                            ) : (
-                              <>
-                                <div>{method.account_name}</div>
-                                <div className="text-muted-foreground">
-                                  {method.account_number}
-                                </div>
-                              </>
-                            )}
-                          </div>
+                        <div className="flex flex-col items-end gap-2">
+                          {getStatusBadge(method.status)}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-destructive mt-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
                       </div>
-                      <div className="flex flex-col items-end gap-2">
-                        {getStatusBadge(method.status)}
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-destructive mt-2"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
+                      <div className="w-full h-1 bg-gradient-to-r from-primary/20 to-accent/20 mt-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8 border rounded-md bg-muted/20">
-                  <p className="text-muted-foreground mb-4">
-                    Aucune méthode de paiement ajoutée
+                <div className="text-center py-12 border rounded-md bg-card/50 backdrop-blur-sm">
+                  <Wallet className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+                  <p className="text-xl font-medium mb-2">Aucune méthode de paiement</p>
+                  <p className="text-muted-foreground max-w-md mx-auto mb-6">
+                    Ajoutez une méthode de paiement pour faciliter vos transactions.
                   </p>
                 </div>
               )}
 
               <Button
-                className="mt-6 w-full sm:w-auto"
+                className="mt-6 w-full sm:w-auto group/btn relative overflow-hidden"
                 variant="outline"
                 asChild
               >
                 <a href="#add-payment-method">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Ajouter une méthode de paiement
+                  <span className="relative z-10 flex items-center justify-center group-hover/btn:text-white transition-colors duration-300">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Ajouter une méthode de paiement
+                    <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                  </span>
+                  <span className="absolute inset-0 bg-gradient-to-r from-primary to-accent translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
                 </a>
               </Button>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Historique des Paiements</CardTitle>
+          <Card className="border border-border shadow-sm hover:shadow-md transition-all duration-300 backdrop-blur-sm overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
+              <CardTitle className="flex items-center gap-2">
+                <Receipt className="h-5 w-5 text-primary" />
+                <span>Historique des Paiements</span>
+              </CardTitle>
               <CardDescription>
                 Votre historique récent de paiements
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               {paymentHistory && paymentHistory.length > 0 ? (
                 <div className="border rounded-md overflow-hidden">
                   <table className="w-full">
@@ -280,15 +311,19 @@ export default async function PaymentMethodsPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y">
-                      {paymentHistory.map((payment) => (
-                        <tr key={payment.id}>
+                      {paymentHistory.map((payment, idx) => (
+                        <tr 
+                          key={payment.id} 
+                          className="hover:bg-muted/30 transition-colors duration-200"
+                          style={{ transitionDelay: `${idx * 50}ms` }}
+                        >
                           <td className="p-3">
                             #{payment.invoices?.invoice_number}
                           </td>
                           <td className="p-3">
                             {new Date(payment.created_at).toLocaleDateString()}
                           </td>
-                          <td className="p-3">
+                          <td className="p-3 font-medium">
                             {formatCurrency(payment.invoices?.amount || 0)}
                           </td>
                           <td className="p-3">
@@ -303,8 +338,8 @@ export default async function PaymentMethodsPage() {
                           </td>
                           <td className="p-3 text-right">
                             {payment.status === "verified" && (
-                              <Button variant="ghost" size="sm">
-                                Download
+                              <Button variant="ghost" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors">
+                                Télécharger
                               </Button>
                             )}
                           </td>
@@ -314,9 +349,11 @@ export default async function PaymentMethodsPage() {
                   </table>
                 </div>
               ) : (
-                <div className="text-center py-8 border rounded-md bg-muted/20">
-                  <p className="text-muted-foreground">
-                    Aucun historique de paiement disponible
+                <div className="text-center py-12 border rounded-md bg-card/50 backdrop-blur-sm">
+                  <Receipt className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+                  <p className="text-xl font-medium mb-2">Aucun historique de paiement</p>
+                  <p className="text-muted-foreground max-w-md mx-auto mb-6">
+                    Vos transactions apparaîtront ici une fois que vous aurez effectué des paiements.
                   </p>
                 </div>
               )}
@@ -325,8 +362,12 @@ export default async function PaymentMethodsPage() {
         </div>
 
         <div className="space-y-6" id="add-payment-method">
-          <Card>
-            <CardHeader>
+          <Card className="border border-border shadow-sm hover:shadow-xl transition-all duration-500 backdrop-blur-sm sticky top-6">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
+              <div className="mb-3 inline-flex items-center px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-medium backdrop-blur-sm border border-primary/20 shadow-glow">
+                <Sparkles className="w-3 h-3 mr-1" />
+                <span>NOUVEAU</span>
+              </div>
               <CardTitle>Ajouter une Méthode de Paiement</CardTitle>
               <CardDescription>
                 Choisissez votre méthode de paiement préférée
@@ -334,11 +375,13 @@ export default async function PaymentMethodsPage() {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="bank_transfer">
-                <TabsList className="grid w-full grid-cols-2 mb-4">
-                  <TabsTrigger value="bank_transfer">
+                <TabsList className="grid w-full mt-4 grid-cols-2 mb-4">
+                  <TabsTrigger value="bank_transfer" className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
                     Virement Bancaire
                   </TabsTrigger>
-                  <TabsTrigger value="wafacash">WafaCash</TabsTrigger>
+                  <TabsTrigger value="wafacash" className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+                    WafaCash
+                  </TabsTrigger>
                 </TabsList>
 
                 <form action={addPaymentMethod} className="space-y-4">
@@ -352,6 +395,7 @@ export default async function PaymentMethodsPage() {
                         name="bankName"
                         placeholder="Attijariwafa Bank"
                         required
+                        className="focus-visible:ring-primary"
                       />
                     </div>
 
@@ -362,6 +406,7 @@ export default async function PaymentMethodsPage() {
                         name="accountName"
                         placeholder="Mohammed Alami"
                         required
+                        className="focus-visible:ring-primary"
                       />
                     </div>
 
@@ -374,6 +419,7 @@ export default async function PaymentMethodsPage() {
                         name="accountNumber"
                         placeholder="007 123456789012345678"
                         required
+                        className="focus-visible:ring-primary"
                       />
                     </div>
 
@@ -383,6 +429,7 @@ export default async function PaymentMethodsPage() {
                         id="reference"
                         name="reference"
                         placeholder="Référence de paiement"
+                        className="focus-visible:ring-primary"
                       />
                     </div>
 
@@ -394,6 +441,7 @@ export default async function PaymentMethodsPage() {
                         id="details"
                         name="details"
                         placeholder="Informations supplémentaires pour ce mode de paiement"
+                        className="focus-visible:ring-primary"
                       />
                     </div>
                   </TabsContent>
@@ -408,6 +456,7 @@ export default async function PaymentMethodsPage() {
                         name="accountName"
                         placeholder="Mohammed Alami"
                         required
+                        className="focus-visible:ring-primary"
                       />
                     </div>
 
@@ -418,6 +467,7 @@ export default async function PaymentMethodsPage() {
                         name="accountNumber"
                         placeholder="+212 6XX XXX XXX"
                         required
+                        className="focus-visible:ring-primary"
                       />
                     </div>
 
@@ -429,6 +479,7 @@ export default async function PaymentMethodsPage() {
                         id="reference"
                         name="reference"
                         placeholder="Code de transfert WafaCash"
+                        className="focus-visible:ring-primary"
                       />
                     </div>
 
@@ -440,30 +491,40 @@ export default async function PaymentMethodsPage() {
                         id="details"
                         name="details"
                         placeholder="Informations supplémentaires pour ce mode de paiement"
+                        className="focus-visible:ring-primary"
                       />
                     </div>
                   </TabsContent>
 
-                  <Button type="submit" className="w-full mt-4">
-                    Ajouter cette Méthode de Paiement
+                  <Button 
+                    type="submit" 
+                    className="w-full mt-4 bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-shadow relative overflow-hidden group"
+                  >
+                    <span className="relative z-10 flex items-center justify-center">
+                      Ajouter cette Méthode de Paiement
+                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </span>
                   </Button>
                 </form>
               </Tabs>
 
               <Separator className="my-6" />
 
-              <div className="text-sm text-muted-foreground">
-                <p className="mb-2">Comment ça marche:</p>
-                <ol className="list-decimal pl-5 space-y-1">
-                  <li>Ajoutez votre méthode de paiement préférée</li>
-                  <li>
+              <div className="p-4 bg-card/50 rounded-lg border border-border">
+                <div className="flex items-center gap-2 mb-3 text-primary">
+                  <Shield className="w-5 h-5" />
+                  <h3 className="font-medium">Comment ça marche:</h3>
+                </div>
+                <ol className="list-decimal pl-5 space-y-1 text-sm text-muted-foreground">
+                  <li className="transition-colors hover:text-foreground">Ajoutez votre méthode de paiement préférée</li>
+                  <li className="transition-colors hover:text-foreground">
                     Lors du paiement d'une facture, sélectionnez cette méthode
                   </li>
-                  <li>
+                  <li className="transition-colors hover:text-foreground">
                     Effectuez le paiement via votre banque ou service WafaCash
                   </li>
-                  <li>Notre équipe vérifiera votre paiement dans les 24-48h</li>
-                  <li>
+                  <li className="transition-colors hover:text-foreground">Notre équipe vérifiera votre paiement dans les 24-48h</li>
+                  <li className="transition-colors hover:text-foreground">
                     Une fois vérifié, votre paiement sera marqué comme complété
                   </li>
                 </ol>

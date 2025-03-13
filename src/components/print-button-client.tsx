@@ -1,13 +1,20 @@
 "use client";
 
+import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Printer } from "lucide-react";
 
 interface PrintButtonClientProps {
+  children: ReactNode;
+  invoiceId: string;
+  invoiceNumber: string;
   className?: string;
 }
 
 export default function PrintButtonClient({
+  children,
+  invoiceId,
+  invoiceNumber,
   className,
 }: PrintButtonClientProps) {
   const handlePrint = () => {
@@ -15,14 +22,8 @@ export default function PrintButtonClient({
   };
 
   return (
-    <Button
-      variant="outline"
-      className={`flex items-center gap-2 ${className || ""}`}
-      onClick={handlePrint}
-      type="button"
-    >
-      <Printer className="h-4 w-4" />
-      <span>Print</span>
-    </Button>
+    <div onClick={handlePrint} className={className}>
+      {children}
+    </div>
   );
 }

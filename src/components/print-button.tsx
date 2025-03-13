@@ -1,12 +1,18 @@
 "use client";
 
 import { ReactNode } from "react";
+import { ButtonHTMLAttributes } from "react";
 
-interface PrintButtonProps {
+interface PrintButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
+  className?: string;
 }
 
-export default function PrintButton({ children }: PrintButtonProps) {
+export default function PrintButton({ 
+  children, 
+  className, 
+  ...props 
+}: PrintButtonProps) {
   const handlePrint = () => {
     window.print();
   };
@@ -14,7 +20,8 @@ export default function PrintButton({ children }: PrintButtonProps) {
   return (
     <button
       onClick={handlePrint}
-      className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+      className={className}
+      {...props}
     >
       {children}
     </button>

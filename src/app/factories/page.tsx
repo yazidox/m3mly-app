@@ -7,6 +7,7 @@ import {
   Star,
   Sparkles,
   Factory,
+  ArrowRight,
 } from "lucide-react";
 import { createClient } from "../../../supabase/server";
 import { Input } from "@/components/ui/input";
@@ -31,32 +32,32 @@ export default async function FactoriesPage() {
   // Use empty array if no factories found
   const factoryList = factories || [];
 
-  // Mock categories for filter
+  // Catégories pour le filtre
   const categories = [
     "T-shirts",
-    "Dresses",
-    "Activewear",
+    "Robes",
+    "Vêtements de sport",
     "Denim",
-    "Outerwear",
-    "Knitwear",
-    "Formal wear",
-    "Traditional clothing",
-    "Accessories",
-    "Casual wear",
+    "Vêtements d'extérieur",
+    "Tricots",
+    "Tenues formelles",
+    "Vêtements traditionnels",
+    "Accessoires",
+    "Vêtements décontractés",
     "Sportswear",
-    "Uniforms",
-    "Sustainable clothing",
-    "Beachwear",
-    "Resort clothing",
-    "Swimwear",
+    "Uniformes",
+    "Vêtements durables",
+    "Vêtements de plage",
+    "Vêtements de villégiature",
+    "Maillots de bain",
   ];
 
-  // Mock locations for filter
+  // Emplacements pour le filtre
   const locations = [
     "Casablanca",
     "Marrakech",
-    "Fes",
-    "Tangier",
+    "Fès",
+    "Tanger",
     "Rabat",
     "Agadir",
   ];
@@ -65,43 +66,43 @@ export default async function FactoriesPage() {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Page header with background gradient */}
-      <div className="relative py-12 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5" />
+      {/* Hero Section */}
+      <section className="relative overflow-hidden min-h-[50vh] flex items-center">
+        {/* Background elements */}
+        <div className="absolute inset-0 bg-grid-pattern bg-[length:50px_50px] opacity-5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10" />
 
         {/* Animated background shapes */}
         <div className="absolute inset-0 overflow-hidden">
-          <div
-            className="absolute -top-20 -left-20 w-60 h-60 bg-primary/10 rounded-full filter blur-3xl opacity-50 animate-float"
-            style={{ animationDelay: "0.5s" }}
-          />
-          <div
-            className="absolute bottom-10 right-20 w-40 h-40 bg-accent/10 rounded-full filter blur-3xl opacity-40 animate-float"
-            style={{ animationDelay: "1.5s" }}
-          />
+          <div className="absolute -top-40 -left-40 w-96 h-96 bg-primary/15 rounded-full filter blur-3xl opacity-70 animate-blob" />
+          <div className="absolute top-60 -right-20 w-80 h-80 bg-accent/25 rounded-full filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+          <div className="absolute bottom-40 left-20 w-60 h-60 bg-secondary/20 rounded-full filter blur-3xl opacity-50 animate-blob animation-delay-4000" />
         </div>
 
         <div className="container mx-auto px-4 relative">
           <div className="max-w-4xl">
-            <div className="mb-4 inline-flex items-center px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+            <div className="mb-6 inline-flex items-center px-4 py-1.5 rounded-full bg-primary/15 text-primary text-sm font-medium backdrop-blur-sm border border-primary/20 shadow-glow animate-pulse">
               <Sparkles className="w-4 h-4 mr-2" />
-              Find Your Perfect Manufacturing Partner
+              <span className="relative">Trouvez votre partenaire de fabrication idéal</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Browse Factories
+            <h1 className="text-5xl sm:text-6xl font-bold mb-8 tracking-tight leading-tight">
+              Explorez nos{" "}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent animate-text-shimmer relative after:absolute after:content-[''] after:bottom-0 after:left-0 after:w-full after:h-[6px] after:bg-gradient-to-r after:from-primary/30 after:to-accent/30 after:-rotate-1">
+                usines
+              </span>
             </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl">
-              Discover and connect with the best garment manufacturers in
-              Morocco, filtered to match your specific production needs.
+            <p className="text-xl text-muted-foreground mb-10 leading-relaxed max-w-2xl">
+              Découvrez et connectez-vous avec les meilleurs fabricants de vêtements au Maroc, 
+              filtrés pour répondre à vos besoins spécifiques de production.
             </p>
           </div>
         </div>
-      </div>
+      </section>
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <div className="text-sm font-medium text-muted-foreground">
-            Showing {factoryList.length} factories
+            Affichage de {factoryList.length} usines
           </div>
           <div className="flex items-center gap-3">
             <div className="relative">
@@ -110,28 +111,28 @@ export default async function FactoriesPage() {
                 size={18}
               />
               <Input
-                placeholder="Search factories..."
+                placeholder="Rechercher des usines..."
                 className="pl-10 w-64 bg-card border-border"
               />
             </div>
             <Button variant="outline" className="flex items-center gap-2">
               <SlidersHorizontal size={16} />
-              <span>Sort</span>
+              <span>Trier</span>
             </Button>
           </div>
         </div>
 
         <div className="flex flex-col md:flex-row gap-8">
-          {/* Filters Sidebar */}
-          <div className="w-full md:w-64 bg-card p-6 rounded-xl border border-border h-fit sticky top-24 shadow-sm">
+          {/* Filtres Sidebar */}
+          <div className="w-full md:w-64 bg-card p-6 rounded-xl border border-border h-fit sticky top-24 shadow-sm backdrop-blur-sm">
             <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
               <Filter size={18} className="text-primary" />
-              <span>Filters</span>
+              <span>Filtres</span>
             </h2>
 
             <div className="mb-6">
               <h3 className="text-sm font-medium mb-3 text-foreground">
-                Categories
+                Catégories
               </h3>
               <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
                 {categories.slice(0, 8).map((category, index) => (
@@ -150,13 +151,13 @@ export default async function FactoriesPage() {
                 variant="link"
                 className="text-xs p-0 h-auto mt-2 text-primary"
               >
-                Show more
+                Voir plus
               </Button>
             </div>
 
             <div className="mb-6">
               <h3 className="text-sm font-medium mb-3 text-foreground">
-                Location
+                Emplacement
               </h3>
               <div className="space-y-2">
                 {locations.map((location, index) => (
@@ -175,7 +176,7 @@ export default async function FactoriesPage() {
 
             <div className="mb-6">
               <h3 className="text-sm font-medium mb-3 text-foreground">
-                Minimum Order Quantity
+                Quantité minimale de commande
               </h3>
               <div className="space-y-2">
                 {["1-50", "51-100", "101-200", "201+"].map((range, index) => (
@@ -185,7 +186,7 @@ export default async function FactoriesPage() {
                       htmlFor={`moq-${index}`}
                       className="text-sm text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
                     >
-                      {range} units
+                      {range} unités
                     </Label>
                   </div>
                 ))}
@@ -194,7 +195,7 @@ export default async function FactoriesPage() {
 
             <div className="mb-6">
               <h3 className="text-sm font-medium mb-3 text-foreground">
-                Rating
+                Évaluation
               </h3>
               <div className="space-y-2">
                 {[4, 3, 2, 1].map((rating) => (
@@ -214,9 +215,9 @@ export default async function FactoriesPage() {
 
             <div className="flex gap-2">
               <Button variant="outline" className="flex-1">
-                Reset
+                Réinitialiser
               </Button>
-              <Button className="flex-1">Apply</Button>
+              <Button className="flex-1">Appliquer</Button>
             </div>
           </div>
 
@@ -249,24 +250,39 @@ export default async function FactoriesPage() {
                 ))
               ) : (
                 <div className="col-span-3 py-12 text-center">
-                  <div className="bg-muted/50 rounded-lg p-8 max-w-md mx-auto">
+                  <div className="bg-card/50 backdrop-blur-sm rounded-xl p-8 max-w-md mx-auto border border-border/50">
                     <Factory className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <h3 className="text-xl font-medium mb-2">
-                      No Factories Found
+                      Aucune usine trouvée
                     </h3>
                     <p className="text-muted-foreground mb-6">
-                      There are currently no factories available that match your
-                      criteria. Try adjusting your filters or check back later.
+                      Il n'y a actuellement aucune usine disponible correspondant à vos critères. 
+                      Essayez d'ajuster vos filtres ou revenez plus tard.
                     </p>
-                    <Button variant="outline">Reset Filters</Button>
+                    <Button 
+                      variant="outline" 
+                      className="group relative inline-flex items-center px-6 py-3 border border-border rounded-lg hover:bg-secondary/80 transition-all"
+                    >
+                      <span className="relative z-10 flex items-center">
+                        Réinitialiser les filtres
+                      </span>
+                      <span className="absolute inset-0 bg-gradient-to-r from-secondary/30 to-secondary/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
+                    </Button>
                   </div>
                 </div>
               )}
             </div>
 
             <div className="mt-12 flex justify-center">
-              <Button variant="outline" className="mx-auto hover-lift px-8">
-                Load More
+              <Button 
+                variant="outline" 
+                className="group relative inline-flex items-center px-8 py-4 text-foreground bg-secondary/80 rounded-xl hover:bg-secondary transition-all text-lg font-medium border border-border overflow-hidden"
+              >
+                <span className="relative z-10 flex items-center">
+                  Charger plus
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
+                <span className="absolute inset-0 bg-gradient-to-r from-secondary/50 to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </Button>
             </div>
           </div>

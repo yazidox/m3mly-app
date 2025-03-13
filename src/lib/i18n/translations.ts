@@ -83,7 +83,7 @@ export const translations: TranslationsType = {
     "common.dashboard": "Tableau de bord",
     "common.sign_in": "Se connecter",
     "common.sign_up": "S'inscrire",
-    "common.find_factories": "Trouver des usines",
+    "common.find_factories": "Trouver des produits",
     "common.join_as_factory": "Rejoindre en tant qu'usine",
     "common.no_minimum_orders": "Pas de commandes minimales",
     "common.secure_payment": "Paiement sécurisé",

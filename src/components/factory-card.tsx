@@ -1,10 +1,11 @@
 "use client";
 
-import { Package, Star } from "lucide-react";
+import { Package, Star, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "../../supabase/client";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface FactoryCardProps {
   factory: {
@@ -56,85 +57,99 @@ export default function FactoryCard({ factory }: FactoryCardProps) {
   }, [factory.id]);
 
   return (
-    <div className="bg-card rounded-xl border border-border overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+    <div className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-2 backdrop-blur-sm">
       <div className="relative h-48 w-full overflow-hidden">
         <Image
-          src={factory.image}
+          src={
+            factory.image ||
+            "https://images.unsplash.com/photo-1581669600020-77e86e5f5d9a?w=800&q=80"
+          }
           alt={factory.name}
           fill
-          className="object-cover hover:scale-105 transition-transform duration-500"
+          className="object-cover group-hover:scale-110 transition-transform duration-700"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute top-4 right-4 flex items-center gap-1 text-amber-500 bg-card/80 backdrop-blur-sm px-2 py-1 rounded-full border border-amber-200/30 shadow-glow opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+          <Star className="fill-amber-500 w-4 h-4" />
+          <span className="text-sm font-medium">
+            {factory.rating}
+          </span>
+        </div>
       </div>
-      <div className="p-6">
-        <div className="flex justify-between items-start mb-2">
-          <h3 className="text-xl font-semibold">{factory.name}</h3>
-          <div className="flex items-center gap-1 text-amber-500 bg-amber-50 px-2 py-1 rounded-full">
-            <Star className="fill-amber-500 w-4 h-4" />
-            <span className="text-sm font-medium">{factory.rating}</span>
+      <div className="p-6 relative">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
+        <div className="relative">
+          <div className="flex justify-between items-start mb-2">
+            <h3 className="text-xl font-semibold">{factory.name}</h3>
           </div>
-        </div>
-        <p className="text-muted-foreground mb-4">
-          {factory.location} • MOQ: {factory.minOrderQuantity}
-        </p>
-        <div className="flex flex-wrap gap-2 mb-4">
-          {factory.specialties.map((specialty, index) => (
-            <span
-              key={index}
-              className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full"
-            >
-              {specialty}
-            </span>
-          ))}
-        </div>
+          <p className="text-muted-foreground mb-4 flex items-center">
+            <span className="inline-block mr-2 bg-primary/10 px-2 py-0.5 rounded-full text-xs text-primary">{factory.location}</span>
+            <span className="text-xs">QCM: {factory.minOrderQuantity}</span>
+          </p>
+          <div className="flex flex-wrap gap-2 mb-4">
+            {factory.specialties.map((specialty, index) => (
+              <span
+                key={index}
+                className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full border border-primary/20"
+              >
+                {specialty}
+              </span>
+            ))}
+          </div>
 
-        {/* Products Preview Section */}
-        <div className="mb-4">
-          <h4 className="text-sm font-medium mb-2 flex items-center gap-1">
-            <Package size={14} className="text-primary" />
-            <span>Products</span>
-          </h4>
+          {/* Products Preview Section */}
+          <div className="mb-4">
+            <h4 className="text-sm font-medium mb-2 flex items-center gap-1">
+              <Package size={14} className="text-primary" />
+              <span>Produits</span>
+            </h4>
 
-          {loading ? (
-            <div className="flex justify-center py-2">
-              <div className="animate-pulse h-4 w-full bg-muted rounded"></div>
-            </div>
-          ) : products.length > 0 ? (
-            <div className="grid grid-cols-3 gap-2">
-              {products.map((product) => (
-                <div
-                  key={product.id}
-                  className="relative h-16 rounded-md overflow-hidden border group"
-                >
-                  <Image
-                    src={
-                      product.image ||
-                      "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=600&q=80"
-                    }
-                    alt={product.name}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="text-white text-xs font-medium">
-                      ${product.price}
-                    </span>
+            {loading ? (
+              <div className="flex justify-center py-2">
+                <div className="animate-pulse h-4 w-full bg-muted rounded"></div>
+              </div>
+            ) : products.length > 0 ? (
+              <div className="grid grid-cols-3 gap-2">
+                {products.map((product) => (
+                  <div
+                    key={product.id}
+                    className="relative h-16 rounded-md overflow-hidden border group/product"
+                  >
+                    <Image
+                      src={
+                        product.image ||
+                        "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=600&q=80"
+                      }
+                      alt={product.name}
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/40 opacity-0 group-hover/product:opacity-100 transition-opacity flex items-center justify-center">
+                      <span className="text-white text-xs font-medium">
+                        {product.price} MAD
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-xs text-muted-foreground">
-              No products available
-            </p>
-          )}
-        </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-xs text-muted-foreground">
+                Aucun produit disponible
+              </p>
+            )}
+          </div>
 
-        <Link
-          href={`/factory/${factory.id}`}
-          className="block w-full text-center py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors"
-        >
-          View Profile
-        </Link>
+          <Link
+            href={`/factory/${factory.id}`}
+            className="group/btn relative block w-full text-center py-3 border border-primary text-primary rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+          >
+            <span className="relative z-10 flex items-center justify-center group-hover/btn:text-white transition-colors duration-300">
+              Voir le profil
+              <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+            </span>
+            <span className="absolute inset-0 bg-gradient-to-r from-primary to-accent translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
+          </Link>
+        </div>
       </div>
     </div>
   );
