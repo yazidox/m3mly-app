@@ -39,19 +39,13 @@ export default function FactoryDashboardNavbar({
       <div className="container mx-auto px-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
           <Link href="/factory-dashboard" className="flex items-center gap-3">
-            {factory.image ? (
-              <div className="relative h-8 w-8 rounded-md overflow-hidden">
-                <Image
-                  src={factory.image}
-                  alt={factory.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            ) : (
-              <Factory className="h-6 w-6 text-primary" />
-            )}
-            <span className="font-bold text-lg hidden sm:inline">
+            <div className="h-8 w-8">
+              <img src="/logo.svg" alt="M3mly Logo" className="h-full w-full" />
+            </div>
+            <span
+              className="font-bold text-lg hidden sm:inline"
+              style={{ color: "#171E44" }}
+            >
               {factory.name}
             </span>
             <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">

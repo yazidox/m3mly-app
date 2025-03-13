@@ -63,6 +63,153 @@ export type Database = {
         }
         Relationships: []
       }
+      invoices: {
+        Row: {
+          amount: number
+          created_at: string | null
+          due_date: string | null
+          factory_id: string | null
+          id: string
+          invoice_number: string
+          notes: string | null
+          order_id: string | null
+          payment_date: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          due_date?: string | null
+          factory_id?: string | null
+          id?: string
+          invoice_number: string
+          notes?: string | null
+          order_id?: string | null
+          payment_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          due_date?: string | null
+          factory_id?: string | null
+          id?: string
+          invoice_number?: string
+          notes?: string | null
+          order_id?: string | null
+          payment_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_factory_id_fkey"
+            columns: ["factory_id"]
+            isOneToOne: false
+            referencedRelation: "factories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          color: string | null
+          company: string | null
+          created_at: string | null
+          email: string
+          estimated_delivery: string | null
+          factory_id: string | null
+          factory_notes: string | null
+          full_name: string
+          id: string
+          material: string | null
+          notes: string | null
+          payment_status: string | null
+          phone: string | null
+          product_id: string | null
+          quantity: number
+          shipping_address: string
+          size: string | null
+          status: string | null
+          total_price: number
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          color?: string | null
+          company?: string | null
+          created_at?: string | null
+          email: string
+          estimated_delivery?: string | null
+          factory_id?: string | null
+          factory_notes?: string | null
+          full_name: string
+          id?: string
+          material?: string | null
+          notes?: string | null
+          payment_status?: string | null
+          phone?: string | null
+          product_id?: string | null
+          quantity: number
+          shipping_address: string
+          size?: string | null
+          status?: string | null
+          total_price: number
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          color?: string | null
+          company?: string | null
+          created_at?: string | null
+          email?: string
+          estimated_delivery?: string | null
+          factory_id?: string | null
+          factory_notes?: string | null
+          full_name?: string
+          id?: string
+          material?: string | null
+          notes?: string | null
+          payment_status?: string | null
+          phone?: string | null
+          product_id?: string | null
+          quantity?: number
+          shipping_address?: string
+          size?: string | null
+          status?: string | null
+          total_price?: number
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_factory_id_fkey"
+            columns: ["factory_id"]
+            isOneToOne: false
+            referencedRelation: "factories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           category: string | null
@@ -115,6 +262,78 @@ export type Database = {
             columns: ["factory_id"]
             isOneToOne: false
             referencedRelation: "factories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sample_requests: {
+        Row: {
+          company: string | null
+          created_at: string | null
+          email: string
+          estimated_delivery: string | null
+          factory_id: string | null
+          factory_notes: string | null
+          full_name: string
+          id: string
+          notes: string | null
+          phone: string | null
+          product_id: string | null
+          quantity: number
+          shipping_address: string
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string | null
+          email: string
+          estimated_delivery?: string | null
+          factory_id?: string | null
+          factory_notes?: string | null
+          full_name: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          product_id?: string | null
+          quantity: number
+          shipping_address: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          company?: string | null
+          created_at?: string | null
+          email?: string
+          estimated_delivery?: string | null
+          factory_id?: string | null
+          factory_notes?: string | null
+          full_name?: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          product_id?: string | null
+          quantity?: number
+          shipping_address?: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sample_requests_factory_id_fkey"
+            columns: ["factory_id"]
+            isOneToOne: false
+            referencedRelation: "factories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sample_requests_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]

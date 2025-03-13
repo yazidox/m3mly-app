@@ -5,6 +5,7 @@ import { Factory, Search, UserCircle, Menu } from "lucide-react";
 import UserProfile from "./user-profile";
 import { t } from "@/lib/i18n/server";
 import LanguageSwitcher from "./language-switcher";
+import Image from "next/image";
 
 export default async function Navbar() {
   const supabase = createClient();
@@ -16,8 +17,13 @@ export default async function Navbar() {
   return (
     <nav className="w-full border-b border-border bg-background/80 backdrop-blur-md py-4 sticky top-0 z-50">
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <Link href="/" prefetch className="text-2xl font-bold text-primary">
-          M3mly
+        <Link href="/" prefetch className="flex items-center gap-2">
+          <div className="h-8 w-8">
+            <img src="/logo.svg" alt="M3mly Logo" className="h-full w-full" />
+          </div>
+          <span className="text-2xl font-bold" style={{ color: "#171E44" }}>
+            M3mly
+          </span>
         </Link>
 
         <div className="hidden md:flex gap-6 items-center">

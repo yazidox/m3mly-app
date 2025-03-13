@@ -10,7 +10,7 @@
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 221 83% 53%;
+    --primary: 246 85% 59%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222 47% 11%;
@@ -22,13 +22,16 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 221 83% 53%;
+    --ring: 246 85% 59%;
     --radius: 0.75rem;
-    --chart-1: 221 83% 53%;
+    --chart-1: 246 85% 59%;
     --chart-2: 250 95% 76%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
+    --brand-text: 231 59% 18%;
   }
 
   .dark {
@@ -56,6 +59,8 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
   }
 }
 
@@ -95,6 +100,45 @@
   @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
 }
 
+/* Scrollbar styling */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Aceternity-inspired animations */
+@keyframes shimmer {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: -200% 0%;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 8s linear infinite;
+  background-size: 200% 100%;
+  background-image: linear-gradient(
+    to right,
+    hsl(var(--background)),
+    hsl(var(--primary) / 0.1),
+    hsl(var(--background))
+  );
+}
+
 /* RTL Support */
 [dir="rtl"] .ml-2 {
   margin-left: 0;
@@ -116,4 +160,27 @@
 
 [dir="rtl"] .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 1;
+}
+
+/* Print styles for invoices */
+@media print {
+  body {
+    background-color: white;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .print\:p-0 {
+    padding: 0 !important;
+  }
+
+  .print\:p-4 {
+    padding: 1rem !important;
+  }
+
+  .print\:shadow-none {
+    box-shadow: none !important;
+  }
 }

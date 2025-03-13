@@ -74,6 +74,15 @@ export async function updateFactory(formData: FormData) {
     .map((c) => c.trim());
   const status = formData.get("status") as string;
 
+  // Factory owner account fields
+  const createOwner = formData.get("create_owner") === "on";
+  const updatePassword = formData.get("update_password") === "on";
+  const ownerId = formData.get("owner_id") as string;
+  const ownerEmail = formData.get("owner_email") as string;
+  const ownerPassword = formData.get("owner_password") as string;
+  const ownerName = formData.get("owner_name") as string;
+
+  // Update factory information
   const { error } = await supabase
     .from("factories")
     .update({
@@ -96,6 +105,66 @@ export async function updateFactory(formData: FormData) {
   if (error) {
     console.error("Error updating factory:", error);
     throw new Error("Failed to update factory");
+  }
+
+  // Handle factory owner account operations
+  try {
+    // Create new factory owner account if requested
+    if (createOwner && ownerEmail && ownerPassword) {
+      // Create user with factory owner role using standard signUp API
+      const { data, error: authError } = await supabase.auth.signUp({
+        email: ownerEmail,
+        password: ownerPassword,
+        options: {
+          data: {
+            full_name: ownerName || name + " Owner",
+            role: "factory_owner",
+            factory_id: id,
+          },
+        },
+      });
+
+      if (authError) {
+        console.error("Error creating factory owner account:", authError);
+        throw new Error("Failed to create factory owner account");
+      }
+
+      // Create user record in public.users table
+      if (data.user) {
+        const { error: userError } = await supabase.from("users").insert({
+          id: data.user.id,
+          email: ownerEmail,
+          full_name: ownerName || name + " Owner",
+          role: "factory_owner",
+          factory_id: id,
+          token_identifier: data.user.id,
+          user_id: data.user.id,
+          created_at: new Date().toISOString(),
+        });
+
+        if (userError) {
+          console.error("Error creating user record:", userError);
+        }
+      }
+    }
+
+    // Update existing owner's password if requested
+    else if (updatePassword && ownerId) {
+      // Instead of using admin API, we'll send a password reset email
+      const { error: updateError } = await supabase.auth.resetPasswordForEmail(
+        ownerEmail,
+        {
+          redirectTo: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/callback?redirect_to=/protected/reset-password`,
+        },
+      );
+
+      if (updateError) {
+        console.error("Error sending password reset email:", updateError);
+        throw new Error("Failed to send password reset email");
+      }
+    }
+  } catch (err) {
+    console.error("Error in factory owner operations:", err);
   }
 
   revalidatePath("/admin/factories");

@@ -86,15 +86,38 @@ export const signInAction = async (formData: FormData) => {
   const password = formData.get("password") as string;
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) {
+    console.error("Sign in error:", error.message);
     return encodedRedirect("error", "/sign-in", error.message);
   }
 
+  if (!data.user) {
+    console.error("No user returned after sign in");
+    return encodedRedirect("error", "/sign-in", "Authentication failed");
+  }
+
+  // Check user role to determine redirect destination
+  const { data: userData, error: userError } = await supabase
+    .from("users")
+    .select("role")
+    .eq("email", email)
+    .single();
+
+  if (userError) {
+    console.error("Error fetching user role:", userError.message);
+  }
+
+  // Redirect based on user role
+  if (userData && userData.role === "factory_owner") {
+    return redirect("/factory-dashboard");
+  }
+
+  // Default redirect for normal users
   return redirect("/dashboard");
 };
 

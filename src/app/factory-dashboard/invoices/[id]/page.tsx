@@ -1,6 +1,5 @@
 import { createClient } from "../../../../../supabase/server";
 import { Button } from "@/components/ui/button";
-import { markInvoiceAsPaid } from "@/app/actions/factory";
 import {
   ArrowLeft,
   Calendar,
@@ -13,6 +12,10 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import FactoryDashboardNavbar from "@/components/factory-dashboard-navbar";
+import InvoiceActionButton from "@/components/invoice-action-button";
+import InvoicePdfModal from "@/components/invoice-pdf-modal";
+import PrintButtonClient from "@/components/print-button-client";
+import { formatCurrency } from "@/lib/formatters";
 
 export default async function InvoiceDetailPage({
   params,
@@ -76,19 +79,21 @@ export default async function InvoiceDetailPage({
               <p className="text-muted-foreground">#{invoice.invoice_number}</p>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" className="flex items-center gap-2">
-                <Printer className="h-4 w-4" />
-                <span>Print</span>
-              </Button>
+              <PrintButtonClient />
+              <InvoicePdfModal
+                invoiceId={invoice.id}
+                invoiceNumber={invoice.invoice_number}
+              >
+                <Button variant="outline" className="flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  <span>View PDF</span>
+                </Button>
+              </InvoicePdfModal>
               {invoice.status !== "paid" && (
-                <form action={markInvoiceAsPaid}>
-                  <input type="hidden" name="invoice_id" value={invoice.id} />
-                  <input type="hidden" name="order_id" value={order.id} />
-                  <Button className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4" />
-                    <span>Mark as Paid</span>
-                  </Button>
-                </form>
+                <InvoiceActionButton
+                  invoiceId={invoice.id}
+                  orderId={order.id}
+                />
               )}
             </div>
           </div>
@@ -171,11 +176,12 @@ export default async function InvoiceDetailPage({
                   </td>
                   <td className="text-right py-3 px-4">{order.quantity}</td>
                   <td className="text-right py-3 px-4">
-                    ${Number(order.products.price).toFixed(2)}
+                    {formatCurrency(Number(order.products.price))}
                   </td>
                   <td className="text-right py-3 px-4">
-                    $
-                    {(order.quantity * Number(order.products.price)).toFixed(2)}
+                    {formatCurrency(
+                      order.quantity * Number(order.products.price),
+                    )}
                   </td>
                 </tr>
               </tbody>
@@ -186,7 +192,7 @@ export default async function InvoiceDetailPage({
                     Subtotal
                   </td>
                   <td className="text-right py-3 px-4">
-                    ${Number(invoice.amount).toFixed(2)}
+                    {formatCurrency(Number(invoice.amount))}
                   </td>
                 </tr>
                 <tr>
@@ -194,7 +200,7 @@ export default async function InvoiceDetailPage({
                   <td className="text-right py-3 px-4 font-semibold">
                     Tax (0%)
                   </td>
-                  <td className="text-right py-3 px-4">$0.00</td>
+                  <td className="text-right py-3 px-4">{formatCurrency(0)}</td>
                 </tr>
                 <tr>
                   <td colSpan={2}></td>
@@ -202,7 +208,7 @@ export default async function InvoiceDetailPage({
                     Total Due
                   </td>
                   <td className="text-right py-3 px-4 font-bold">
-                    ${Number(invoice.amount).toFixed(2)}
+                    {formatCurrency(Number(invoice.amount))}
                   </td>
                 </tr>
               </tfoot>

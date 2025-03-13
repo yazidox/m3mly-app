@@ -1,5 +1,6 @@
 import { createClient } from "../../../supabase/server";
 import { redirect } from "next/navigation";
+import { formatCurrency, formatNumber } from "@/lib/formatters";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
@@ -20,7 +21,9 @@ import {
   DollarSign,
   Users,
   Edit,
+  FileText,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import FactoryDashboardNavbar from "@/components/factory-dashboard-navbar";
 
@@ -75,6 +78,28 @@ export default async function FactoryDashboard({
     console.error("Error fetching sample requests:", samplesError);
   }
 
+  // Fetch products for this factory
+  const { data: products, error: productsError } = await supabase
+    .from("products")
+    .select("*")
+    .eq("factory_id", factoryId)
+    .order("created_at", { ascending: false });
+
+  if (productsError) {
+    console.error("Error fetching products:", productsError);
+  }
+
+  // Fetch invoices for this factory
+  const { data: invoices, error: invoicesError } = await supabase
+    .from("invoices")
+    .select("*")
+    .eq("factory_id", factoryId)
+    .order("created_at", { ascending: false });
+
+  if (invoicesError) {
+    console.error("Error fetching invoices:", invoicesError);
+  }
+
   // Calculate statistics
   const pendingOrders =
     orders?.filter((order) => order.status === "pending").length || 0;
@@ -85,6 +110,8 @@ export default async function FactoryDashboard({
     .reduce((sum, order) => sum + Number(order.total_price), 0);
   const pendingSamples =
     sampleRequests?.filter((sample) => sample.status === "pending").length || 0;
+  const unpaidInvoices =
+    invoices?.filter((invoice) => invoice.status === "unpaid").length || 0;
 
   // Get active tab from URL or default to "overview"
   const activeTab = searchParams.tab || "overview";
@@ -118,6 +145,15 @@ export default async function FactoryDashboard({
             )}
             {searchParams.message === "sample_updated" && (
               <p>Sample request status updated successfully</p>
+            )}
+            {searchParams.message === "product_created" && (
+              <p>Product created successfully</p>
+            )}
+            {searchParams.message === "product_updated" && (
+              <p>Product updated successfully</p>
+            )}
+            {searchParams.message === "product_deleted" && (
+              <p>Product deleted successfully</p>
             )}
           </div>
         )}
@@ -171,7 +207,9 @@ export default async function FactoryDashboard({
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    ${totalRevenue?.toFixed(2) || "0.00"}
+                    {totalRevenue
+                      ? formatCurrency(totalRevenue)
+                      : formatCurrency(0)}
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
                     From all orders
@@ -182,14 +220,14 @@ export default async function FactoryDashboard({
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <CardTitle className="text-sm font-medium">
-                    Sample Requests
+                    Unpaid Invoices
                   </CardTitle>
-                  <Package className="h-4 w-4 text-muted-foreground" />
+                  <FileText className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{pendingSamples}</div>
+                  <div className="text-2xl font-bold">{unpaidInvoices}</div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Pending samples
+                    Awaiting payment
                   </p>
                 </CardContent>
               </Card>
@@ -197,8 +235,13 @@ export default async function FactoryDashboard({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
-                <CardHeader>
+                <CardHeader className="flex justify-between items-center">
                   <CardTitle className="text-lg">Recent Orders</CardTitle>
+                  <Link href="/factory-dashboard?tab=orders">
+                    <Button variant="ghost" size="sm">
+                      View All
+                    </Button>
+                  </Link>
                 </CardHeader>
                 <CardContent>
                   {orders && orders.length > 0 ? (
@@ -245,23 +288,78 @@ export default async function FactoryDashboard({
                       No orders yet
                     </div>
                   )}
-                  {orders && orders.length > 5 && (
-                    <div className="mt-4 text-center">
-                      <Link href="/factory-dashboard?tab=orders">
-                        <Button variant="link" size="sm">
-                          View all orders
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
                 </CardContent>
               </Card>
 
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">
-                    Recent Sample Requests
-                  </CardTitle>
+                <CardHeader className="flex justify-between items-center">
+                  <CardTitle className="text-lg">Recent Invoices</CardTitle>
+                  <Link href="/factory-dashboard/invoices">
+                    <Button variant="ghost" size="sm">
+                      View All
+                    </Button>
+                  </Link>
+                </CardHeader>
+                <CardContent>
+                  {invoices && invoices.length > 0 ? (
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Invoice #</TableHead>
+                          <TableHead>Amount</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Date</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {invoices.slice(0, 5).map((invoice) => (
+                          <TableRow key={invoice.id}>
+                            <TableCell className="font-medium">
+                              {invoice.invoice_number}
+                            </TableCell>
+                            <TableCell>
+                              {formatCurrency(Number(invoice.amount))}
+                            </TableCell>
+                            <TableCell>
+                              <Badge
+                                variant={
+                                  invoice.status === "paid"
+                                    ? "success"
+                                    : invoice.status === "overdue"
+                                      ? "destructive"
+                                      : "outline"
+                                }
+                              >
+                                {invoice.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              {new Date(
+                                invoice.created_at,
+                              ).toLocaleDateString()}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  ) : (
+                    <div className="text-center py-6 text-muted-foreground">
+                      No invoices yet
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader className="flex justify-between items-center">
+                  <CardTitle className="text-lg">Sample Requests</CardTitle>
+                  <Link href="/factory-dashboard?tab=samples">
+                    <Button variant="ghost" size="sm">
+                      View All
+                    </Button>
+                  </Link>
                 </CardHeader>
                 <CardContent>
                   {sampleRequests && sampleRequests.length > 0 ? (
@@ -308,13 +406,55 @@ export default async function FactoryDashboard({
                       No sample requests yet
                     </div>
                   )}
-                  {sampleRequests && sampleRequests.length > 5 && (
-                    <div className="mt-4 text-center">
-                      <Link href="/factory-dashboard?tab=samples">
-                        <Button variant="link" size="sm">
-                          View all sample requests
-                        </Button>
-                      </Link>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex justify-between items-center">
+                  <CardTitle className="text-lg">Recent Products</CardTitle>
+                  <Link href="/factory-dashboard/products">
+                    <Button variant="ghost" size="sm">
+                      Manage Products
+                    </Button>
+                  </Link>
+                </CardHeader>
+                <CardContent>
+                  {products && products.length > 0 ? (
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Price</TableHead>
+                          <TableHead>Status</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {products.slice(0, 5).map((product) => (
+                          <TableRow key={product.id}>
+                            <TableCell className="font-medium">
+                              {product.name}
+                            </TableCell>
+                            <TableCell>
+                              {formatCurrency(product.price)}
+                            </TableCell>
+                            <TableCell>
+                              <Badge
+                                variant={
+                                  product.status === "active"
+                                    ? "success"
+                                    : "secondary"
+                                }
+                              >
+                                {product.status}
+                              </Badge>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  ) : (
+                    <div className="text-center py-6 text-muted-foreground">
+                      No products yet
                     </div>
                   )}
                 </CardContent>
@@ -352,7 +492,7 @@ export default async function FactoryDashboard({
                           <TableCell>{order.products?.name}</TableCell>
                           <TableCell>{order.quantity}</TableCell>
                           <TableCell>
-                            ${Number(order.total_price).toFixed(2)}
+                            {formatCurrency(Number(order.total_price))}
                           </TableCell>
                           <TableCell>
                             <Badge
@@ -479,27 +619,89 @@ export default async function FactoryDashboard({
 
           <TabsContent value="products">
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
+              <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <CardTitle>Your Products</CardTitle>
                 <Link href="/factory-dashboard/products/new">
-                  <Button size="sm">Add New Product</Button>
+                  <Button className="w-full sm:w-auto">
+                    <Package className="h-4 w-4 mr-2" /> Add New Product
+                  </Button>
                 </Link>
               </CardHeader>
               <CardContent>
-                {/* Products table or grid would go here */}
-                <div className="text-center py-12">
-                  <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-medium mb-2">
-                    Manage Your Products
-                  </h3>
-                  <p className="text-muted-foreground max-w-md mx-auto mb-6">
-                    Add, edit, or remove products from your factory catalog.
-                    Customers can browse and order these products.
-                  </p>
-                  <Link href="/factory-dashboard/products/new">
-                    <Button>Add Your First Product</Button>
-                  </Link>
-                </div>
+                {products && products.length > 0 ? (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Image</TableHead>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Price</TableHead>
+                        <TableHead>Category</TableHead>
+                        <TableHead>Min Order</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {products.map((product) => (
+                        <TableRow key={product.id}>
+                          <TableCell>
+                            {product.image && (
+                              <div className="relative h-10 w-10 rounded-md overflow-hidden">
+                                <Image
+                                  src={product.image}
+                                  alt={product.name}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            )}
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            {product.name}
+                          </TableCell>
+                          <TableCell>${product.price}</TableCell>
+                          <TableCell>{product.category}</TableCell>
+                          <TableCell>{product.min_order_quantity}</TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={
+                                product.status === "active"
+                                  ? "success"
+                                  : "secondary"
+                              }
+                            >
+                              {product.status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Link
+                              href={`/factory-dashboard/products/${product.id}`}
+                            >
+                              <Button variant="outline" size="sm">
+                                <Edit className="h-4 w-4 mr-2" />
+                                Edit
+                              </Button>
+                            </Link>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <div className="text-center py-12">
+                    <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-medium mb-2">
+                      No Products Yet
+                    </h3>
+                    <p className="text-muted-foreground max-w-md mx-auto mb-6">
+                      You haven't added any products to your catalog yet. Add
+                      your first product to start receiving orders.
+                    </p>
+                    <Link href="/factory-dashboard/products/new">
+                      <Button>Add Your First Product</Button>
+                    </Link>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>

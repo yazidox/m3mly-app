@@ -4,9 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { updateFactory } from "@/app/actions/admin";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, User, Factory as FactoryIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default async function EditFactoryPage({
   params,
@@ -24,6 +26,14 @@ export default async function EditFactoryPage({
   if (error || !factory) {
     return notFound();
   }
+
+  // Check if factory already has an owner account
+  const { data: existingOwner } = await supabase
+    .from("users")
+    .select("*")
+    .eq("factory_id", factory.id)
+    .eq("role", "factory_owner")
+    .maybeSingle();
 
   return (
     <div className="space-y-6">
@@ -189,6 +199,117 @@ export default async function EditFactoryPage({
                 <option value="approved">Approved</option>
                 <option value="rejected">Rejected</option>
               </select>
+            </div>
+
+            <Separator className="my-4" />
+
+            <div className="bg-muted/50 p-4 rounded-lg">
+              <div className="flex items-center gap-2 mb-4">
+                <FactoryIcon className="h-5 w-5 text-primary" />
+                <h3 className="font-medium">Factory Owner Account</h3>
+              </div>
+
+              {existingOwner ? (
+                <div className="bg-background p-4 rounded border mb-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <User className="h-5 w-5 text-primary" />
+                    <h3 className="font-medium">Existing Owner Account</h3>
+                  </div>
+
+                  <div className="text-sm mb-4">
+                    <p className="flex items-center gap-2 mb-2">
+                      <span className="text-muted-foreground">Email:</span>
+                      <strong>{existingOwner.email}</strong>
+                    </p>
+                    <p className="text-muted-foreground">
+                      This factory already has an owner account. Check the box
+                      below to reset the owner's password.
+                    </p>
+                  </div>
+
+                  <div className="flex items-start space-x-2 mb-4">
+                    <Checkbox id="update_password" name="update_password" />
+                    <div className="grid gap-1.5 leading-none">
+                      <label
+                        htmlFor="update_password"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Reset password
+                      </label>
+                      <p className="text-sm text-muted-foreground">
+                        Check this box to reset the factory owner's password
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Password field removed as we're using email reset */}
+                  <input
+                    type="hidden"
+                    name="owner_password"
+                    value="reset-via-email"
+                  />
+
+                  <input
+                    type="hidden"
+                    name="owner_id"
+                    value={existingOwner.id}
+                  />
+                  <input
+                    type="hidden"
+                    name="owner_email"
+                    value={existingOwner.email}
+                  />
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-start space-x-2 mb-4">
+                    <Checkbox id="create_owner" name="create_owner" />
+                    <div className="grid gap-1.5 leading-none">
+                      <label
+                        htmlFor="create_owner"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Create owner account
+                      </label>
+                      <p className="text-sm text-muted-foreground">
+                        This will create a user with factory owner role who can
+                        access the factory dashboard
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="owner_email">Owner Email</Label>
+                      <Input
+                        id="owner_email"
+                        name="owner_email"
+                        type="email"
+                        placeholder="factory-owner@example.com"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="owner_password">Owner Password</Label>
+                      <Input
+                        id="owner_password"
+                        name="owner_password"
+                        type="password"
+                        placeholder="Minimum 6 characters"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 mt-4">
+                    <Label htmlFor="owner_name">Owner Full Name</Label>
+                    <Input
+                      id="owner_name"
+                      name="owner_name"
+                      type="text"
+                      placeholder="Factory Manager Name"
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </div>
 

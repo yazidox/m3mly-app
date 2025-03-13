@@ -14,7 +14,10 @@ export async function requestSample(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { success: false, message: "You must be logged in to request a sample." };
+    return {
+      success: false,
+      message: "You must be logged in to request a sample.",
+    };
   }
 
   // Extract form data
@@ -47,16 +50,22 @@ export async function requestSample(formData: FormData) {
 
     if (error) {
       console.error("Error creating sample request:", error);
-      return { success: false, message: "Failed to create sample request. Please try again." };
+      return {
+        success: false,
+        message: "Failed to create sample request. Please try again.",
+      };
     }
 
     // Revalidate path
     revalidatePath("/dashboard/samples");
-    
+
     return { success: true, message: "Sample request submitted successfully!" };
   } catch (error) {
     console.error("Error in requestSample:", error);
-    return { success: false, message: "An unexpected error occurred. Please try again." };
+    return {
+      success: false,
+      message: "An unexpected error occurred. Please try again.",
+    };
   }
 }
 
@@ -70,7 +79,10 @@ export async function placeOrder(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { success: false, message: "You must be logged in to place an order." };
+    return {
+      success: false,
+      message: "You must be logged in to place an order.",
+    };
   }
 
   // Extract form data
@@ -97,10 +109,13 @@ export async function placeOrder(formData: FormData) {
 
     if (productError || !product) {
       console.error("Error fetching product price:", productError);
-      return { success: false, message: "Failed to fetch product price. Please try again." };
+      return {
+        success: false,
+        message: "Failed to fetch product price. Please try again.",
+      };
     }
 
-    // Calculate total price
+    // Calculate total price (convert to MAD if needed)
     const total_price = product.price * quantity;
 
     // Create order in database
@@ -126,16 +141,22 @@ export async function placeOrder(formData: FormData) {
 
     if (error) {
       console.error("Error creating order:", error);
-      return { success: false, message: "Failed to place order. Please try again." };
+      return {
+        success: false,
+        message: "Failed to place order. Please try again.",
+      };
     }
 
     // Revalidate path
     revalidatePath("/dashboard/orders");
-    
+
     return { success: true, message: "Order placed successfully!" };
   } catch (error) {
     console.error("Error in placeOrder:", error);
-    return { success: false, message: "An unexpected error occurred. Please try again." };
+    return {
+      success: false,
+      message: "An unexpected error occurred. Please try again.",
+    };
   }
 }
 
@@ -176,7 +197,7 @@ export async function updateOrderStatus(formData: FormData) {
     .from("orders")
     .update({
       status,
-      estimated_delivery: estimatedDelivery,
+      estimated_delivery: estimatedDelivery || null,
       factory_notes: notes,
       updated_at: new Date().toISOString(),
     })
@@ -229,7 +250,7 @@ export async function updateSampleStatus(formData: FormData) {
     .from("sample_requests")
     .update({
       status,
-      estimated_delivery: estimatedDelivery,
+      estimated_delivery: estimatedDelivery || null,
       factory_notes: notes,
       updated_at: new Date().toISOString(),
     })

@@ -10,9 +10,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FileText, Eye, DollarSign } from "lucide-react";
+import { FileText, Eye } from "lucide-react";
+import { formatCurrency } from "@/lib/formatters";
 import Link from "next/link";
 import FactoryDashboardNavbar from "@/components/factory-dashboard-navbar";
+import MarkInvoicePaidButton from "@/components/mark-invoice-paid-button";
+import InvoicePdfModal from "@/components/invoice-pdf-modal";
 
 export default async function InvoicesPage() {
   const supabase = await createClient();
@@ -60,9 +63,14 @@ export default async function InvoicesPage() {
               Manage and track customer invoices
             </p>
           </div>
-          <Link href="/factory-dashboard?tab=orders">
-            <Button>View Orders</Button>
-          </Link>
+          <div className="flex gap-3">
+            <Link href="/factory-dashboard/completed-orders">
+              <Button variant="outline">Generate Invoices</Button>
+            </Link>
+            <Link href="/factory-dashboard?tab=orders">
+              <Button>View Orders</Button>
+            </Link>
+          </div>
         </div>
 
         <div className="bg-card rounded-xl border shadow-sm overflow-hidden">
@@ -87,7 +95,9 @@ export default async function InvoicesPage() {
                     </TableCell>
                     <TableCell>#{invoice.order_id.substring(0, 8)}</TableCell>
                     <TableCell>{invoice.orders?.full_name}</TableCell>
-                    <TableCell>${Number(invoice.amount).toFixed(2)}</TableCell>
+                    <TableCell>
+                      {formatCurrency(Number(invoice.amount))}
+                    </TableCell>
                     <TableCell>
                       {invoice.due_date
                         ? new Date(invoice.due_date).toLocaleDateString()
@@ -108,38 +118,25 @@ export default async function InvoicesPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Link
-                          href={`/factory-dashboard/invoices/${invoice.id}`}
-                        >
-                          <Button variant="outline" size="sm">
-                            <Eye className="h-4 w-4 mr-2" />
-                            View
-                          </Button>
-                        </Link>
-                        {invoice.status !== "paid" && (
-                          <form
-                            action="/api/factory/mark-invoice-paid"
-                            method="POST"
+                        <div className="flex gap-2">
+                          <Link
+                            href={`/factory-dashboard/invoices/${invoice.id}`}
                           >
-                            <input
-                              type="hidden"
-                              name="invoice_id"
-                              value={invoice.id}
-                            />
-                            <input
-                              type="hidden"
-                              name="order_id"
-                              value={invoice.order_id}
-                            />
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-green-600"
-                            >
-                              <DollarSign className="h-4 w-4 mr-2" />
-                              Mark Paid
+                            <Button variant="outline" size="sm">
+                              <Eye className="h-4 w-4 mr-2" />
+                              View
                             </Button>
-                          </form>
+                          </Link>
+                          <InvoicePdfModal
+                            invoiceId={invoice.id}
+                            invoiceNumber={invoice.invoice_number}
+                          />
+                        </div>
+                        {invoice.status !== "paid" && (
+                          <MarkInvoicePaidButton
+                            invoiceId={invoice.id}
+                            orderId={invoice.order_id}
+                          />
                         )}
                       </div>
                     </TableCell>

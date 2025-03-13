@@ -56,14 +56,15 @@ export async function GET(request: NextRequest) {
     }
 
     // Create user with factory owner role
-    const { data, error } = await supabase.auth.admin.createUser({
+    const { data, error } = await supabase.auth.signUp({
       email: "factory@example.com",
       password: "factory123",
-      email_confirm: true,
-      user_metadata: {
-        full_name: "Factory Owner",
-        role: "factory_owner",
-        factory_id: factory.id,
+      options: {
+        data: {
+          full_name: "Factory Owner",
+          role: "factory_owner",
+          factory_id: factory.id,
+        },
       },
     });
 
@@ -84,6 +85,8 @@ export async function GET(request: NextRequest) {
         role: "factory_owner",
         factory_id: factory.id,
         created_at: new Date().toISOString(),
+        token_identifier: data.user.id,
+        user_id: data.user.id,
       });
 
       if (userError) {
