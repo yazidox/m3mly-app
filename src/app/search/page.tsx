@@ -37,8 +37,10 @@ export default async function SearchPage({
       factories = factoriesData.filter(
         (factory) =>
           factory.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          factory.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          factory.location.toLowerCase().includes(searchQuery.toLowerCase())
+          factory.description
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          factory.location.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     } else {
       factories = factoriesData || [];
@@ -58,8 +60,10 @@ export default async function SearchPage({
       products = productsData.filter(
         (product) =>
           product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          product.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          product.category?.toLowerCase().includes(searchQuery.toLowerCase())
+          product.description
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          product.category?.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     } else {
       products = productsData || [];
@@ -95,11 +99,7 @@ export default async function SearchPage({
                   className="pl-9 bg-background/80 backdrop-blur-sm border-primary/20 focus-visible:border-primary/50"
                   defaultValue={searchQuery}
                 />
-                <input
-                  type="hidden"
-                  name="type"
-                  value={searchType}
-                />
+                <input type="hidden" name="type" value={searchType} />
                 <Button
                   type="submit"
                   className="absolute right-1 top-1/2 -translate-y-1/2 h-7 px-3"
@@ -120,7 +120,7 @@ export default async function SearchPage({
       <Tabs defaultValue={searchType} className="space-y-6">
         <div className="flex justify-between items-center">
           <TabsList>
-            <TabsTrigger 
+            <TabsTrigger
               value="factories"
               onClick={() => {
                 const url = new URL(window.location.href);
@@ -130,7 +130,7 @@ export default async function SearchPage({
             >
               <Building className="h-4 w-4 mr-2" /> Factories
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="products"
               onClick={() => {
                 const url = new URL(window.location.href);
@@ -142,8 +142,8 @@ export default async function SearchPage({
             </TabsTrigger>
           </TabsList>
           <div className="text-sm text-muted-foreground">
-            {searchType === "factories" 
-              ? `${factories.length} factories found` 
+            {searchType === "factories"
+              ? `${factories.length} factories found`
               : `${products.length} products found`}
             {searchQuery ? ` for "${searchQuery}"` : ""}
           </div>
@@ -174,7 +174,9 @@ export default async function SearchPage({
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
                         <div className="flex items-center gap-1">
                           <Sparkles className="h-4 w-4 text-amber-400" />
-                          <span className="text-white text-sm font-medium">{factory.rating} Rating</span>
+                          <span className="text-white text-sm font-medium">
+                            {factory.rating} Rating
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -190,13 +192,21 @@ export default async function SearchPage({
                           {factory.description}
                         </p>
                         <div className="flex flex-wrap gap-1 mt-3">
-                          {factory.specialties?.slice(0, 3).map((specialty, index) => (
-                            <Badge key={index} variant="secondary" className="text-xs">
-                              {specialty}
-                            </Badge>
-                          ))}
+                          {factory.specialties
+                            ?.slice(0, 3)
+                            .map((specialty, index) => (
+                              <Badge
+                                key={index}
+                                variant="secondary"
+                                className="text-xs"
+                              >
+                                {specialty}
+                              </Badge>
+                            ))}
                           {factory.specialties?.length > 3 && (
-                            <Badge variant="outline" className="text-xs">+{factory.specialties.length - 3} more</Badge>
+                            <Badge variant="outline" className="text-xs">
+                              +{factory.specialties.length - 3} more
+                            </Badge>
                           )}
                         </div>
                       </div>
@@ -208,4 +218,102 @@ export default async function SearchPage({
                           size="sm"
                           className="gap-1 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
                         >
-                          View <ArrowRight className="h-3 w-3"
+                          View <ArrowRight className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 border rounded-lg">
+              <SearchIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-lg font-medium mb-2">No factories found</h3>
+              <p className="text-muted-foreground max-w-md mx-auto mb-6">
+                {searchQuery
+                  ? `No factories matching "${searchQuery}"`
+                  : "There are no factories available at the moment"}
+              </p>
+              <Button asChild>
+                <Link href="/factories">Browse All Factories</Link>
+              </Button>
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="products" className="mt-0">
+          {products.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {products.map((product) => (
+                <Link
+                  key={product.id}
+                  href={`/product/${product.id}`}
+                  className="group"
+                >
+                  <Card className="overflow-hidden hover:shadow-md transition-all duration-300 h-full flex flex-col border-border/50 hover:border-primary/30">
+                    <div className="h-48 bg-muted relative overflow-hidden">
+                      {product.image ? (
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="h-full w-full flex items-center justify-center">
+                          <Package className="h-12 w-12 text-muted-foreground" />
+                        </div>
+                      )}
+                      <Badge className="absolute top-2 right-2">
+                        {product.category}
+                      </Badge>
+                    </div>
+                    <CardContent className="p-4 flex-1 flex flex-col">
+                      <div className="flex-1">
+                        <h3 className="font-semibold mb-1 group-hover:text-primary transition-colors">
+                          {product.name}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {product.factories?.name}
+                        </p>
+                        <p className="text-sm line-clamp-2">
+                          {product.description}
+                        </p>
+                      </div>
+                      <div className="flex justify-between items-center mt-4 pt-4 border-t border-border/40">
+                        <div className="font-bold">
+                          {product.price
+                            ? `${product.price}`
+                            : "Price on request"}
+                        </div>
+                        <Button
+                          size="sm"
+                          className="gap-1 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+                        >
+                          View <ArrowRight className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 border rounded-lg">
+              <Package className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-lg font-medium mb-2">No products found</h3>
+              <p className="text-muted-foreground max-w-md mx-auto mb-6">
+                {searchQuery
+                  ? `No products matching "${searchQuery}"`
+                  : "There are no products available at the moment"}
+              </p>
+              <Button asChild>
+                <Link href="/products">Browse All Products</Link>
+              </Button>
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}

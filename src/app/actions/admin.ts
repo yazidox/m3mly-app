@@ -291,3 +291,92 @@ export async function updateUser(formData: FormData) {
   revalidatePath("/admin/users");
   redirect("/admin/users");
 }
+
+// Payment verification actions
+export async function verifyPayment(formData: FormData) {
+  const supabase = await createClient();
+
+  const paymentId = formData.get("payment_id") as string;
+  const invoiceId = formData.get("invoice_id") as string;
+  const orderId = formData.get("order_id") as string;
+
+  try {
+    // 1. Update payment status to verified
+    const { error: paymentError } = await supabase
+      .from("payments")
+      .update({
+        status: "verified",
+        verified_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", paymentId);
+
+    if (paymentError) {
+      console.error("Error updating payment:", paymentError);
+      throw new Error("Failed to verify payment");
+    }
+
+    // 2. Update invoice status to paid
+    const { error: invoiceError } = await supabase
+      .from("invoices")
+      .update({
+        status: "paid",
+        payment_date: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", invoiceId);
+
+    if (invoiceError) {
+      console.error("Error updating invoice:", invoiceError);
+    }
+
+    // 3. Update order payment status if order exists
+    if (orderId) {
+      const { error: orderError } = await supabase
+        .from("orders")
+        .update({
+          payment_status: "paid",
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", orderId);
+
+      if (orderError) {
+        console.error("Error updating order:", orderError);
+      }
+    }
+
+    revalidatePath("/admin/payments");
+    return redirect(`/admin/payments/${paymentId}?message=payment_verified`);
+  } catch (error) {
+    console.error("Error in verifyPayment:", error);
+    return redirect(`/admin/payments/${paymentId}?error=verification_failed`);
+  }
+}
+
+export async function rejectPayment(formData: FormData) {
+  const supabase = await createClient();
+
+  const paymentId = formData.get("payment_id") as string;
+
+  try {
+    // Update payment status to rejected
+    const { error: paymentError } = await supabase
+      .from("payments")
+      .update({
+        status: "rejected",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", paymentId);
+
+    if (paymentError) {
+      console.error("Error rejecting payment:", paymentError);
+      throw new Error("Failed to reject payment");
+    }
+
+    revalidatePath("/admin/payments");
+    return redirect(`/admin/payments/${paymentId}?message=payment_rejected`);
+  } catch (error) {
+    console.error("Error in rejectPayment:", error);
+    return redirect(`/admin/payments/${paymentId}?error=rejection_failed`);
+  }
+}

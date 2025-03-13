@@ -9,6 +9,8 @@ import {
   Users,
   Settings,
   LogOut,
+  FileText,
+  CreditCard,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
@@ -34,6 +36,16 @@ const navItems = [
     title: "Users",
     href: "/admin/users",
     icon: <Users className="h-5 w-5" />,
+  },
+  {
+    title: "Payments",
+    href: "/admin/payments",
+    icon: <CreditCard className="h-5 w-5" />,
+  },
+  {
+    title: "Invoices",
+    href: "/admin/invoices",
+    icon: <FileText className="h-5 w-5" />,
   },
   {
     title: "Settings",

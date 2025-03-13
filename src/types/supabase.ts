@@ -210,6 +210,114 @@ export type Database = {
           },
         ]
       }
+      payment_methods: {
+        Row: {
+          account_name: string
+          account_number: string
+          bank_name: string | null
+          created_at: string | null
+          details: string | null
+          id: string
+          is_default: boolean | null
+          reference: string | null
+          status: string
+          type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          account_name: string
+          account_number: string
+          bank_name?: string | null
+          created_at?: string | null
+          details?: string | null
+          id?: string
+          is_default?: boolean | null
+          reference?: string | null
+          status?: string
+          type: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          account_name?: string
+          account_number?: string
+          bank_name?: string | null
+          created_at?: string | null
+          details?: string | null
+          id?: string
+          is_default?: boolean | null
+          reference?: string | null
+          status?: string
+          type?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string | null
+          currency: string | null
+          details: string | null
+          id: string
+          invoice_id: string
+          payment_method_id: string | null
+          payment_method_type: string
+          reference: string | null
+          status: string
+          updated_at: string | null
+          user_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          currency?: string | null
+          details?: string | null
+          id?: string
+          invoice_id: string
+          payment_method_id?: string | null
+          payment_method_type: string
+          reference?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          currency?: string | null
+          details?: string | null
+          id?: string
+          invoice_id?: string
+          payment_method_id?: string | null
+          payment_method_type?: string
+          reference?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_payment_method_id_fkey"
+            columns: ["payment_method_id"]
+            isOneToOne: false
+            referencedRelation: "payment_methods"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           category: string | null
