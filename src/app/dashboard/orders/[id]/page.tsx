@@ -15,6 +15,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/formatters";
+import { t } from "@/lib/i18n/server";
 
 export default async function OrderDetailPage({
   params,
@@ -52,6 +53,22 @@ export default async function OrderDetailPage({
     .eq("order_id", order.id)
     .maybeSingle();
 
+  // Helper function to translate status
+  const translateStatus = (status: string) => {
+    switch (status) {
+      case "pending":
+        return t("dashboard.status_pending");
+      case "processing":
+        return t("dashboard.status_processing");
+      case "completed":
+        return t("dashboard.status_completed");
+      case "cancelled":
+        return t("dashboard.status_cancelled");
+      default:
+        return status;
+    }
+  };
+
   return (
     <div className="space-y-6">
       <Link
@@ -59,7 +76,7 @@ export default async function OrderDetailPage({
         className="inline-flex items-center text-muted-foreground hover:text-foreground mb-6"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to Orders
+        Retour aux commandes
       </Link>
 
       <div className="bg-card rounded-xl border shadow-sm p-6">
@@ -212,7 +229,7 @@ export default async function OrderDetailPage({
                                 : "outline"
                         }
                       >
-                        {order.status}
+                        {translateStatus(order.status)}
                       </Badge>
                     </div>
                   </div>
@@ -256,7 +273,7 @@ export default async function OrderDetailPage({
                     <Link href={`/dashboard/invoices/${invoice.id}`}>
                       <Button variant="outline" size="sm">
                         <FileText className="h-4 w-4 mr-2" />
-                        View Invoice
+                        {t("dashboard.view_details")} Invoice
                       </Button>
                     </Link>
                   </div>

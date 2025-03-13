@@ -48,9 +48,9 @@ export default async function SettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Account Settings</h1>
+        <h1 className="text-3xl font-bold mb-2">Paramètres du Compte</h1>
         <p className="text-muted-foreground">
-          Manage your account preferences and settings
+          Gérez vos préférences et paramètres de compte
         </p>
       </div>
 

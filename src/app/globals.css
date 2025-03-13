@@ -162,6 +162,41 @@
   --tw-space-x-reverse: 1;
 }
 
+/* Additional RTL styles for dashboard */
+[dir="rtl"] .justify-start {
+  justify-content: flex-end;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .mr-1,
+[dir="rtl"] .mr-2,
+[dir="rtl"] .mr-3,
+[dir="rtl"] .mr-4 {
+  margin-right: 0;
+  margin-left: 0.25rem;
+  margin-left: 0.5rem;
+  margin-left: 0.75rem;
+  margin-left: 1rem;
+}
+
+[dir="rtl"] .ml-1,
+[dir="rtl"] .ml-2,
+[dir="rtl"] .ml-3,
+[dir="rtl"] .ml-4 {
+  margin-left: 0;
+  margin-right: 0.25rem;
+  margin-right: 0.5rem;
+  margin-right: 0.75rem;
+  margin-right: 1rem;
+}
+
 /* Print styles for invoices */
 @media print {
   body {

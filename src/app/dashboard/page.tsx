@@ -30,6 +30,7 @@ import {
   Factory,
   Zap,
 } from "lucide-react";
+import { t } from "@/lib/i18n/server";
 
 export default async function Dashboard() {
   const supabase = await createClient();
@@ -96,10 +97,10 @@ export default async function Dashboard() {
               className="text-4xl font-bold mb-2"
               style={{ color: "#171E44" }}
             >
-              Welcome, {userData?.full_name || "User"}
+              Bienvenue, {userData?.full_name || "Utilisateur"}
             </h1>
             <p className="text-muted-foreground text-lg">
-              Here's an overview of your manufacturing journey
+              Voici un aperçu de votre parcours de fabrication
             </p>
           </div>
         </div>
@@ -109,7 +110,7 @@ export default async function Dashboard() {
         <Card className="group hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
-              Orders
+              Commandes
             </CardTitle>
             <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <ShoppingCart className="h-4 w-4 text-primary" />
@@ -118,7 +119,7 @@ export default async function Dashboard() {
           <CardContent>
             <div className="text-3xl font-bold">{orders?.length || 0}</div>
             <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
-              <Clock className="h-3 w-3" /> {pendingOrders} pending
+              <Clock className="h-3 w-3" /> {pendingOrders} en attente
             </p>
           </CardContent>
           <CardFooter className="pt-0">
@@ -126,7 +127,7 @@ export default async function Dashboard() {
               href="/dashboard/orders"
               className="text-xs text-primary flex items-center hover:underline"
             >
-              View all orders <ArrowRight className="h-3 w-3 ml-1" />
+              Voir toutes les commandes <ArrowRight className="h-3 w-3 ml-1" />
             </Link>
           </CardFooter>
         </Card>
@@ -134,7 +135,7 @@ export default async function Dashboard() {
         <Card className="group hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
-              Sample Requests
+              Demandes d'Échantillons
             </CardTitle>
             <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <Package className="h-4 w-4 text-primary" />
@@ -143,7 +144,7 @@ export default async function Dashboard() {
           <CardContent>
             <div className="text-3xl font-bold">{samples?.length || 0}</div>
             <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
-              <Clock className="h-3 w-3" /> {pendingSamples} pending
+              <Clock className="h-3 w-3" /> {pendingSamples} en attente
             </p>
           </CardContent>
           <CardFooter className="pt-0">
@@ -151,7 +152,7 @@ export default async function Dashboard() {
               href="/dashboard/samples"
               className="text-xs text-primary flex items-center hover:underline"
             >
-              View all samples <ArrowRight className="h-3 w-3 ml-1" />
+              Voir tous les échantillons <ArrowRight className="h-3 w-3 ml-1" />
             </Link>
           </CardFooter>
         </Card>
@@ -159,7 +160,7 @@ export default async function Dashboard() {
         <Card className="group hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
-              Total Spent
+              Total Dépensé
             </CardTitle>
             <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <CreditCard className="h-4 w-4 text-primary" />
@@ -170,7 +171,7 @@ export default async function Dashboard() {
               {formatCurrency(totalSpent)}
             </div>
             <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
-              <TrendingUp className="h-3 w-3" /> Across all orders
+              <TrendingUp className="h-3 w-3" /> Sur toutes les commandes
             </p>
           </CardContent>
           <CardFooter className="pt-0">
@@ -178,7 +179,7 @@ export default async function Dashboard() {
               href="/dashboard/invoices"
               className="text-xs text-primary flex items-center hover:underline"
             >
-              View invoices <ArrowRight className="h-3 w-3 ml-1" />
+              Voir les factures <ArrowRight className="h-3 w-3 ml-1" />
             </Link>
           </CardFooter>
         </Card>
@@ -186,7 +187,7 @@ export default async function Dashboard() {
         <Card className="group hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">
-              Next Delivery
+              Prochaine Livraison
             </CardTitle>
             <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <Truck className="h-4 w-4 text-primary" />
@@ -199,10 +200,10 @@ export default async function Dashboard() {
                     orders.find((order) => order.status === "processing")
                       ?.estimated_delivery || Date.now(),
                   ).toLocaleDateString()
-                : "No deliveries"}
+                : "Aucune livraison"}
             </div>
             <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
-              <Calendar className="h-3 w-3" /> Estimated arrival
+              <Calendar className="h-3 w-3" /> Arrivée estimée
             </p>
           </CardContent>
           <CardFooter className="pt-0">
@@ -210,7 +211,7 @@ export default async function Dashboard() {
               href="/dashboard/shipments"
               className="text-xs text-primary flex items-center hover:underline"
             >
-              Track shipments <ArrowRight className="h-3 w-3 ml-1" />
+              Suivre les expéditions <ArrowRight className="h-3 w-3 ml-1" />
             </Link>
           </CardFooter>
         </Card>
@@ -218,12 +219,12 @@ export default async function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <Card className="overflow-hidden border-border/50 hover:shadow-md transition-all duration-300">
+          <Card className="overflow-hidden hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30">
             <CardHeader className="bg-muted/30">
               <div className="flex justify-between items-center">
                 <CardTitle className="flex items-center gap-2">
                   <ShoppingCart className="h-5 w-5 text-primary" />
-                  Recent Orders
+                  Commandes Récentes
                 </CardTitle>
                 <Link href="/dashboard/orders">
                   <Button
@@ -231,12 +232,12 @@ export default async function Dashboard() {
                     size="sm"
                     className="gap-1 hover:bg-background/80"
                   >
-                    View All <ArrowRight className="h-4 w-4" />
+                    Voir Tout <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
               </div>
               <CardDescription>
-                Your most recent manufacturing orders
+                Vos commandes de fabrication les plus récentes
               </CardDescription>
             </CardHeader>
             <CardContent className="p-0">
@@ -277,7 +278,7 @@ export default async function Dashboard() {
                           <div className="font-medium">
                             {formatCurrency(Number(order.total_price))}
                           </div>
-                          <div className="text-sm">{order.quantity} units</div>
+                          <div className="text-sm">{order.quantity} unités</div>
                         </div>
                         <Badge
                           variant={
@@ -298,21 +299,21 @@ export default async function Dashboard() {
               ) : (
                 <div className="text-center py-12 text-muted-foreground">
                   <ShoppingCart className="h-12 w-12 mx-auto mb-3 text-muted-foreground/50" />
-                  <p>No orders yet</p>
+                  <p>Pas encore de commandes</p>
                   <Button variant="outline" size="sm" className="mt-4">
-                    <Link href="/factories">Browse Factories</Link>
+                    <Link href="/factories">Parcourir les Usines</Link>
                   </Button>
                 </div>
               )}
             </CardContent>
           </Card>
 
-          <Card className="overflow-hidden border-border/50 hover:shadow-md transition-all duration-300">
+          <Card className="overflow-hidden hover:shadow-md transition-all duration-300 border-border/50 hover:border-primary/30">
             <CardHeader className="bg-muted/30">
               <div className="flex justify-between items-center">
                 <CardTitle className="flex items-center gap-2">
                   <Package className="h-5 w-5 text-primary" />
-                  Recent Sample Requests
+                  Demandes d'Échantillons Récentes
                 </CardTitle>
                 <Link href="/dashboard/samples">
                   <Button
@@ -320,12 +321,12 @@ export default async function Dashboard() {
                     size="sm"
                     className="gap-1 hover:bg-background/80"
                   >
-                    View All <ArrowRight className="h-4 w-4" />
+                    Voir Tout <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
               </div>
               <CardDescription>
-                Your most recent sample requests
+                Vos demandes d'échantillons les plus récentes
               </CardDescription>
             </CardHeader>
             <CardContent className="p-0">
@@ -361,7 +362,7 @@ export default async function Dashboard() {
                       <div className="flex items-center gap-3">
                         <div className="text-right">
                           <div className="font-medium">
-                            {sample.quantity} units
+                            {sample.quantity} unités
                           </div>
                         </div>
                         <Badge
@@ -383,9 +384,9 @@ export default async function Dashboard() {
               ) : (
                 <div className="text-center py-12 text-muted-foreground">
                   <Package className="h-12 w-12 mx-auto mb-3 text-muted-foreground/50" />
-                  <p>No sample requests yet</p>
+                  <p>Pas encore de demandes d'échantillons</p>
                   <Button variant="outline" size="sm" className="mt-4">
-                    <Link href="/factories">Request Samples</Link>
+                    <Link href="/factories">Demander des Échantillons</Link>
                   </Button>
                 </div>
               )}
@@ -398,9 +399,9 @@ export default async function Dashboard() {
             <CardHeader className="bg-muted/30">
               <CardTitle className="flex items-center gap-2">
                 <UserCircle className="h-5 w-5 text-primary" />
-                Profile Overview
+                Aperçu du Profil
               </CardTitle>
-              <CardDescription>Your account information</CardDescription>
+              <CardDescription>Vos informations de compte</CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="flex items-center gap-4 mb-6">
@@ -409,7 +410,7 @@ export default async function Dashboard() {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold">
-                    {userData?.full_name || "User"}
+                    {userData?.full_name || "Utilisateur"}
                   </h3>
                   <p className="text-muted-foreground">{userData?.email}</p>
                   {userData?.phone && (
@@ -421,20 +422,20 @@ export default async function Dashboard() {
               <div className="space-y-4">
                 <div>
                   <h4 className="font-medium mb-2 text-sm text-muted-foreground">
-                    SHIPPING ADDRESS
+                    ADRESSE DE LIVRAISON
                   </h4>
                   <p className="text-sm bg-muted/30 p-3 rounded-md">
-                    {userData?.address || "No address provided"}
+                    {userData?.address || "Aucune adresse fournie"}
                   </p>
                 </div>
                 <div>
                   <h4 className="font-medium mb-2 text-sm text-muted-foreground">
-                    ACCOUNT DETAILS
+                    DÉTAILS DU COMPTE
                   </h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between bg-muted/30 p-2 rounded-md">
                       <span className="text-muted-foreground">
-                        Member since:
+                        Membre depuis:
                       </span>
                       <span>
                         {new Date(
@@ -444,13 +445,13 @@ export default async function Dashboard() {
                     </div>
                     <div className="flex justify-between bg-muted/30 p-2 rounded-md">
                       <span className="text-muted-foreground">
-                        Account type:
+                        Type de compte:
                       </span>
-                      <span>{userData?.role || "user"}</span>
+                      <span>{userData?.role || "utilisateur"}</span>
                     </div>
                     <div className="flex justify-between bg-muted/30 p-2 rounded-md">
                       <span className="text-muted-foreground">CIN:</span>
-                      <span>{userData?.cin || "Not provided"}</span>
+                      <span>{userData?.cin || "Non fourni"}</span>
                     </div>
                   </div>
                 </div>
@@ -459,7 +460,7 @@ export default async function Dashboard() {
             <CardFooter className="flex justify-end border-t border-border/40 bg-muted/20 py-3">
               <Link href="/dashboard/profile">
                 <Button variant="outline" size="sm" className="gap-1">
-                  Edit Profile <ArrowRight className="h-3 w-3" />
+                  Modifier le Profil <ArrowRight className="h-3 w-3" />
                 </Button>
               </Link>
             </CardFooter>
@@ -469,9 +470,11 @@ export default async function Dashboard() {
             <CardHeader className="bg-muted/30">
               <CardTitle className="flex items-center gap-2">
                 <Building className="h-5 w-5 text-primary" />
-                Explore Factories
+                Explorer les Usines
               </CardTitle>
-              <CardDescription>Discover manufacturing partners</CardDescription>
+              <CardDescription>
+                Découvrir des partenaires de fabrication
+              </CardDescription>
             </CardHeader>
             <CardContent className="p-0">
               {factories && factories.length > 0 ? (
@@ -503,7 +506,7 @@ export default async function Dashboard() {
                       <div className="flex items-center justify-between text-sm">
                         <div className="flex items-center gap-1">
                           <Zap className="h-3 w-3 text-amber-500" />
-                          <span>Min: {factory.min_order_quantity} units</span>
+                          <span>Min: {factory.min_order_quantity} unités</span>
                         </div>
                         <Link href={`/factory/${factory.id}`}>
                           <Button
@@ -511,7 +514,7 @@ export default async function Dashboard() {
                             size="sm"
                             className="h-7 text-xs gap-1 hover:bg-primary/10"
                           >
-                            View <ArrowRight className="h-3 w-3" />
+                            Voir <ArrowRight className="h-3 w-3" />
                           </Button>
                         </Link>
                       </div>
@@ -521,14 +524,14 @@ export default async function Dashboard() {
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
                   <Building className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
-                  <p>No factories available</p>
+                  <p>Aucune usine disponible</p>
                 </div>
               )}
             </CardContent>
             <CardFooter className="border-t border-border/40 bg-muted/20 py-3">
               <Link href="/factories" className="w-full">
                 <Button className="w-full gap-1" variant="outline">
-                  <Search className="h-4 w-4" /> Browse All Factories
+                  <Search className="h-4 w-4" /> Parcourir Toutes les Usines
                 </Button>
               </Link>
             </CardFooter>

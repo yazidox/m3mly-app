@@ -1,6 +1,7 @@
 import { createClient } from "../../../supabase/server";
 import { redirect } from "next/navigation";
 import DashboardSidebar from "@/components/dashboard-sidebar";
+import { getLocale } from "@/lib/i18n/server";
 
 export default async function DashboardLayout({
   children,
@@ -28,8 +29,14 @@ export default async function DashboardLayout({
     return redirect("/factory-dashboard");
   }
 
+  const locale = getLocale();
+  const isRtl = locale === "ar";
+
   return (
-    <div className="flex min-h-screen bg-gradient-to-b from-background via-background/95 to-background/90">
+    <div
+      className="flex min-h-screen bg-gradient-to-b from-background via-background/95 to-background/90"
+      dir={isRtl ? "rtl" : "ltr"}
+    >
       <DashboardSidebar />
       <div className="flex-1 p-8 overflow-auto">{children}</div>
     </div>

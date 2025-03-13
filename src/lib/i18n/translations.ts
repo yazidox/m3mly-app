@@ -36,7 +36,38 @@ export type TranslationKey =
   | "footer.about_m3mly"
   | "footer.contact_us"
   | "footer.privacy_policy"
-  | "footer.terms_of_service";
+  | "footer.terms_of_service"
+  | "dashboard.welcome"
+  | "dashboard.overview"
+  | "dashboard.orders"
+  | "dashboard.samples"
+  | "dashboard.invoices"
+  | "dashboard.shipments"
+  | "dashboard.payment_methods"
+  | "dashboard.profile"
+  | "dashboard.settings"
+  | "dashboard.logout"
+  | "dashboard.recent_orders"
+  | "dashboard.recent_samples"
+  | "dashboard.total_spent"
+  | "dashboard.next_delivery"
+  | "dashboard.view_all"
+  | "dashboard.no_orders"
+  | "dashboard.no_samples"
+  | "dashboard.profile_overview"
+  | "dashboard.shipping_address"
+  | "dashboard.account_details"
+  | "dashboard.member_since"
+  | "dashboard.account_type"
+  | "dashboard.edit_profile"
+  | "dashboard.explore_factories"
+  | "dashboard.discover_partners"
+  | "dashboard.min_order"
+  | "dashboard.view_details"
+  | "dashboard.status_pending"
+  | "dashboard.status_processing"
+  | "dashboard.status_completed"
+  | "dashboard.status_cancelled";
 
 type TranslationsType = {
   [key in Locale]: {
@@ -83,6 +114,37 @@ export const translations: TranslationsType = {
     "footer.contact_us": "Contactez-nous",
     "footer.privacy_policy": "Politique de confidentialité",
     "footer.terms_of_service": "Conditions d'utilisation",
+    "dashboard.welcome": "Bienvenue",
+    "dashboard.overview": "Aperçu",
+    "dashboard.orders": "Mes Commandes",
+    "dashboard.samples": "Demandes d'Échantillons",
+    "dashboard.invoices": "Factures",
+    "dashboard.shipments": "Expéditions",
+    "dashboard.payment_methods": "Méthodes de Paiement",
+    "dashboard.profile": "Profil",
+    "dashboard.settings": "Paramètres",
+    "dashboard.logout": "Se déconnecter",
+    "dashboard.recent_orders": "Commandes Récentes",
+    "dashboard.recent_samples": "Demandes d'Échantillons Récentes",
+    "dashboard.total_spent": "Total Dépensé",
+    "dashboard.next_delivery": "Prochaine Livraison",
+    "dashboard.view_all": "Voir Tout",
+    "dashboard.no_orders": "Pas encore de commandes",
+    "dashboard.no_samples": "Pas encore de demandes d'échantillons",
+    "dashboard.profile_overview": "Aperçu du Profil",
+    "dashboard.shipping_address": "Adresse de Livraison",
+    "dashboard.account_details": "Détails du Compte",
+    "dashboard.member_since": "Membre depuis",
+    "dashboard.account_type": "Type de compte",
+    "dashboard.edit_profile": "Modifier le Profil",
+    "dashboard.explore_factories": "Explorer les Usines",
+    "dashboard.discover_partners": "Découvrir des partenaires de fabrication",
+    "dashboard.min_order": "Min",
+    "dashboard.view_details": "Voir Détails",
+    "dashboard.status_pending": "En attente",
+    "dashboard.status_processing": "En traitement",
+    "dashboard.status_completed": "Terminé",
+    "dashboard.status_cancelled": "Annulé",
   },
   ar: {
     "common.browse_factories": "تصفح المصانع",
@@ -122,5 +184,36 @@ export const translations: TranslationsType = {
     "footer.contact_us": "اتصل بنا",
     "footer.privacy_policy": "سياسة الخصوصية",
     "footer.terms_of_service": "شروط الخدمة",
+    "dashboard.welcome": "مرحبًا",
+    "dashboard.overview": "نظرة عامة",
+    "dashboard.orders": "طلباتي",
+    "dashboard.samples": "طلبات العينات",
+    "dashboard.invoices": "الفواتير",
+    "dashboard.shipments": "الشحنات",
+    "dashboard.payment_methods": "طرق الدفع",
+    "dashboard.profile": "الملف الشخصي",
+    "dashboard.settings": "الإعدادات",
+    "dashboard.logout": "تسجيل الخروج",
+    "dashboard.recent_orders": "الطلبات الأخيرة",
+    "dashboard.recent_samples": "طلبات العينات الأخيرة",
+    "dashboard.total_spent": "إجمالي المصروفات",
+    "dashboard.next_delivery": "التسليم القادم",
+    "dashboard.view_all": "عرض الكل",
+    "dashboard.no_orders": "لا توجد طلبات حتى الآن",
+    "dashboard.no_samples": "لا توجد طلبات عينات حتى الآن",
+    "dashboard.profile_overview": "نظرة عامة على الملف الشخصي",
+    "dashboard.shipping_address": "عنوان الشحن",
+    "dashboard.account_details": "تفاصيل الحساب",
+    "dashboard.member_since": "عضو منذ",
+    "dashboard.account_type": "نوع الحساب",
+    "dashboard.edit_profile": "تعديل الملف الشخصي",
+    "dashboard.explore_factories": "استكشاف المصانع",
+    "dashboard.discover_partners": "اكتشاف شركاء التصنيع",
+    "dashboard.min_order": "الحد الأدنى",
+    "dashboard.view_details": "عرض التفاصيل",
+    "dashboard.status_pending": "قيد الانتظار",
+    "dashboard.status_processing": "قيد المعالجة",
+    "dashboard.status_completed": "مكتمل",
+    "dashboard.status_cancelled": "ملغي",
   },
 };

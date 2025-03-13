@@ -5,14 +5,12 @@ import type { NextRequest } from "next/server";
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
 
-  // Check if the locale cookie exists, if not set it to 'fr' (French) as default
-  if (!req.cookies.has("locale")) {
-    res.cookies.set("locale", "fr", {
-      path: "/",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 365, // 1 year
-    });
-  }
+  // Always set locale to 'fr' (French) as default
+  res.cookies.set("locale", "fr", {
+    path: "/",
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 365, // 1 year
+  });
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

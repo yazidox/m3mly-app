@@ -53,9 +53,9 @@ export default async function PaymentMethodsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Payment Methods</h1>
+        <h1 className="text-3xl font-bold mb-2">Méthodes de Paiement</h1>
         <p className="text-muted-foreground">
-          Manage your payment methods and billing history
+          Gérez vos méthodes de paiement et historique de facturation
         </p>
       </div>
 

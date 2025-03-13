@@ -8,11 +8,11 @@ import LanguageSwitcher from "./language-switcher";
 import Image from "next/image";
 
 export default async function Navbar() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: { user },
-  } = await (await supabase).auth.getUser();
+  } = await supabase.auth.getUser();
 
   return (
     <nav className="w-full border-b border-border bg-background/80 backdrop-blur-md py-4 sticky top-0 z-50">

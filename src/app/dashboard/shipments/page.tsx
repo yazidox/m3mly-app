@@ -40,8 +40,10 @@ export default async function ShipmentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">My Shipments</h1>
-        <p className="text-muted-foreground">Track your orders and shipments</p>
+        <h1 className="text-3xl font-bold mb-2">Mes Expéditions</h1>
+        <p className="text-muted-foreground">
+          Suivez vos commandes et expéditions
+        </p>
       </div>
 
       <div className="bg-card rounded-xl border shadow-sm overflow-hidden">
