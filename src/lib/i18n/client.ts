@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, ReactNode, useMemo, createContext, useContext } from "react";
+import React, { useState, useEffect, ReactNode, useMemo, createContext, useContext } from "react";
 import { Locale, TranslationKey, translations } from "./translations";
 
 type LanguageContextType = {
@@ -54,7 +54,7 @@ export function LanguageProvider({
   }, [locale]);
 
   // Create value object
-  const value = useMemo(
+  const contextValue = useMemo<LanguageContextType>(
     () => ({
       locale,
       setLocale,
@@ -63,10 +63,10 @@ export function LanguageProvider({
     [locale, t]
   );
 
-  return (
-    <LanguageContext.Provider value={value}>
-      {children}
-    </LanguageContext.Provider>
+  return React.createElement(
+    LanguageContext.Provider,
+    { value: contextValue },
+    children
   );
 }
 
