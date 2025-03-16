@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
 import { createClient } from "../../../../supabase/server";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,20 +12,105 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Edit, UserCircle } from "lucide-react";
+import { CheckCircle, Edit, UserCircle } from "lucide-react";
 import Link from "next/link";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
-export default async function UsersPage() {
-  const supabase = await createClient();
+export default function UsersPage() {
+  const [users, setUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+  const router = useRouter();
 
-  const { data: users, error } = await supabase
-    .from("users")
-    .select("*")
-    .order("created_at", { ascending: false });
+  // Function to fetch users with useCallback to prevent unnecessary re-renders
+  const fetchUsers = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `${window.location.origin}/api/admin/users`,
+        {
+          // Add cache: 'no-store' to prevent caching
+          cache: "no-store",
+          headers: {
+            "Cache-Control": "no-cache",
+          },
+        },
+      );
+      const data = await response.json();
+      if (data.users) {
+        setUsers(data.users);
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch users",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [toast]); // Add toast as a dependency
 
-  if (error) {
-    console.error("Error fetching users:", error);
-  }
+  // Approve user function
+  const approveUser = async (userId: string) => {
+    try {
+      const response = await fetch(
+        `${window.location.origin}/api/admin/users/${userId}/approve`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache",
+          },
+          cache: "no-store",
+        },
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast({
+          title: "Success",
+          description: "User approved successfully",
+          variant: "default",
+        });
+
+        // Fetch fresh data from the server instead of just updating local state
+        await fetchUsers();
+      } else {
+        toast({
+          title: "Error",
+          description: data.message || "Failed to approve user",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error approving user:", error);
+      toast({
+        title: "Error",
+        description: "Failed to approve user",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Fetch users on component mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      fetchUsers();
+    }
+
+    // Set up a refresh interval to keep data fresh
+    const intervalId = setInterval(() => {
+      if (typeof window !== "undefined") {
+        fetchUsers();
+      }
+    }, 30000); // Refresh every 30 seconds
+
+    return () => clearInterval(intervalId); // Clean up on unmount
+  }, [fetchUsers]);
 
   return (
     <div className="space-y-6">
@@ -41,11 +129,18 @@ export default async function UsersPage() {
               <TableHead>Role</TableHead>
               <TableHead>Phone</TableHead>
               <TableHead>Joined</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users && users.length > 0 ? (
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={8} className="text-center py-6">
+                  Loading users...
+                </TableCell>
+              </TableRow>
+            ) : users && users.length > 0 ? (
               users.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell>
@@ -68,7 +163,25 @@ export default async function UsersPage() {
                   <TableCell>
                     {new Date(user.created_at).toLocaleDateString()}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell>
+                    <Badge
+                      variant={user.is_approved ? "success" : "destructive"}
+                    >
+                      {user.is_approved ? "Approved" : "Pending"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right flex justify-end gap-2">
+                    {!user.is_approved && (
+                      <Button
+                        onClick={() => approveUser(user.id)}
+                        variant="outline"
+                        size="sm"
+                        className="text-green-600 border-green-600 hover:bg-green-50 dark:hover:bg-green-950/20"
+                      >
+                        <CheckCircle className="h-4 w-4 mr-1" />
+                        Approve
+                      </Button>
+                    )}
                     <Link href={`/admin/users/${user.id}`}>
                       <Button variant="outline" size="sm">
                         <Edit className="h-4 w-4" />
@@ -80,7 +193,7 @@ export default async function UsersPage() {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={7}
+                  colSpan={8}
                   className="text-center py-6 text-muted-foreground"
                 >
                   No users found

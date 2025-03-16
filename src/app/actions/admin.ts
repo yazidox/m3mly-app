@@ -120,6 +120,7 @@ export async function updateFactory(formData: FormData) {
             full_name: ownerName || name + " Owner",
             role: "factory_owner",
             factory_id: id,
+            is_approved: true, // Factory owners are auto-approved
           },
         },
       });
@@ -140,6 +141,7 @@ export async function updateFactory(formData: FormData) {
           token_identifier: data.user.id,
           user_id: data.user.id,
           created_at: new Date().toISOString(),
+          is_approved: true, // Factory owners are auto-approved
         });
 
         if (userError) {
@@ -269,6 +271,7 @@ export async function updateUser(formData: FormData) {
   const role = formData.get("role") as string;
   const address = formData.get("address") as string;
   const cin = formData.get("cin") as string;
+  const isApproved = formData.get("is_approved") === "on";
 
   const { error } = await supabase
     .from("users")
@@ -279,6 +282,7 @@ export async function updateUser(formData: FormData) {
       role,
       address,
       cin,
+      is_approved: isApproved,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id);
@@ -286,6 +290,31 @@ export async function updateUser(formData: FormData) {
   if (error) {
     console.error("Error updating user:", error);
     throw new Error("Failed to update user");
+  }
+
+  // Update the user's metadata in auth.users
+  try {
+    const { data: authUser } = await supabase.auth.admin.getUserById(id);
+
+    if (authUser && authUser.user) {
+      const currentMetadata = authUser.user.user_metadata || {};
+
+      // Update the user metadata
+      const { error: authUpdateError } =
+        await supabase.auth.admin.updateUserById(id, {
+          user_metadata: {
+            ...currentMetadata,
+            is_approved: isApproved,
+            role: role,
+          },
+        });
+
+      if (authUpdateError) {
+        console.error("Error updating auth user metadata:", authUpdateError);
+      }
+    }
+  } catch (err) {
+    console.error("Error updating auth user:", err);
   }
 
   revalidatePath("/admin/users");

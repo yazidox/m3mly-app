@@ -54,8 +54,10 @@ export async function createFactoryOwner() {
     options: {
       data: {
         full_name: "Factory Owner",
+        store_name: "Demo Factory Store",
         role: "factory_owner",
         factory_id: factory.id,
+        is_approved: true,
       },
     },
   });
@@ -71,9 +73,11 @@ export async function createFactoryOwner() {
       id: data.user.id,
       email: "factory@example.com",
       full_name: "Factory Owner",
+      store_name: "Demo Factory Store",
       role: "factory_owner",
       factory_id: factory.id,
       created_at: new Date().toISOString(),
+      is_approved: true,
     });
 
     if (userError) {

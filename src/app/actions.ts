@@ -9,10 +9,12 @@ export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
   const fullName = formData.get("full_name")?.toString() || "";
+  const storeName = formData.get("store_name")?.toString() || "";
   const phone = formData.get("phone")?.toString() || "";
   const address = formData.get("address")?.toString() || "";
   const cin = formData.get("cin")?.toString() || "";
   const referralSource = formData.get("referral_source")?.toString() || "";
+  const role = formData.get("role")?.toString() || "user";
   const supabase = await createClient();
   const origin = headers().get("origin");
 
@@ -24,6 +26,9 @@ export const signUpAction = async (formData: FormData) => {
     );
   }
 
+  // Determine if the user should be auto-approved based on role
+  const isApproved = role === "admin" || role === "factory_owner";
+
   const {
     data: { user },
     error,
@@ -34,11 +39,14 @@ export const signUpAction = async (formData: FormData) => {
       emailRedirectTo: `${origin}/auth/callback`,
       data: {
         full_name: fullName,
+        store_name: storeName,
         email: email,
         phone: phone,
         address: address,
         cin: cin,
         referral_source: referralSource,
+        is_approved: isApproved,
+        role: role,
       },
     },
   });
@@ -52,22 +60,67 @@ export const signUpAction = async (formData: FormData) => {
 
   if (user) {
     try {
-      const { error: updateError } = await supabase.from("users").insert({
-        id: user.id,
-        name: fullName,
-        full_name: fullName,
-        email: email,
-        phone: phone,
-        address: address,
-        cin: cin,
-        referral_source: referralSource,
-        user_id: user.id,
-        token_identifier: user.id,
-        created_at: new Date().toISOString(),
-      });
+      // First check if the user already exists in the users table
+      const { data: existingUser, error: existingUserError } = await supabase
+        .from("users")
+        .select("id")
+        .eq("id", user.id)
+        .single();
 
-      if (updateError) {
-        console.error("Error updating user profile:", updateError);
+      if (existingUserError && existingUserError.code !== "PGRST116") {
+        console.error("Error checking existing user:", existingUserError);
+      }
+
+      // Only insert if the user doesn't already exist
+      if (!existingUser) {
+        const { error: updateError } = await supabase.from("users").insert({
+          id: user.id,
+          name: fullName,
+          full_name: fullName,
+          store_name: storeName,
+          email: email,
+          phone: phone,
+          address: address,
+          cin: cin,
+          referral_source: referralSource,
+          user_id: user.id,
+          token_identifier: user.id,
+          created_at: new Date().toISOString(),
+          is_approved: isApproved,
+          role: role,
+        });
+
+        if (updateError) {
+          console.error("Error updating user profile:", updateError);
+          // If there's an error with the store_name column, try again without it
+          if (
+            updateError.message &&
+            updateError.message.includes("store_name")
+          ) {
+            const { error: retryError } = await supabase.from("users").insert({
+              id: user.id,
+              name: fullName,
+              full_name: fullName,
+              email: email,
+              phone: phone,
+              address: address,
+              cin: cin,
+              referral_source: referralSource,
+              user_id: user.id,
+              token_identifier: user.id,
+              created_at: new Date().toISOString(),
+              is_approved: isApproved,
+              role: role,
+            });
+
+            if (retryError) {
+              console.error(
+                "Error in retry user profile creation:",
+                retryError,
+              );
+            }
+          }
+        }
       }
     } catch (err) {
       console.error("Error in user profile creation:", err);
@@ -77,7 +130,7 @@ export const signUpAction = async (formData: FormData) => {
   return encodedRedirect(
     "success",
     "/sign-up",
-    "Merci de vous être inscrit ! Veuillez vérifier votre email pour le lien de vérification.",
+    "Merci de vous être inscrit ! Nous examinerons votre compte et vous contacterons par téléphone pour l'approbation.",
   );
 };
 
@@ -86,8 +139,10 @@ export const signInAction = async (formData: FormData) => {
   const password = formData.get("password") as string;
   const supabase = await createClient();
 
+  // Trim email to prevent whitespace issues
+  const trimmedEmail = email.trim();
   const { data, error } = await supabase.auth.signInWithPassword({
-    email,
+    email: trimmedEmail,
     password,
   });
 
@@ -101,15 +156,25 @@ export const signInAction = async (formData: FormData) => {
     return encodedRedirect("error", "/sign-in", "Authentication failed");
   }
 
-  // Check user role to determine redirect destination
+  // Check user role and approval status to determine redirect destination
   const { data: userData, error: userError } = await supabase
     .from("users")
-    .select("role")
+    .select("role, is_approved")
     .eq("email", email)
     .single();
 
   if (userError) {
-    console.error("Error fetching user role:", userError.message);
+    console.error("Error fetching user data:", userError.message);
+  }
+
+  // Check if user is approved
+  if (userData && userData.is_approved === false) {
+    await supabase.auth.signOut();
+    return encodedRedirect(
+      "info",
+      "/sign-in",
+      "Votre compte est en attente d'approbation. Notre équipe vous contactera bientôt par téléphone.",
+    );
   }
 
   // Redirect based on user role

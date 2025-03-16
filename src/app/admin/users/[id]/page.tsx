@@ -6,6 +6,7 @@ import { updateUser } from "@/app/actions/admin";
 import { ArrowLeft, UserCircle } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Switch } from "@/components/ui/switch";
 
 export default async function EditUserPage({
   params,
@@ -73,6 +74,14 @@ export default async function EditUserPage({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
+                <Label htmlFor="store_name">Store Name</Label>
+                <Input
+                  id="store_name"
+                  name="store_name"
+                  defaultValue={user.store_name || ""}
+                />
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="phone">Phone</Label>
                 <Input
                   id="phone"
@@ -80,6 +89,9 @@ export default async function EditUserPage({
                   defaultValue={user.phone || ""}
                 />
               </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="role">Role</Label>
                 <select
@@ -93,6 +105,21 @@ export default async function EditUserPage({
                   <option value="factory_owner">Factory Owner</option>
                   <option value="admin">Admin</option>
                 </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="is_approved" className="block mb-2">
+                  Account Status
+                </Label>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="is_approved"
+                    name="is_approved"
+                    defaultChecked={user.is_approved}
+                  />
+                  <Label htmlFor="is_approved" className="cursor-pointer">
+                    {user.is_approved ? "Approved" : "Pending Approval"}
+                  </Label>
+                </div>
               </div>
             </div>
 
