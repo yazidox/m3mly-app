@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   Twitter,
@@ -7,17 +9,13 @@ import {
   Sparkles,
   ArrowRight,
 } from "lucide-react";
-import { t } from "@/lib/i18n/server";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/i18n/client";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-
-  // Get the current locale from cookies
-  const cookies = require("next/headers").cookies;
-  const cookieStore = cookies();
-  const locale = cookieStore.get("locale")?.value || "fr";
+  const { locale } = useLanguage();
   const isRtl = locale === "ar";
 
   return (
@@ -54,8 +52,9 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-muted-foreground max-w-xs mb-6 leading-relaxed">
-              Connecting small clothing businesses with Moroccan garment
-              factories for seamless production.
+              {isRtl 
+                ? "ربط الشركات الصغيرة للملابس بمصانع الملابس المغربية للإنتاج السلس."
+                : "Connexion des petites entreprises de vêtements avec des usines de vêtements marocaines pour une production fluide."}
             </p>
             <div className={`flex ${isRtl ? "space-x-reverse" : ""} space-x-4`}>
               <a
@@ -96,7 +95,7 @@ export default function Footer() {
                 <Sparkles
                   className={`w-4 h-4 ${isRtl ? "ml-2" : "mr-2"} text-primary`}
                 />
-                {t("common.platform")}
+                {isRtl ? "المنصة" : "Plateforme"}
               </h3>
               <ul className="space-y-3">
                 <li>
@@ -104,7 +103,7 @@ export default function Footer() {
                     href="/dashboard"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.browse_factories")}</span>
+                    <span>{isRtl ? "تصفح المصانع" : "Parcourir les usines"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -115,7 +114,7 @@ export default function Footer() {
                     href="#how-it-works"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.how_it_works")}</span>
+                    <span>{isRtl ? "كيف تعمل" : "Comment ça marche"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -126,7 +125,7 @@ export default function Footer() {
                     href="/dashboard"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.dashboard")}</span>
+                    <span>{isRtl ? "لوحة التحكم" : "Tableau de bord"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -137,7 +136,7 @@ export default function Footer() {
                     href="#pricing"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.pricing")}</span>
+                    <span>{isRtl ? "التسعير" : "Tarification"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -152,7 +151,7 @@ export default function Footer() {
                 <Sparkles
                   className={`w-4 h-4 ${isRtl ? "ml-2" : "mr-2"} text-primary`}
                 />
-                {t("common.for_businesses")}
+                {isRtl ? "للشركات" : "Pour les entreprises"}
               </h3>
               <ul className="space-y-3">
                 <li>
@@ -160,7 +159,7 @@ export default function Footer() {
                     href="#"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.request_samples")}</span>
+                    <span>{isRtl ? "طلب عينات" : "Demander des échantillons"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -171,7 +170,7 @@ export default function Footer() {
                     href="#"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.order_tracking")}</span>
+                    <span>{isRtl ? "تتبع الطلب" : "Suivi de commande"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -182,7 +181,7 @@ export default function Footer() {
                     href="#"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.payment_protection")}</span>
+                    <span>{isRtl ? "حماية الدفع" : "Protection des paiements"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -193,7 +192,7 @@ export default function Footer() {
                     href="#"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.success_stories")}</span>
+                    <span>{isRtl ? "قصص النجاح" : "Histoires de réussite"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -208,7 +207,7 @@ export default function Footer() {
                 <Sparkles
                   className={`w-4 h-4 ${isRtl ? "ml-2" : "mr-2"} text-primary`}
                 />
-                {t("common.for_factories")}
+                {isRtl ? "للمصانع" : "Pour les usines"}
               </h3>
               <ul className="space-y-3">
                 <li>
@@ -216,7 +215,7 @@ export default function Footer() {
                     href="#"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.join_as_factory")}</span>
+                    <span>{isRtl ? "انضم كمصنع" : "Rejoindre en tant qu'usine"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -227,7 +226,7 @@ export default function Footer() {
                     href="#"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.factory_dashboard")}</span>
+                    <span>{isRtl ? "لوحة تحكم المصنع" : "Tableau de bord de l'usine"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -238,7 +237,7 @@ export default function Footer() {
                     href="#"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.order_management")}</span>
+                    <span>{isRtl ? "إدارة الطلبات" : "Gestion des commandes"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -249,7 +248,7 @@ export default function Footer() {
                     href="#"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.showcase_portfolio")}</span>
+                    <span>{isRtl ? "عرض المحفظة" : "Présenter le portfolio"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -264,7 +263,7 @@ export default function Footer() {
                 <Sparkles
                   className={`w-4 h-4 ${isRtl ? "ml-2" : "mr-2"} text-primary`}
                 />
-                {t("common.company")}
+                {isRtl ? "الشركة" : "Entreprise"}
               </h3>
               <ul className="space-y-3">
                 <li>
@@ -272,7 +271,7 @@ export default function Footer() {
                     href="#"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.about_m3mly")}</span>
+                    <span>{isRtl ? "عن M3mly" : "À propos de M3mly"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -283,7 +282,7 @@ export default function Footer() {
                     href="#"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.contact_us")}</span>
+                    <span>{isRtl ? "اتصل بنا" : "Contactez-nous"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -294,7 +293,7 @@ export default function Footer() {
                     href="#"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.privacy_policy")}</span>
+                    <span>{isRtl ? "سياسة الخصوصية" : "Politique de confidentialité"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -305,7 +304,7 @@ export default function Footer() {
                     href="#"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
-                    <span>{t("footer.terms_of_service")}</span>
+                    <span>{isRtl ? "شروط الخدمة" : "Conditions d'utilisation"}</span>
                     <span
                       className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
                     ></span>
@@ -318,7 +317,7 @@ export default function Footer() {
 
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-border/50 backdrop-blur-sm">
           <div className="text-muted-foreground mb-4 md:mb-0">
-            © {currentYear} M3mly. {t("common.all_rights_reserved")}
+            © {currentYear} M3mly. {isRtl ? "جميع الحقوق محفوظة" : "Tous droits réservés"}
           </div>
 
           <div className="flex items-center gap-4">
@@ -326,7 +325,7 @@ export default function Footer() {
               href="#"
               className="text-sm text-muted-foreground hover:text-primary transition-colors relative group"
             >
-              <span>Privacy Policy</span>
+              <span>{isRtl ? "سياسة الخصوصية" : "Politique de confidentialité"}</span>
               <span
                 className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[1px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
               ></span>
@@ -336,7 +335,7 @@ export default function Footer() {
               href="#"
               className="text-sm text-muted-foreground hover:text-primary transition-colors relative group"
             >
-              <span>Terms of Service</span>
+              <span>{isRtl ? "شروط الخدمة" : "Conditions d'utilisation"}</span>
               <span
                 className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[1px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
               ></span>
@@ -346,7 +345,7 @@ export default function Footer() {
               href="#"
               className="text-sm text-muted-foreground hover:text-primary transition-colors relative group"
             >
-              <span>Cookies</span>
+              <span>{isRtl ? "ملفات تعريف الارتباط" : "Cookies"}</span>
               <span
                 className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[1px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
               ></span>

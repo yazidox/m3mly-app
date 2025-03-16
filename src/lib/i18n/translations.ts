@@ -17,6 +17,8 @@ export type TranslationKey =
   | "common.for_factories"
   | "common.company"
   | "common.all_rights_reserved"
+  | "common.menu"
+  | "common.language"
   | "hero.connect_with"
   | "hero.moroccan"
   | "hero.garment_factories"
@@ -83,9 +85,9 @@ export const translations: TranslationsType = {
     "common.dashboard": "Tableau de bord",
     "common.sign_in": "Se connecter",
     "common.sign_up": "S'inscrire",
-    "common.find_factories": "Trouver des produits",
+    "common.find_factories": "Trouver des usines",
     "common.join_as_factory": "Rejoindre en tant qu'usine",
-    "common.no_minimum_orders": "Pas de commandes minimales",
+    "common.no_minimum_orders": "Pas de commandes minimum",
     "common.secure_payment": "Paiement sécurisé",
     "common.quality_guaranteed": "Qualité garantie",
     "common.platform": "Plateforme",
@@ -93,6 +95,8 @@ export const translations: TranslationsType = {
     "common.for_factories": "Pour les usines",
     "common.company": "Entreprise",
     "common.all_rights_reserved": "Tous droits réservés",
+    "common.menu": "Menu",
+    "common.language": "Langue",
     "hero.connect_with": "Connectez-vous avec",
     "hero.moroccan": "marocaines",
     "hero.garment_factories": "des usines de vêtements",
@@ -163,6 +167,8 @@ export const translations: TranslationsType = {
     "common.for_factories": "للمصانع",
     "common.company": "الشركة",
     "common.all_rights_reserved": "جميع الحقوق محفوظة",
+    "common.menu": "القائمة",
+    "common.language": "اللغة",
     "hero.connect_with": "تواصل مع",
     "hero.moroccan": "المغربية",
     "hero.garment_factories": "مصانع الملابس",

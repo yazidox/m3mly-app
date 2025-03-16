@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Lalezar } from "next/font/google";
+import { Inter, Readex_Pro } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { TempoInit } from "@/components/tempo-init";
@@ -11,9 +11,9 @@ import ClientLanguageProvider from "@/components/client-language-provider";
 import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const lalezar = Lalezar({
-  weight: "400",
-  subsets: ["arabic"],
+const lalezar = Readex_Pro({
+  weight: ["200", "300", "400", "500", "600", "700"],
+  subsets: ["latin", "arabic"],
   variable: "--font-lalezar",
 });
 
@@ -41,7 +41,7 @@ export default function RootLayout({
       className={`${inter.variable} ${lalezar.variable}`}
     >
       <Script src="https://api.tempolabs.ai/proxy-asset?url=https://storage.googleapis.com/tempo-public-assets/error-handling.js" />
-      <body className={inter.className}>
+      <body className={lalezar.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

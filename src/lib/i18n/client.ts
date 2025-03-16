@@ -16,6 +16,16 @@ const LanguageContext = createContext<LanguageContextType>({
   t: (key) => key,
 });
 
+// Helper function to get cookie value
+function getCookie(name: string): string | undefined {
+  if (typeof document === 'undefined') return undefined;
+  
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+  return undefined;
+}
+
 // Provider component
 export function LanguageProvider({
   children,
@@ -26,8 +36,14 @@ export function LanguageProvider({
 }) {
   // State to hold the current locale
   const [locale, setLocaleState] = useState<Locale>(() => {
-    // Initialize from localStorage if in browser environment
+    // Initialize from cookies first (for SSR consistency)
     if (typeof window !== "undefined") {
+      const cookieLocale = getCookie("locale") as Locale;
+      if (cookieLocale && (cookieLocale === "fr" || cookieLocale === "ar")) {
+        return cookieLocale;
+      }
+      
+      // Then try localStorage
       const savedLocale = localStorage.getItem("locale") as Locale;
       if (savedLocale && (savedLocale === "fr" || savedLocale === "ar")) {
         return savedLocale;
@@ -35,6 +51,14 @@ export function LanguageProvider({
     }
     return initialLocale;
   });
+
+  // Sync document direction with locale
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+      document.documentElement.lang = locale;
+    }
+  }, [locale]);
 
   // Function to update locale
   const setLocale = (newLocale: Locale) => {
