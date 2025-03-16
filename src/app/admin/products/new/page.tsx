@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { createProduct } from "@/app/actions/admin";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { PriceTiersContainer } from "@/components/price-tiers-container";
 
 export default async function NewProductPage() {
   const supabase = await createClient();
@@ -61,7 +62,7 @@ export default async function NewProductPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="price">Price ($)</Label>
+                <Label htmlFor="price">Base Price (MAD)</Label>
                 <Input
                   id="price"
                   name="price"
@@ -76,6 +77,9 @@ export default async function NewProductPage() {
                 <Input id="category" name="category" required />
               </div>
             </div>
+
+            {/* Price Tiers */}
+            <PriceTiersContainer initialTierCount={1} />
 
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>

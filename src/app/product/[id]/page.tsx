@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/formatters";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PriceTierDisplay } from "@/components/price-tier-display";
 
 export default async function ProductPage({
   params,
@@ -66,8 +67,22 @@ export default async function ProductPage({
           </div>
 
           {user && isApproved ? (
-            <div className="text-2xl font-bold">
-              {formatCurrency(product.price)}
+            <div className="space-y-4">
+              <div className="text-2xl font-bold">
+                {formatCurrency(product.price)}
+              </div>
+
+              {/* Display price tiers if available */}
+              {product.price_tiers && product.price_tiers.length > 0 && (
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h3 className="text-sm font-medium mb-2">Volume Pricing</h3>
+                  <PriceTierDisplay
+                    priceTiers={product.price_tiers}
+                    basePrice={product.price}
+                    showUpsell={false}
+                  />
+                </div>
+              )}
             </div>
           ) : (
             <div className="text-xl text-muted-foreground">

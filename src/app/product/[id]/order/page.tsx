@@ -8,6 +8,7 @@ import { createClient } from "../../../../../supabase/server";
 import Navbar from "@/components/navbar";
 import { ProductDisplay } from "@/components/product-display";
 import Footer from "@/components/footer";
+import { ProductPriceCalculator } from "@/components/product-price-calculator";
 
 export default async function PlaceOrderPage({
   params,
@@ -74,15 +75,31 @@ export default async function PlaceOrderPage({
               <div>
                 <h2 className="text-2xl font-bold">Passer Commande</h2>
                 <p className="text-muted-foreground">
-                  Remplissez le formulaire ci-dessous pour passer votre commande en gros
+                  Remplissez le formulaire ci-dessous pour passer votre commande
+                  en gros
                 </p>
               </div>
             </div>
 
-            <OrderRequestForm 
-              product={product} 
-              userData={userData} 
-              placeOrder={placeOrder} 
+            {/* Add price calculator before the order form */}
+            {product.price_tiers && product.price_tiers.length > 0 && (
+              <div className="mb-6 p-4 bg-muted/50 rounded-lg">
+                <h3 className="text-sm font-medium mb-3">
+                  Calculateur de prix (Prix réduit pour grandes quantités)
+                </h3>
+                <ProductPriceCalculator
+                  basePrice={product.price}
+                  priceTiers={product.price_tiers}
+                  minOrderQuantity={product.min_order_quantity}
+                  initialQuantity={product.min_order_quantity}
+                />
+              </div>
+            )}
+
+            <OrderRequestForm
+              product={product}
+              userData={userData}
+              placeOrder={placeOrder}
             />
           </div>
         </div>

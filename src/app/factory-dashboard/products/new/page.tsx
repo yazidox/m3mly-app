@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import FactoryDashboardNavbar from "@/components/factory-dashboard-navbar";
+import { AddTierButton } from "@/components/add-tier-button";
 
 export default async function NewFactoryProductPage() {
   const supabase = await createClient();
@@ -76,6 +77,27 @@ export default async function NewFactoryProductPage() {
     const leadTime = parseInt(formData.get("lead_time") as string);
     const status = formData.get("status") as string;
 
+    // Extract price tiers
+    const priceTiers = [];
+    let tierIndex = 0;
+
+    while (formData.has(`tier-min-${tierIndex}`)) {
+      const minQty = parseInt(formData.get(`tier-min-${tierIndex}`) as string);
+      const maxQtyStr = formData.get(`tier-max-${tierIndex}`) as string;
+      const maxQty = maxQtyStr ? parseInt(maxQtyStr) : null;
+      const tierPrice = parseFloat(
+        formData.get(`tier-price-${tierIndex}`) as string,
+      );
+
+      priceTiers.push({
+        min_quantity: minQty,
+        max_quantity: maxQty,
+        price: tierPrice,
+      });
+
+      tierIndex++;
+    }
+
     // Create product in database
     const { error } = await supabase.from("products").insert({
       factory_id: userData.factory_id,
@@ -88,6 +110,7 @@ export default async function NewFactoryProductPage() {
       min_order_quantity: minOrderQuantity,
       lead_time: leadTime,
       status,
+      price_tiers: priceTiers,
       created_at: new Date().toISOString(),
     });
 
@@ -128,7 +151,7 @@ export default async function NewFactoryProductPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="price">Price ($)</Label>
+                  <Label htmlFor="price">Base Price ($)</Label>
                   <Input
                     id="price"
                     name="price"
@@ -142,6 +165,54 @@ export default async function NewFactoryProductPage() {
                   <Label htmlFor="category">Category</Label>
                   <Input id="category" name="category" required />
                 </div>
+              </div>
+
+              {/* Client component for price tiers */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label>Quantity-Based Pricing Tiers</Label>
+                  <AddTierButton initialTierCount={1} />
+                </div>
+                <div id="price-tiers-container" className="space-y-2">
+                  <div className="grid grid-cols-3 gap-2 items-end">
+                    <div>
+                      <Label htmlFor="tier-min-0">Min Quantity</Label>
+                      <Input
+                        id="tier-min-0"
+                        name="tier-min-0"
+                        type="number"
+                        min="1"
+                        defaultValue="1"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="tier-max-0">Max Quantity</Label>
+                      <Input
+                        id="tier-max-0"
+                        name="tier-max-0"
+                        type="number"
+                        min="1"
+                        placeholder="Leave empty for unlimited"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="tier-price-0">Price per Unit ($)</Label>
+                      <Input
+                        id="tier-price-0"
+                        name="tier-price-0"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Set different prices based on order quantity. Higher
+                  quantities typically have lower per-unit prices.
+                </p>
               </div>
 
               <div className="space-y-2">

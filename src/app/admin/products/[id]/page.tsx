@@ -8,6 +8,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import { PriceTiersContainer } from "@/components/price-tiers-container";
 
 export default async function EditProductPage({
   params,
@@ -93,7 +94,7 @@ export default async function EditProductPage({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="price">Price ($)</Label>
+                <Label htmlFor="price">Base Price (MAD)</Label>
                 <Input
                   id="price"
                   name="price"
@@ -114,6 +115,12 @@ export default async function EditProductPage({
                 />
               </div>
             </div>
+
+            {/* Price Tiers */}
+            <PriceTiersContainer
+              initialTierCount={1}
+              existingTiers={product.price_tiers || []}
+            />
 
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>

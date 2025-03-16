@@ -192,6 +192,48 @@ export async function createProduct(formData: FormData) {
   const leadTime = parseInt(formData.get("lead_time") as string);
   const status = formData.get("status") as string;
 
+  // Extract price tiers if they exist
+  const priceTiers = [];
+  const tierCount = document
+    .querySelector("#price-tiers-container")
+    ?.getAttribute("data-tier-count");
+  const numTiers = tierCount ? parseInt(tierCount) : 0;
+
+  // Log for debugging
+  console.log("Number of tiers detected:", numTiers);
+  console.log("Form data keys:", [...formData.keys()]);
+
+  for (let i = 0; i < numTiers; i++) {
+    const minQtyStr = formData.get(`tier-min-${i}`) as string;
+    const maxQtyStr = formData.get(`tier-max-${i}`) as string;
+    const tierPriceStr = formData.get(`tier-price-${i}`) as string;
+
+    console.log(`Processing tier ${i}:`, {
+      minQtyStr,
+      maxQtyStr,
+      tierPriceStr,
+    });
+
+    const minQty = parseInt(minQtyStr);
+    const maxQty =
+      maxQtyStr && maxQtyStr.trim() !== "" ? parseInt(maxQtyStr) : null;
+    const tierPrice = parseFloat(tierPriceStr);
+
+    // Only add valid tiers with all required fields
+    if (!isNaN(minQty) && !isNaN(tierPrice)) {
+      priceTiers.push({
+        min_quantity: minQty,
+        max_quantity: maxQty,
+        price: tierPrice,
+      });
+    }
+  }
+
+  console.log("Final price tiers to be saved:", priceTiers);
+
+  // Sort price tiers by min_quantity to ensure proper ordering
+  priceTiers.sort((a, b) => a.min_quantity - b.min_quantity);
+
   const { error } = await supabase.from("products").insert({
     factory_id: factoryId,
     name,
@@ -203,6 +245,7 @@ export async function createProduct(formData: FormData) {
     min_order_quantity: minOrderQuantity,
     lead_time: leadTime,
     status,
+    price_tiers: priceTiers.length > 0 ? priceTiers : null,
     created_at: new Date().toISOString(),
   });
 
@@ -234,6 +277,48 @@ export async function updateProduct(formData: FormData) {
   const leadTime = parseInt(formData.get("lead_time") as string);
   const status = formData.get("status") as string;
 
+  // Extract price tiers if they exist
+  const priceTiers = [];
+  const tierCount = document
+    .querySelector("#price-tiers-container")
+    ?.getAttribute("data-tier-count");
+  const numTiers = tierCount ? parseInt(tierCount) : 0;
+
+  // Log for debugging
+  console.log("Number of tiers detected:", numTiers);
+  console.log("Form data keys:", [...formData.keys()]);
+
+  for (let i = 0; i < numTiers; i++) {
+    const minQtyStr = formData.get(`tier-min-${i}`) as string;
+    const maxQtyStr = formData.get(`tier-max-${i}`) as string;
+    const tierPriceStr = formData.get(`tier-price-${i}`) as string;
+
+    console.log(`Processing tier ${i}:`, {
+      minQtyStr,
+      maxQtyStr,
+      tierPriceStr,
+    });
+
+    const minQty = parseInt(minQtyStr);
+    const maxQty =
+      maxQtyStr && maxQtyStr.trim() !== "" ? parseInt(maxQtyStr) : null;
+    const tierPrice = parseFloat(tierPriceStr);
+
+    // Only add valid tiers with all required fields
+    if (!isNaN(minQty) && !isNaN(tierPrice)) {
+      priceTiers.push({
+        min_quantity: minQty,
+        max_quantity: maxQty,
+        price: tierPrice,
+      });
+    }
+  }
+
+  console.log("Final price tiers to be saved:", priceTiers);
+
+  // Sort price tiers by min_quantity to ensure proper ordering
+  priceTiers.sort((a, b) => a.min_quantity - b.min_quantity);
+
   const { error } = await supabase
     .from("products")
     .update({
@@ -247,6 +332,7 @@ export async function updateProduct(formData: FormData) {
       min_order_quantity: minOrderQuantity,
       lead_time: leadTime,
       status,
+      price_tiers: priceTiers.length > 0 ? priceTiers : null,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id);

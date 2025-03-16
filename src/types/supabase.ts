@@ -331,6 +331,7 @@ export type Database = {
           min_order_quantity: number | null
           name: string
           price: number
+          price_tiers: Json | null
           status: string | null
           updated_at: string | null
         }
@@ -346,6 +347,7 @@ export type Database = {
           min_order_quantity?: number | null
           name: string
           price: number
+          price_tiers?: Json | null
           status?: string | null
           updated_at?: string | null
         }
@@ -361,6 +363,7 @@ export type Database = {
           min_order_quantity?: number | null
           name?: string
           price?: number
+          price_tiers?: Json | null
           status?: string | null
           updated_at?: string | null
         }
