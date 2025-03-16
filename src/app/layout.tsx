@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Lalezar } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { TempoInit } from "@/components/tempo-init";
@@ -10,7 +10,12 @@ import { Locale } from "@/lib/i18n/translations";
 import ClientLanguageProvider from "@/components/client-language-provider";
 import { Toaster } from "@/components/ui/toaster";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const lalezar = Lalezar({
+  weight: "400",
+  subsets: ["arabic"],
+  variable: "--font-lalezar",
+});
 
 export const metadata: Metadata = {
   title: "M3mly - Plateforme de fabrication de vêtements B2B",
@@ -29,7 +34,12 @@ export default function RootLayout({
   const dir = locale === "ar" ? "rtl" : "ltr";
 
   return (
-    <html lang={locale} dir={dir} suppressHydrationWarning>
+    <html
+      lang={locale}
+      dir={dir}
+      suppressHydrationWarning
+      className={`${inter.variable} ${lalezar.variable}`}
+    >
       <Script src="https://api.tempolabs.ai/proxy-asset?url=https://storage.googleapis.com/tempo-public-assets/error-handling.js" />
       <body className={inter.className}>
         <ThemeProvider
