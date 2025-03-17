@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { formatCurrency } from "@/lib/formatters";
 import Link from "next/link";
+import GenerateInvoicesButton from "@/components/generate-invoices-button";
 
 export default async function UserInvoicesPage() {
   const supabase = await createClient();
@@ -44,6 +45,21 @@ export default async function UserInvoicesPage() {
     console.error("Error fetching invoices:", invoicesError);
   }
 
+  // Check if user has any paid orders without invoices
+  const { data: paidOrdersWithoutInvoices, error: ordersError } = await supabase
+    .from("orders")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("payment_status", "paid")
+    .not(
+      "id",
+      "in",
+      supabase.from("invoices").select("order_id").is("order_id", "not.null"),
+    );
+
+  const hasMissingInvoices =
+    paidOrdersWithoutInvoices && paidOrdersWithoutInvoices.length > 0;
+
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="container mx-auto px-4 py-8 relative">
@@ -60,15 +76,18 @@ export default async function UserInvoicesPage() {
               Consultez et gérez vos factures et paiements
             </p>
           </div>
-          <Link href="/factories">
-            <Button className="group relative inline-flex items-center px-6 py-2 text-white bg-primary rounded-xl hover:bg-primary/90 transition-all shadow-glow hover:shadow-primary/40 text-base font-medium overflow-hidden">
-              <span className="relative z-10 flex items-center">
-                Explorer les Usines
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </span>
-              <span className="absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </Button>
-          </Link>
+          <div className="flex gap-4">
+            {hasMissingInvoices && <GenerateInvoicesButton />}
+            <Link href="/factories">
+              <Button className="group relative inline-flex items-center px-6 py-2 text-white bg-primary rounded-xl hover:bg-primary/90 transition-all shadow-glow hover:shadow-primary/40 text-base font-medium overflow-hidden">
+                <span className="relative z-10 flex items-center">
+                  Explorer les Usines
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
+                <span className="absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </Button>
+            </Link>
+          </div>
         </div>
 
         <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-border/50 shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
@@ -163,21 +182,28 @@ export default async function UserInvoicesPage() {
               <FileText className="h-12 w-12 mx-auto mb-3 text-muted-foreground/50" />
               <p className="text-lg font-medium mb-2">Aucune facture</p>
               <p className="max-w-md mx-auto mb-6">
-                Vous n'avez pas encore de factures. Lorsque vous passerez des
-                commandes, vos factures apparaîtront ici.
+                {hasMissingInvoices
+                  ? "Vous avez des commandes payées sans factures. Cliquez sur 'Générer les factures manquantes' pour les créer."
+                  : "Vous n'avez pas encore de factures. Lorsque vous passerez des commandes, vos factures apparaîtront ici."}
               </p>
-              <Link href="/factories">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="mt-4 group relative inline-flex items-center px-6 py-2 rounded-xl hover:bg-primary/10 transition-all text-base font-medium overflow-hidden"
-                >
-                  <span className="relative z-10 flex items-center">
-                    Parcourir les usines
-                    <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                </Button>
-              </Link>
+              {hasMissingInvoices ? (
+                <div className="mt-4">
+                  <GenerateInvoicesButton />
+                </div>
+              ) : (
+                <Link href="/factories">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-4 group relative inline-flex items-center px-6 py-2 rounded-xl hover:bg-primary/10 transition-all text-base font-medium overflow-hidden"
+                  >
+                    <span className="relative z-10 flex items-center">
+                      Parcourir les usines
+                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Button>
+                </Link>
+              )}
             </div>
           )}
         </div>

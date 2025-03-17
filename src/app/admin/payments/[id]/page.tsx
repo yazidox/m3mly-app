@@ -22,9 +22,10 @@ import {
   FileText,
   User,
   Calendar,
+  Package,
 } from "lucide-react";
 import Link from "next/link";
-import { verifyPayment, rejectPayment } from "@/app/actions/admin";
+import { PaymentActions } from "./client";
 
 export default async function AdminPaymentDetailPage({
   params,
@@ -78,13 +79,22 @@ export default async function AdminPaymentDetailPage({
     return notFound();
   }
 
-  // Fetch order data if available
+  // Fetch order data if available from invoice or direct order payment
   let order = null;
   if (payment.invoices?.order_id) {
     const { data: orderData } = await supabase
       .from("orders")
       .select("*, products(name)")
       .eq("id", payment.invoices.order_id)
+      .single();
+
+    order = orderData;
+  } else if (payment.order_id) {
+    // Direct order payment (no invoice)
+    const { data: orderData } = await supabase
+      .from("orders")
+      .select("*, products(name)")
+      .eq("id", payment.order_id)
       .single();
 
     order = orderData;
@@ -169,28 +179,50 @@ export default async function AdminPaymentDetailPage({
 
                 <div>
                   <h3 className="text-sm font-semibold text-muted-foreground mb-2">
-                    INFORMATIONS FACTURE
+                    {payment.invoices
+                      ? "INFORMATIONS FACTURE"
+                      : "INFORMATIONS COMMANDE"}
                   </h3>
                   <div className="space-y-3">
                     <div className="flex items-start gap-3">
                       <FileText className="h-5 w-5 text-muted-foreground mt-0.5" />
                       <div>
-                        <p className="font-medium">
-                          Facture #{payment.invoices?.invoice_number}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          Émise le{" "}
-                          {new Date(
-                            payment.invoices?.created_at || Date.now(),
-                          ).toLocaleDateString()}
-                        </p>
-                        {payment.invoices?.due_date && (
-                          <p className="text-sm text-muted-foreground">
-                            Échéance:{" "}
-                            {new Date(
-                              payment.invoices.due_date,
-                            ).toLocaleDateString()}
-                          </p>
+                        {payment.invoices ? (
+                          <>
+                            <p className="font-medium">
+                              Facture #{payment.invoices?.invoice_number}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              Émise le{" "}
+                              {new Date(
+                                payment.invoices?.created_at || Date.now(),
+                              ).toLocaleDateString()}
+                            </p>
+                            {payment.invoices?.due_date && (
+                              <p className="text-sm text-muted-foreground">
+                                Échéance:{" "}
+                                {new Date(
+                                  payment.invoices.due_date,
+                                ).toLocaleDateString()}
+                              </p>
+                            )}
+                          </>
+                        ) : payment.order_id ? (
+                          <>
+                            <p className="font-medium">
+                              Commande #{payment.order_id.substring(0, 8)}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              Passée le{" "}
+                              {order
+                                ? new Date(
+                                    order.created_at || Date.now(),
+                                  ).toLocaleDateString()
+                                : new Date().toLocaleDateString()}
+                            </p>
+                          </>
+                        ) : (
+                          <p className="font-medium">Paiement direct</p>
                         )}
                       </div>
                     </div>
@@ -209,7 +241,12 @@ export default async function AdminPaymentDetailPage({
                     <div>
                       <p className="text-sm text-muted-foreground">Montant</p>
                       <p className="text-lg font-bold">
-                        {formatCurrency(payment.invoices?.amount || 0)}
+                        {formatCurrency(
+                          payment.invoices?.amount ||
+                            (order ? order.total_price : 0) ||
+                            payment.amount ||
+                            0,
+                        )}
                       </p>
                     </div>
                     <div>
@@ -390,66 +427,12 @@ export default async function AdminPaymentDetailPage({
               </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-2">
-              {payment.status === "pending" && (
-                <>
-                  <form action={verifyPayment} className="w-full">
-                    <input type="hidden" name="payment_id" value={payment.id} />
-                    <input
-                      type="hidden"
-                      name="invoice_id"
-                      value={payment.invoice_id}
-                    />
-                    <input
-                      type="hidden"
-                      name="order_id"
-                      value={payment.invoices?.order_id || ""}
-                    />
-                    <Button
-                      type="submit"
-                      className="w-full bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      <CheckCheck className="h-4 w-4 mr-2" /> Valider le
-                      Paiement
-                    </Button>
-                  </form>
-
-                  <form action={rejectPayment} className="w-full">
-                    <input type="hidden" name="payment_id" value={payment.id} />
-                    <Button
-                      type="submit"
-                      variant="outline"
-                      className="w-full text-red-600 border-red-200 hover:bg-red-50 mt-2"
-                    >
-                      <AlertCircle className="h-4 w-4 mr-2" /> Rejeter le
-                      Paiement
-                    </Button>
-                  </form>
-                </>
-              )}
-
-              {payment.status === "verified" && (
-                <div className="bg-green-50 border border-green-200 text-green-800 p-4 rounded-md w-full">
-                  <h4 className="font-medium flex items-center gap-1 mb-1">
-                    <CheckCheck className="h-4 w-4" /> Paiement validé
-                  </h4>
-                  <p className="text-sm">
-                    Ce paiement a été vérifié et validé. La facture a été
-                    marquée comme payée.
-                  </p>
-                </div>
-              )}
-
-              {payment.status === "rejected" && (
-                <div className="bg-red-50 border border-red-200 text-red-800 p-4 rounded-md w-full">
-                  <h4 className="font-medium flex items-center gap-1 mb-1">
-                    <AlertCircle className="h-4 w-4" /> Paiement rejeté
-                  </h4>
-                  <p className="text-sm">
-                    Ce paiement a été rejeté. Le client devra effectuer un
-                    nouveau paiement.
-                  </p>
-                </div>
-              )}
+              <PaymentActions
+                paymentId={payment.id}
+                invoiceId={payment.invoice_id}
+                orderId={payment.invoices?.order_id || payment.order_id || ""}
+                status={payment.status}
+              />
             </CardFooter>
           </Card>
 
@@ -458,23 +441,27 @@ export default async function AdminPaymentDetailPage({
               <CardTitle>Liens Rapides</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <Button
-                variant="outline"
-                className="w-full justify-start"
-                asChild
-              >
-                <Link href={`/admin/invoices/${payment.invoice_id}`}>
-                  <FileText className="h-4 w-4 mr-2" /> Voir la Facture
-                </Link>
-              </Button>
-
-              {payment.invoices?.order_id && (
+              {payment.invoice_id && (
                 <Button
                   variant="outline"
                   className="w-full justify-start"
                   asChild
                 >
-                  <Link href={`/admin/orders/${payment.invoices.order_id}`}>
+                  <Link href={`/admin/invoices/${payment.invoice_id}`}>
+                    <FileText className="h-4 w-4 mr-2" /> Voir la Facture
+                  </Link>
+                </Button>
+              )}
+
+              {(payment.invoices?.order_id || payment.order_id) && (
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  asChild
+                >
+                  <Link
+                    href={`/admin/orders/${payment.invoices?.order_id || payment.order_id}`}
+                  >
                     <Package className="h-4 w-4 mr-2" /> Voir la Commande
                   </Link>
                 </Button>

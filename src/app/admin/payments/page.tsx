@@ -140,15 +140,28 @@ export default async function AdminPaymentsPage() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Link
-                      href={`/admin/invoices/${payment.invoice_id}`}
-                      className="hover:underline"
-                    >
-                      #{payment.invoices?.invoice_number}
-                    </Link>
+                    {payment.invoice_id ? (
+                      <Link
+                        href={`/admin/invoices/${payment.invoice_id}`}
+                        className="hover:underline"
+                      >
+                        #{payment.invoices?.invoice_number}
+                      </Link>
+                    ) : payment.order_id ? (
+                      <Link
+                        href={`/admin/orders/${payment.order_id}`}
+                        className="hover:underline"
+                      >
+                        #ORD-{payment.order_id.substring(0, 8)}
+                      </Link>
+                    ) : (
+                      "—"
+                    )}
                   </TableCell>
                   <TableCell className="font-medium">
-                    {formatCurrency(payment.invoices?.amount || 0)}
+                    {formatCurrency(
+                      payment.invoices?.amount || payment.amount || 0,
+                    )}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center">

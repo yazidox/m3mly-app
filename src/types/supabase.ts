@@ -257,12 +257,15 @@ export type Database = {
       }
       payments: {
         Row: {
+          account_name: string | null
+          account_number: string | null
           amount: number
           created_at: string | null
           currency: string | null
           details: string | null
           id: string
-          invoice_id: string
+          invoice_id: string | null
+          order_id: string | null
           payment_method_id: string | null
           payment_method_type: string
           reference: string | null
@@ -272,12 +275,15 @@ export type Database = {
           verified_at: string | null
         }
         Insert: {
+          account_name?: string | null
+          account_number?: string | null
           amount: number
           created_at?: string | null
           currency?: string | null
           details?: string | null
           id?: string
-          invoice_id: string
+          invoice_id?: string | null
+          order_id?: string | null
           payment_method_id?: string | null
           payment_method_type: string
           reference?: string | null
@@ -287,12 +293,15 @@ export type Database = {
           verified_at?: string | null
         }
         Update: {
+          account_name?: string | null
+          account_number?: string | null
           amount?: number
           created_at?: string | null
           currency?: string | null
           details?: string | null
           id?: string
-          invoice_id?: string
+          invoice_id?: string | null
+          order_id?: string | null
           payment_method_id?: string | null
           payment_method_type?: string
           reference?: string | null
@@ -310,10 +319,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "payments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "payments_payment_method_id_fkey"
             columns: ["payment_method_id"]
             isOneToOne: false
             referencedRelation: "payment_methods"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -531,7 +554,44 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_invoices_for_user: {
+        Args: {
+          user_id: string
+        }
+        Returns: {
+          amount: number
+          created_at: string | null
+          due_date: string | null
+          factory_id: string | null
+          id: string
+          invoice_number: string
+          notes: string | null
+          order_id: string | null
+          payment_date: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }[]
+      }
+      generate_missing_invoices_for_user: {
+        Args: {
+          user_id: string
+        }
+        Returns: {
+          amount: number
+          created_at: string | null
+          due_date: string | null
+          factory_id: string | null
+          id: string
+          invoice_number: string
+          notes: string | null
+          order_id: string | null
+          payment_date: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
