@@ -28,12 +28,12 @@ export default async function FactoriesPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Factories</h1>
-          <p className="text-muted-foreground">Manage and approve factories</p>
+          <h1 className="text-3xl font-bold mb-2">Usines</h1>
+          <p className="text-muted-foreground">Gérer et approuver les usines</p>
         </div>
         <Link href="/admin/factories/new">
           <Button className="flex items-center gap-2">
-            <Plus className="h-4 w-4" /> Add Factory
+            <Plus className="h-4 w-4" /> Ajouter une Usine
           </Button>
         </Link>
       </div>
@@ -42,11 +42,11 @@ export default async function FactoriesPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Location</TableHead>
-              <TableHead>Min Order Qty</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Created At</TableHead>
+              <TableHead>Nom</TableHead>
+              <TableHead>Emplacement</TableHead>
+              <TableHead>Qté Min. Commande</TableHead>
+              <TableHead>Statut</TableHead>
+              <TableHead>Créé le</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -67,7 +67,11 @@ export default async function FactoriesPage() {
                             : "destructive"
                       }
                     >
-                      {factory.status}
+                      {factory.status === "approved" 
+                        ? "approuvé" 
+                        : factory.status === "pending" 
+                          ? "en attente" 
+                          : "rejeté"}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -118,7 +122,7 @@ export default async function FactoriesPage() {
                   colSpan={6}
                   className="text-center py-6 text-muted-foreground"
                 >
-                  No factories found
+                  Aucune usine trouvée
                 </TableCell>
               </TableRow>
             )}

@@ -26,9 +26,9 @@ export default async function AdminDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-2">Tableau de Bord Admin</h1>
         <p className="text-muted-foreground">
-          Manage factories, products, and users
+          Gérer les usines, produits et utilisateurs
         </p>
       </div>
 
@@ -36,14 +36,14 @@ export default async function AdminDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">
-              Total Factories
+              Total Usines
             </CardTitle>
             <Factory className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{factoriesCount || 0}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              {pendingFactoriesCount || 0} pending approval
+              {pendingFactoriesCount || 0} en attente d'approbation
             </p>
           </CardContent>
         </Card>
@@ -51,27 +51,27 @@ export default async function AdminDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">
-              Total Products
+              Total Produits
             </CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{productsCount || 0}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              Across all factories
+              À travers toutes les usines
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Utilisateurs</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{usersCount || 0}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              Registered accounts
+              Comptes enregistrés
             </p>
           </CardContent>
         </Card>
@@ -79,14 +79,14 @@ export default async function AdminDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">
-              Platform Activity
+              Activité Plateforme
             </CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">Active</div>
             <p className="text-xs text-muted-foreground mt-1">
-              System status normal
+              État du système normal
             </p>
           </CardContent>
         </Card>

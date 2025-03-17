@@ -101,10 +101,11 @@ export default async function SamplesPage() {
                         }
                         className="px-3 py-1"
                       >
-                        {sample.status === "completed" ? "Terminée" : 
-                         sample.status === "processing" ? "En cours" : 
-                         sample.status === "cancelled" ? "Annulée" : 
-                         sample.status}
+                          {sample.status === "completed" ? "Terminée" : 
+                          sample.status === "processing" ? "En cours" : 
+                          sample.status === "cancelled" ? "Annulée" : 
+                          sample.status === "pending" ? "En attente" : 
+                          sample.status}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">

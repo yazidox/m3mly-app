@@ -73,20 +73,14 @@ export default function DashboardSidebar() {
     {
       label: t("common.browse_factories"),
       icon: <Building className="h-5 w-5" />,
-      href: "/factories",
+      href: "/products",
       active: pathname === "/factories",
     },
     {
       label: t("common.find_factories"),
       icon: <Store className="h-5 w-5" />,
-      href: "/products",
+      href: "/factories",
       active: pathname === "/products",
-    },
-    {
-      label: t("common.find_factories"),
-      icon: <Search className="h-5 w-5" />,
-      href: "/search",
-      active: pathname === "/search",
     },
   ];
 
@@ -135,7 +129,7 @@ export default function DashboardSidebar() {
       <div className="p-6 border-b border-border/40 relative z-10 backdrop-blur-sm">
         <div className="flex items-center gap-2 mb-4">
           <div className="w-[160px] flex items-center justify-center">
-            <img src="/logo.svg" alt="M3mly Logo" className="h-full w-full" />
+            <img src={isRtl ? "/logo-ar.png" : "/logo.svg"} alt="M3mly Logo" className="h-full w-full" />
           </div>
         </div>
         <div className="flex justify-between items-center">

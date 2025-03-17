@@ -42,10 +42,10 @@ export default function UsersPage() {
         setUsers(data.users);
       }
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Erreur lors de la récupération des utilisateurs:", error);
       toast({
-        title: "Error",
-        description: "Failed to fetch users",
+        title: "Erreur",
+        description: "Échec de la récupération des utilisateurs",
         variant: "destructive",
       });
     } finally {
@@ -72,8 +72,8 @@ export default function UsersPage() {
 
       if (data.success) {
         toast({
-          title: "Success",
-          description: "User approved successfully",
+          title: "Succès",
+          description: "Utilisateur approuvé avec succès",
           variant: "default",
         });
 
@@ -81,16 +81,16 @@ export default function UsersPage() {
         await fetchUsers();
       } else {
         toast({
-          title: "Error",
-          description: data.message || "Failed to approve user",
+          title: "Erreur",
+          description: data.message || "Échec de l'approbation de l'utilisateur",
           variant: "destructive",
         });
       }
     } catch (error) {
-      console.error("Error approving user:", error);
+      console.error("Erreur lors de l'approbation de l'utilisateur:", error);
       toast({
-        title: "Error",
-        description: "Failed to approve user",
+        title: "Erreur",
+        description: "Échec de l'approbation de l'utilisateur",
         variant: "destructive",
       });
     }
@@ -115,8 +115,8 @@ export default function UsersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Users</h1>
-        <p className="text-muted-foreground">Manage platform users</p>
+        <h1 className="text-3xl font-bold mb-2">Utilisateurs</h1>
+        <p className="text-muted-foreground">Gérer les utilisateurs de la plateforme</p>
       </div>
 
       <div className="bg-card rounded-lg border shadow-sm">
@@ -124,12 +124,12 @@ export default function UsersPage() {
           <TableHeader>
             <TableRow>
               <TableHead></TableHead>
-              <TableHead>Name</TableHead>
+              <TableHead>Nom</TableHead>
               <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead>Joined</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Rôle</TableHead>
+              <TableHead>Téléphone</TableHead>
+              <TableHead>Inscrit le</TableHead>
+              <TableHead>Statut</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -137,7 +137,7 @@ export default function UsersPage() {
             {loading ? (
               <TableRow>
                 <TableCell colSpan={8} className="text-center py-6">
-                  Loading users...
+                  Chargement des utilisateurs...
                 </TableCell>
               </TableRow>
             ) : users && users.length > 0 ? (
@@ -156,7 +156,7 @@ export default function UsersPage() {
                     <Badge
                       variant={user.role === "admin" ? "default" : "secondary"}
                     >
-                      {user.role || "user"}
+                      {user.role || "utilisateur"}
                     </Badge>
                   </TableCell>
                   <TableCell>{user.phone || "N/A"}</TableCell>
@@ -167,7 +167,7 @@ export default function UsersPage() {
                     <Badge
                       variant={user.is_approved ? "success" : "destructive"}
                     >
-                      {user.is_approved ? "Approved" : "Pending"}
+                      {user.is_approved ? "Approuvé" : "En attente"}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right flex justify-end gap-2">
@@ -179,7 +179,7 @@ export default function UsersPage() {
                         className="text-green-600 border-green-600 hover:bg-green-50 dark:hover:bg-green-950/20"
                       >
                         <CheckCircle className="h-4 w-4 mr-1" />
-                        Approve
+                        Approuver
                       </Button>
                     )}
                     <Link href={`/admin/users/${user.id}`}>
@@ -196,7 +196,7 @@ export default function UsersPage() {
                   colSpan={8}
                   className="text-center py-6 text-muted-foreground"
                 >
-                  No users found
+                  Aucun utilisateur trouvé
                 </TableCell>
               </TableRow>
             )}

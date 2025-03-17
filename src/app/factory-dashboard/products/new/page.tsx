@@ -130,13 +130,13 @@ export default async function NewFactoryProductPage() {
         <div className="flex items-center gap-4 mb-6">
           <Link href="/factory-dashboard?tab=products">
             <Button variant="ghost" size="sm">
-              <ArrowLeft className="h-4 w-4 mr-2" /> Back
+              <ArrowLeft className="h-4 w-4 mr-2" /> Retour
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold">Add New Product</h1>
+            <h1 className="text-2xl font-bold">Ajouter un Nouveau Produit</h1>
             <p className="text-muted-foreground">
-              Create a new product for your factory catalog
+              Créez un nouveau produit pour votre catalogue d'usine
             </p>
           </div>
         </div>
@@ -145,13 +145,13 @@ export default async function NewFactoryProductPage() {
           <form action={createProduct} className="space-y-6 max-w-2xl mx-auto">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Product Name</Label>
+                <Label htmlFor="name">Nom du Produit</Label>
                 <Input id="name" name="name" required />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="price">Base Price ($)</Label>
+                  <Label htmlFor="price">Prix de Base (MAD)</Label>
                   <Input
                     id="price"
                     name="price"
@@ -162,7 +162,7 @@ export default async function NewFactoryProductPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="category">Category</Label>
+                  <Label htmlFor="category">Catégorie</Label>
                   <Input id="category" name="category" required />
                 </div>
               </div>
@@ -170,13 +170,13 @@ export default async function NewFactoryProductPage() {
               {/* Client component for price tiers */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label>Quantity-Based Pricing Tiers</Label>
+                  <Label>Paliers de Prix par Quantité</Label>
                   <AddTierButton initialTierCount={1} />
                 </div>
                 <div id="price-tiers-container" className="space-y-2">
                   <div className="grid grid-cols-3 gap-2 items-end">
                     <div>
-                      <Label htmlFor="tier-min-0">Min Quantity</Label>
+                      <Label htmlFor="tier-min-0">Quantité Minimale</Label>
                       <Input
                         id="tier-min-0"
                         name="tier-min-0"
@@ -187,17 +187,17 @@ export default async function NewFactoryProductPage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="tier-max-0">Max Quantity</Label>
+                      <Label htmlFor="tier-max-0">Quantité Maximale</Label>
                       <Input
                         id="tier-max-0"
                         name="tier-max-0"
                         type="number"
                         min="1"
-                        placeholder="Leave empty for unlimited"
+                        placeholder="Laisser vide pour illimité"
                       />
                     </div>
                     <div>
-                      <Label htmlFor="tier-price-0">Price per Unit ($)</Label>
+                      <Label htmlFor="tier-price-0">Prix par Unité (MAD)</Label>
                       <Input
                         id="tier-price-0"
                         name="tier-price-0"
@@ -210,8 +210,7 @@ export default async function NewFactoryProductPage() {
                   </div>
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Set different prices based on order quantity. Higher
-                  quantities typically have lower per-unit prices.
+                  Définissez différents prix en fonction de la quantité commandée. Les quantités plus élevées ont généralement des prix unitaires plus bas.
                 </p>
               </div>
 
@@ -226,7 +225,7 @@ export default async function NewFactoryProductPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="image">Image URL</Label>
+                <Label htmlFor="image">URL de l'Image</Label>
                 <Input
                   id="image"
                   name="image"
@@ -237,11 +236,11 @@ export default async function NewFactoryProductPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="features">Features (comma separated)</Label>
+                <Label htmlFor="features">Caractéristiques (séparées par des virgules)</Label>
                 <Input
                   id="features"
                   name="features"
-                  placeholder="Organic cotton, Sustainable, Handmade"
+                  placeholder="Coton bio, Durable, Fait main"
                   required
                 />
               </div>
@@ -249,7 +248,7 @@ export default async function NewFactoryProductPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="min_order_quantity">
-                    Minimum Order Quantity
+                    Quantité Minimale de Commande
                   </Label>
                   <Input
                     id="min_order_quantity"
@@ -260,7 +259,7 @@ export default async function NewFactoryProductPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lead_time">Lead Time (days)</Label>
+                  <Label htmlFor="lead_time">Délai de Production (jours)</Label>
                   <Input
                     id="lead_time"
                     name="lead_time"
@@ -272,7 +271,7 @@ export default async function NewFactoryProductPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status">Statut</Label>
                 <select
                   id="status"
                   name="status"
@@ -280,14 +279,14 @@ export default async function NewFactoryProductPage() {
                   defaultValue="active"
                   required
                 >
-                  <option value="active">Active</option>
-                  <option value="draft">Draft</option>
+                  <option value="active">Actif</option>
+                  <option value="draft">Brouillon</option>
                 </select>
               </div>
             </div>
 
             <Button type="submit" className="w-full">
-              Create Product
+              Créer le Produit
             </Button>
           </form>
         </div>

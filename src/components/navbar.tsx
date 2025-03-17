@@ -93,7 +93,7 @@ export default function Navbar() {
           className={`flex items-center gap-2 group ${isRtl ? "order-first" : "order-first"}`}
         >
           <div className="w-[130px] relative overflow-hidden transition-all duration-300 group-hover:scale-105">
-            <img src="/logo.svg" alt="M3mly Logo" className="h-full w-full" />
+            <img src={isRtl ? "/logo-ar.png" : "/logo.svg"} alt="M3mly Logo" className="h-full w-full" />
             <div
               className={`absolute -inset-1 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary/10 to-accent/10 rounded-full blur-lg opacity-0 group-hover:opacity-70 transition-opacity duration-300`}
             />

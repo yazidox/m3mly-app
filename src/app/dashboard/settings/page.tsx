@@ -85,16 +85,16 @@ export default async function SettingsPage() {
             <div className="space-y-6">
               <h3 className="text-lg font-medium flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary" />
-                Email Notifications
+                Notifications par Email
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label htmlFor="email_orders" className="font-medium">
-                      Order Updates
+                      Mises à jour des commandes
                     </Label>
                     <p className="text-sm text-muted-foreground">
-                      Receive emails about your order status changes
+                      Recevoir des emails sur les changements de statut de vos commandes
                     </p>
                   </div>
                   <Switch id="email_orders" defaultChecked />
@@ -103,10 +103,10 @@ export default async function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label htmlFor="email_samples" className="font-medium">
-                      Sample Requests
+                      Demandes d'échantillons
                     </Label>
                     <p className="text-sm text-muted-foreground">
-                      Receive emails about your sample request updates
+                      Recevoir des emails sur les mises à jour de vos demandes d'échantillons
                     </p>
                   </div>
                   <Switch id="email_samples" defaultChecked />
@@ -115,10 +115,10 @@ export default async function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label htmlFor="email_invoices" className="font-medium">
-                      Invoices & Payments
+                      Factures & Paiements
                     </Label>
                     <p className="text-sm text-muted-foreground">
-                      Receive emails about invoices and payment confirmations
+                      Recevoir des emails concernant les factures et confirmations de paiement
                     </p>
                   </div>
                   <Switch id="email_invoices" defaultChecked />
@@ -130,7 +130,7 @@ export default async function SettingsPage() {
                       Marketing
                     </Label>
                     <p className="text-sm text-muted-foreground">
-                      Receive promotional emails and special offers
+                      Recevoir des emails promotionnels et offres spéciales
                     </p>
                   </div>
                   <Switch id="email_marketing" />
@@ -141,16 +141,16 @@ export default async function SettingsPage() {
 
               <h3 className="text-lg font-medium flex items-center gap-2">
                 <Smartphone className="h-4 w-4 text-primary" />
-                SMS Notifications
+                Notifications par SMS
               </h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label htmlFor="sms_orders" className="font-medium">
-                      Order Updates
+                      Mises à jour des commandes
                     </Label>
                     <p className="text-sm text-muted-foreground">
-                      Receive text messages about your order status changes
+                      Recevoir des SMS sur les changements de statut de vos commandes
                     </p>
                   </div>
                   <Switch id="sms_orders" />
@@ -159,10 +159,10 @@ export default async function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label htmlFor="sms_delivery" className="font-medium">
-                      Delivery Updates
+                      Mises à jour des livraisons
                     </Label>
                     <p className="text-sm text-muted-foreground">
-                      Receive text messages about your delivery status
+                      Recevoir des SMS sur le statut de vos livraisons
                     </p>
                   </div>
                   <Switch id="sms_delivery" />
@@ -220,30 +220,6 @@ export default async function SettingsPage() {
               </div>
 
               <Separator />
-
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium">Thème</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "justify-start bg-card/50 backdrop-blur-sm rounded-xl p-3 border border-border transform transition-all duration-300",
-                      "hover:scale-105 hover:shadow-md hover:border-primary/20"
-                    )}
-                  >
-                    <Sun className="mr-2 h-5 w-5 text-amber-400" /> Light
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "justify-start bg-card/50 backdrop-blur-sm rounded-xl p-3 border border-border transform transition-all duration-300",
-                      "hover:scale-105 hover:shadow-md hover:border-primary/20"
-                    )}
-                  >
-                    <Moon className="mr-2 h-5 w-5 text-indigo-400" /> Dark
-                  </Button>
-                </div>
-              </div>
 
               <Button className="group relative inline-flex items-center px-6 py-2 text-white bg-primary rounded-xl hover:bg-primary/90 transition-all shadow-glow hover:shadow-primary/40 text-base font-medium overflow-hidden w-full justify-center mt-6">
                 <span className="relative z-10 flex items-center">
@@ -335,64 +311,7 @@ export default async function SettingsPage() {
           </CardContent>
         </Card>
 
-        {/* Account Management */}
-        <Card className="bg-card/50 backdrop-blur-sm border border-border transform transition-all duration-500  hover:shadow-xl hover:border-primary/20">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-2xl">
-              <div className="bg-red-500/15 text-red-500 rounded-full p-2 border border-red-500/20 shadow-glow">
-                <Users className="h-5 w-5" />
-              </div>
-              <span>Gestion du Compte</span>
-            </CardTitle>
-            <CardDescription className="text-base">
-              Actions permanentes pour votre compte
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              <div className="border border-red-200 rounded-xl p-6 bg-red-50/50 backdrop-blur-sm hover:bg-red-50/70 transition-all hover:scale-[1.02]">
-                <h3 className="text-lg font-medium text-red-600 mb-2 flex items-center gap-2">
-                  <Trash2 className="h-5 w-5" />
-                  Supprimer le compte
-                </h3>
-                <p className="text-sm text-red-600 mb-4">
-                  Cette action est irréversible. Toutes vos données seront
-                  définitivement supprimées.
-                </p>
-                <Button
-                  variant="destructive"
-                  className="group relative inline-flex items-center px-6 py-2 text-white rounded-xl transition-all shadow-md hover:shadow-red-500/40 text-base font-medium overflow-hidden"
-                >
-                  <span className="relative z-10 flex items-center">
-                    Supprimer mon compte
-                    <Trash2 className="ml-2 h-4 w-4" />
-                  </span>
-                  <span className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </Button>
-              </div>
-
-              <div className="border rounded-xl p-6 bg-muted/30 backdrop-blur-sm hover:bg-muted/50 transition-all hover:scale-[1.02]">
-                <h3 className="text-lg font-medium mb-2 flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-primary" />
-                  Télécharger vos données
-                </h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Téléchargez une copie de vos données personnelles et de votre
-                  historique de commandes.
-                </p>
-                <Button
-                  variant="outline"
-                  className="group relative inline-flex items-center px-6 py-2 rounded-xl transition-all shadow-sm hover:shadow-md text-base font-medium overflow-hidden border-primary/20 hover:border-primary/40"
-                >
-                  <span className="relative z-10 flex items-center">
-                    Demander l'exportation des données
-                    <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+    
       </div>
     </div>
   );

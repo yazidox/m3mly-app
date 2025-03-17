@@ -18,37 +18,37 @@ import { signOutAction } from "@/app/actions";
 
 const navItems = [
   {
-    title: "Dashboard",
+    title: "Tableau de bord",
     href: "/admin",
     icon: <LayoutDashboard className="h-5 w-5" />,
   },
   {
-    title: "Factories",
+    title: "Usines",
     href: "/admin/factories",
     icon: <Factory className="h-5 w-5" />,
   },
   {
-    title: "Products",
+    title: "Produits",
     href: "/admin/products",
     icon: <Package className="h-5 w-5" />,
   },
   {
-    title: "Users",
+    title: "Utilisateurs",
     href: "/admin/users",
     icon: <Users className="h-5 w-5" />,
   },
   {
-    title: "Payments",
+    title: "Paiements",
     href: "/admin/payments",
     icon: <CreditCard className="h-5 w-5" />,
   },
   {
-    title: "Invoices",
+    title: "Factures",
     href: "/admin/invoices",
     icon: <FileText className="h-5 w-5" />,
   },
   {
-    title: "Settings",
+    title: "Paramètres",
     href: "/admin/settings",
     icon: <Settings className="h-5 w-5" />,
   },
@@ -96,7 +96,7 @@ export default function AdminSidebar() {
             type="submit"
           >
             <LogOut className="mr-2 h-4 w-4" />
-            Sign Out
+            Déconnexion
           </Button>
         </form>
       </div>
