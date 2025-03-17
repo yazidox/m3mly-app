@@ -39,14 +39,15 @@ export default async function OrdersPage() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
-  
-     
       <div className="container mx-auto px-4 py-8 relative">
         <div className="flex justify-between items-center mb-8">
           <div>
-          
             <h1 className="text-4xl font-bold mb-2 tracking-tight">
-              Mes <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent animate-text-shimmer relative after:absolute after:content-[''] after:bottom-0 after:left-0 after:w-full after:h-[6px] after:bg-gradient-to-r after:from-primary/30 after:to-accent/30 after:-rotate-1">Commandes</span> Effectuées
+              Mes{" "}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent animate-text-shimmer relative after:absolute after:content-[''] after:bottom-0 after:left-0 after:w-full after:h-[6px] after:bg-gradient-to-r after:from-primary/30 after:to-accent/30 after:-rotate-1">
+                Commandes
+              </span>{" "}
+              Effectuées
             </h1>
             <p className="text-muted-foreground">
               Suivez et gérez vos commandes de produits
@@ -79,7 +80,10 @@ export default async function OrdersPage() {
               </TableHeader>
               <TableBody>
                 {orders.map((order) => (
-                  <TableRow key={order.id} className="hover:bg-primary/5 transition-colors">
+                  <TableRow
+                    key={order.id}
+                    className="hover:bg-primary/5 transition-colors"
+                  >
                     <TableCell className="font-medium">
                       #{order.id.substring(0, 8)}
                     </TableCell>
@@ -104,15 +108,24 @@ export default async function OrdersPage() {
                         }
                         className="px-3 py-1"
                       >
-                        {order.status === "completed" ? "Terminée" : 
-                         order.status === "processing" ? "En cours" : 
-                         order.status === "cancelled" ? "Annulée" : 
-                         order.status}
+                        {order.status === "completed"
+                          ? "Terminée"
+                          : order.status === "processing"
+                            ? "En cours"
+                            : order.status === "cancelled"
+                              ? "Annulée"
+                              : order.status === "pending"
+                                ? "En attente"
+                                : order.status}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <Link href={`/dashboard/orders/${order.id}`}>
-                        <Button variant="outline" size="sm" className="hover:bg-primary/10 hover:text-primary transition-colors">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="hover:bg-primary/10 hover:text-primary transition-colors"
+                        >
                           <Eye className="h-4 w-4 mr-2" />
                           Voir
                         </Button>
@@ -125,13 +138,19 @@ export default async function OrdersPage() {
           ) : (
             <div className="text-center py-12 text-muted-foreground">
               <ShoppingCart className="h-12 w-12 mx-auto mb-3 text-muted-foreground/50" />
-              <p className="text-lg font-medium mb-2">Pas encore de commandes</p>
+              <p className="text-lg font-medium mb-2">
+                Pas encore de commandes
+              </p>
               <p className="max-w-md mx-auto mb-6">
-                Vous n'avez pas encore passé de commandes. Parcourez nos usines et
-                produits pour passer votre première commande.
+                Vous n'avez pas encore passé de commandes. Parcourez nos usines
+                et produits pour passer votre première commande.
               </p>
               <Link href="/factories">
-                <Button variant="outline" size="sm" className="mt-4 group relative inline-flex items-center px-6 py-2 rounded-xl hover:bg-primary/10 transition-all text-base font-medium overflow-hidden">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-4 group relative inline-flex items-center px-6 py-2 rounded-xl hover:bg-primary/10 transition-all text-base font-medium overflow-hidden"
+                >
                   <span className="relative z-10 flex items-center">
                     Explorer les Usines
                     <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />

@@ -49,7 +49,7 @@ export default function FactoryDashboardNavbar({
               {factory.name}
             </span>
             <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
-              Factory Dashboard
+              Tableau de Bord Usine
             </span>
           </Link>
         </div>
@@ -63,7 +63,7 @@ export default function FactoryDashboardNavbar({
                 className="flex items-center gap-2"
               >
                 <Home className="h-4 w-4" />
-                <span>Dashboard</span>
+                <span>Tableau de Bord</span>
               </Button>
             </Link>
             <Link href="/factory-dashboard?tab=orders">
@@ -73,7 +73,7 @@ export default function FactoryDashboardNavbar({
                 className="flex items-center gap-2"
               >
                 <Package className="h-4 w-4" />
-                <span>Orders</span>
+                <span>Commandes</span>
               </Button>
             </Link>
             <Link href="/factory-dashboard/invoices">
@@ -83,7 +83,7 @@ export default function FactoryDashboardNavbar({
                 className="flex items-center gap-2"
               >
                 <FileText className="h-4 w-4" />
-                <span>Invoices</span>
+                <span>Factures</span>
               </Button>
             </Link>
             <Link href="/factory-dashboard/settings">
@@ -93,7 +93,7 @@ export default function FactoryDashboardNavbar({
                 className="flex items-center gap-2"
               >
                 <Settings className="h-4 w-4" />
-                <span>Settings</span>
+                <span>Paramètres</span>
               </Button>
             </Link>
           </div>
@@ -108,12 +108,12 @@ export default function FactoryDashboardNavbar({
               <DropdownMenuItem
                 onClick={() => router.push(`/factory/${factory.id}`)}
               >
-                View Public Profile
+                Voir Profil Public
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => router.push("/factory-dashboard/settings")}
               >
-                Account Settings
+                Paramètres du Compte
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={async () => {
@@ -122,7 +122,7 @@ export default function FactoryDashboardNavbar({
                   router.push("/sign-in");
                 }}
               >
-                Sign out
+                Déconnexion
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -123,17 +123,17 @@ export default async function FactoryDashboard({
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Factory Dashboard</h1>
+            <h1 className="text-3xl font-bold mb-2">Tableau de Bord d'Usine</h1>
             <p className="text-muted-foreground">
-              Manage your orders, samples, and factory profile
+              Gérez vos commandes, échantillons et profil d'usine
             </p>
           </div>
           <div className="flex gap-3">
             <Link href={`/factory/${factoryId}`}>
-              <Button variant="outline">View Public Profile</Button>
+              <Button variant="outline">Voir Profil Public</Button>
             </Link>
             <Link href="/factory-dashboard/settings">
-              <Button variant="outline">Settings</Button>
+              <Button variant="outline">Paramètres</Button>
             </Link>
           </div>
         </div>
@@ -141,29 +141,29 @@ export default async function FactoryDashboard({
         {searchParams.message && (
           <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md mb-6">
             {searchParams.message === "order_updated" && (
-              <p>Order status updated successfully</p>
+              <p>Statut de commande mis à jour avec succès</p>
             )}
             {searchParams.message === "sample_updated" && (
-              <p>Sample request status updated successfully</p>
+              <p>Statut de demande d'échantillon mis à jour avec succès</p>
             )}
             {searchParams.message === "product_created" && (
-              <p>Product created successfully</p>
+              <p>Produit créé avec succès</p>
             )}
             {searchParams.message === "product_updated" && (
-              <p>Product updated successfully</p>
+              <p>Produit mis à jour avec succès</p>
             )}
             {searchParams.message === "product_deleted" && (
-              <p>Product deleted successfully</p>
+              <p>Produit supprimé avec succès</p>
             )}
           </div>
         )}
 
         <Tabs defaultValue={activeTab} className="space-y-6">
           <TabsList className="mb-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="orders">Orders</TabsTrigger>
-            <TabsTrigger value="samples">Sample Requests</TabsTrigger>
-            <TabsTrigger value="products">Products</TabsTrigger>
+            <TabsTrigger value="overview">Aperçu</TabsTrigger>
+            <TabsTrigger value="orders">Commandes</TabsTrigger>
+            <TabsTrigger value="samples">Demandes d'Échantillons</TabsTrigger>
+            <TabsTrigger value="products">Produits</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -171,14 +171,14 @@ export default async function FactoryDashboard({
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <CardTitle className="text-sm font-medium">
-                    Pending Orders
+                    Commandes en Attente
                   </CardTitle>
                   <ShoppingCart className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{pendingOrders}</div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Awaiting processing
+                    En attente de traitement
                   </p>
                 </CardContent>
               </Card>
@@ -186,14 +186,14 @@ export default async function FactoryDashboard({
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <CardTitle className="text-sm font-medium">
-                    Completed Orders
+                    Commandes Terminées
                   </CardTitle>
                   <Truck className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{completedOrders}</div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Successfully delivered
+                    Livrées avec succès
                   </p>
                 </CardContent>
               </Card>
@@ -201,7 +201,7 @@ export default async function FactoryDashboard({
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <CardTitle className="text-sm font-medium">
-                    Total Revenue
+                    Revenu Total
                   </CardTitle>
                   <DollarSign className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
@@ -212,7 +212,7 @@ export default async function FactoryDashboard({
                       : formatCurrency(0)}
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    From all orders
+                    De toutes les commandes
                   </p>
                 </CardContent>
               </Card>
@@ -220,14 +220,14 @@ export default async function FactoryDashboard({
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <CardTitle className="text-sm font-medium">
-                    Unpaid Invoices
+                    Factures Impayées
                   </CardTitle>
                   <FileText className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{unpaidInvoices}</div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Awaiting payment
+                    En attente de paiement
                   </p>
                 </CardContent>
               </Card>
@@ -236,10 +236,10 @@ export default async function FactoryDashboard({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader className="flex justify-between items-center">
-                  <CardTitle className="text-lg">Recent Orders</CardTitle>
+                  <CardTitle className="text-lg">Commandes Récentes</CardTitle>
                   <Link href="/factory-dashboard?tab=orders">
                     <Button variant="ghost" size="sm">
-                      View All
+                      Voir Tout
                     </Button>
                   </Link>
                 </CardHeader>
@@ -248,9 +248,9 @@ export default async function FactoryDashboard({
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Order ID</TableHead>
-                          <TableHead>Product</TableHead>
-                          <TableHead>Status</TableHead>
+                          <TableHead>ID Commande</TableHead>
+                          <TableHead>Produit</TableHead>
+                          <TableHead>Statut</TableHead>
                           <TableHead>Date</TableHead>
                         </TableRow>
                       </TableHeader>
@@ -273,7 +273,10 @@ export default async function FactoryDashboard({
                                         : "outline"
                                 }
                               >
-                                {order.status}
+                                {order.status === "pending" ? "en attente" : 
+                                 order.status === "processing" ? "en traitement" : 
+                                 order.status === "completed" ? "terminée" : 
+                                 order.status === "cancelled" ? "annulée" : order.status}
                               </Badge>
                             </TableCell>
                             <TableCell>
@@ -285,7 +288,7 @@ export default async function FactoryDashboard({
                     </Table>
                   ) : (
                     <div className="text-center py-6 text-muted-foreground">
-                      No orders yet
+                      Pas encore de commandes
                     </div>
                   )}
                 </CardContent>
@@ -293,10 +296,10 @@ export default async function FactoryDashboard({
 
               <Card>
                 <CardHeader className="flex justify-between items-center">
-                  <CardTitle className="text-lg">Recent Invoices</CardTitle>
+                  <CardTitle className="text-lg">Factures Récentes</CardTitle>
                   <Link href="/factory-dashboard/invoices">
                     <Button variant="ghost" size="sm">
-                      View All
+                      Voir Tout
                     </Button>
                   </Link>
                 </CardHeader>
@@ -305,9 +308,9 @@ export default async function FactoryDashboard({
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Invoice #</TableHead>
-                          <TableHead>Amount</TableHead>
-                          <TableHead>Status</TableHead>
+                          <TableHead>Facture #</TableHead>
+                          <TableHead>Montant</TableHead>
+                          <TableHead>Statut</TableHead>
                           <TableHead>Date</TableHead>
                         </TableRow>
                       </TableHeader>
@@ -330,7 +333,9 @@ export default async function FactoryDashboard({
                                       : "outline"
                                 }
                               >
-                                {invoice.status}
+                                {invoice.status === "paid" ? "payée" : 
+                                 invoice.status === "unpaid" ? "impayée" : 
+                                 invoice.status === "overdue" ? "en retard" : invoice.status}
                               </Badge>
                             </TableCell>
                             <TableCell>
@@ -344,7 +349,7 @@ export default async function FactoryDashboard({
                     </Table>
                   ) : (
                     <div className="text-center py-6 text-muted-foreground">
-                      No invoices yet
+                      Pas encore de factures
                     </div>
                   )}
                 </CardContent>
@@ -354,10 +359,10 @@ export default async function FactoryDashboard({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader className="flex justify-between items-center">
-                  <CardTitle className="text-lg">Sample Requests</CardTitle>
+                  <CardTitle className="text-lg">Demandes d'Échantillons</CardTitle>
                   <Link href="/factory-dashboard?tab=samples">
                     <Button variant="ghost" size="sm">
-                      View All
+                      Voir Tout
                     </Button>
                   </Link>
                 </CardHeader>
@@ -366,9 +371,9 @@ export default async function FactoryDashboard({
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Request ID</TableHead>
-                          <TableHead>Product</TableHead>
-                          <TableHead>Status</TableHead>
+                          <TableHead>ID Demande</TableHead>
+                          <TableHead>Produit</TableHead>
+                          <TableHead>Statut</TableHead>
                           <TableHead>Date</TableHead>
                         </TableRow>
                       </TableHeader>
@@ -391,7 +396,10 @@ export default async function FactoryDashboard({
                                         : "outline"
                                 }
                               >
-                                {sample.status}
+                                {sample.status === "pending" ? "en attente" : 
+                                 sample.status === "processing" ? "en traitement" : 
+                                 sample.status === "completed" ? "terminée" : 
+                                 sample.status === "cancelled" ? "annulée" : sample.status}
                               </Badge>
                             </TableCell>
                             <TableCell>
@@ -403,7 +411,7 @@ export default async function FactoryDashboard({
                     </Table>
                   ) : (
                     <div className="text-center py-6 text-muted-foreground">
-                      No sample requests yet
+                      Pas encore de demandes d'échantillons
                     </div>
                   )}
                 </CardContent>
@@ -411,10 +419,10 @@ export default async function FactoryDashboard({
 
               <Card>
                 <CardHeader className="flex justify-between items-center">
-                  <CardTitle className="text-lg">Recent Products</CardTitle>
+                  <CardTitle className="text-lg">Produits Récents</CardTitle>
                   <Link href="/factory-dashboard/products">
                     <Button variant="ghost" size="sm">
-                      Manage Products
+                      Gérer les Produits
                     </Button>
                   </Link>
                 </CardHeader>
@@ -423,9 +431,9 @@ export default async function FactoryDashboard({
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Name</TableHead>
-                          <TableHead>Price</TableHead>
-                          <TableHead>Status</TableHead>
+                          <TableHead>Nom</TableHead>
+                          <TableHead>Prix</TableHead>
+                          <TableHead>Statut</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -445,7 +453,7 @@ export default async function FactoryDashboard({
                                     : "secondary"
                                 }
                               >
-                                {product.status}
+                                {product.status === "active" ? "actif" : "inactif"}
                               </Badge>
                             </TableCell>
                           </TableRow>
@@ -454,7 +462,7 @@ export default async function FactoryDashboard({
                     </Table>
                   ) : (
                     <div className="text-center py-6 text-muted-foreground">
-                      No products yet
+                      Pas encore de produits
                     </div>
                   )}
                 </CardContent>
@@ -465,19 +473,19 @@ export default async function FactoryDashboard({
           <TabsContent value="orders">
             <Card>
               <CardHeader>
-                <CardTitle>All Orders</CardTitle>
+                <CardTitle>Toutes les Commandes</CardTitle>
               </CardHeader>
               <CardContent>
                 {orders && orders.length > 0 ? (
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Order ID</TableHead>
-                        <TableHead>Customer</TableHead>
-                        <TableHead>Product</TableHead>
-                        <TableHead>Quantity</TableHead>
+                        <TableHead>ID Commande</TableHead>
+                        <TableHead>Client</TableHead>
+                        <TableHead>Produit</TableHead>
+                        <TableHead>Quantité</TableHead>
                         <TableHead>Total</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>Statut</TableHead>
                         <TableHead>Date</TableHead>
                         <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
@@ -506,7 +514,10 @@ export default async function FactoryDashboard({
                                       : "outline"
                               }
                             >
-                              {order.status}
+                              {order.status === "pending" ? "en attente" : 
+                               order.status === "processing" ? "en traitement" : 
+                               order.status === "completed" ? "terminée" : 
+                               order.status === "cancelled" ? "annulée" : order.status}
                             </Badge>
                           </TableCell>
                           <TableCell>
@@ -518,7 +529,7 @@ export default async function FactoryDashboard({
                             >
                               <Button variant="outline" size="sm">
                                 <Edit className="h-4 w-4 mr-2" />
-                                Manage
+                                Gérer
                               </Button>
                             </Link>
                           </TableCell>
@@ -529,10 +540,9 @@ export default async function FactoryDashboard({
                 ) : (
                   <div className="text-center py-12">
                     <ShoppingCart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-medium mb-2">No Orders Yet</h3>
+                    <h3 className="text-lg font-medium mb-2">Pas Encore de Commandes</h3>
                     <p className="text-muted-foreground max-w-md mx-auto">
-                      You haven't received any orders yet. When customers place
-                      orders for your products, they will appear here.
+                      Vous n'avez pas encore reçu de commandes. Lorsque les clients passeront des commandes pour vos produits, elles apparaîtront ici.
                     </p>
                   </div>
                 )}
@@ -543,18 +553,18 @@ export default async function FactoryDashboard({
           <TabsContent value="samples">
             <Card>
               <CardHeader>
-                <CardTitle>All Sample Requests</CardTitle>
+                <CardTitle>Toutes les Demandes d'Échantillons</CardTitle>
               </CardHeader>
               <CardContent>
                 {sampleRequests && sampleRequests.length > 0 ? (
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Request ID</TableHead>
-                        <TableHead>Customer</TableHead>
-                        <TableHead>Product</TableHead>
-                        <TableHead>Quantity</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>ID Demande</TableHead>
+                        <TableHead>Client</TableHead>
+                        <TableHead>Produit</TableHead>
+                        <TableHead>Quantité</TableHead>
+                        <TableHead>Statut</TableHead>
                         <TableHead>Date</TableHead>
                         <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
@@ -580,7 +590,10 @@ export default async function FactoryDashboard({
                                       : "outline"
                               }
                             >
-                              {sample.status}
+                              {sample.status === "pending" ? "en attente" : 
+                               sample.status === "processing" ? "en traitement" : 
+                               sample.status === "completed" ? "terminée" : 
+                               sample.status === "cancelled" ? "annulée" : sample.status}
                             </Badge>
                           </TableCell>
                           <TableCell>
@@ -592,7 +605,7 @@ export default async function FactoryDashboard({
                             >
                               <Button variant="outline" size="sm">
                                 <Edit className="h-4 w-4 mr-2" />
-                                Manage
+                                Gérer
                               </Button>
                             </Link>
                           </TableCell>
@@ -604,12 +617,10 @@ export default async function FactoryDashboard({
                   <div className="text-center py-12">
                     <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <h3 className="text-lg font-medium mb-2">
-                      No Sample Requests Yet
+                      Pas Encore de Demandes d'Échantillons
                     </h3>
                     <p className="text-muted-foreground max-w-md mx-auto">
-                      You haven't received any sample requests yet. When
-                      customers request samples of your products, they will
-                      appear here.
+                      Vous n'avez pas encore reçu de demandes d'échantillons. Lorsque les clients demanderont des échantillons de vos produits, elles apparaîtront ici.
                     </p>
                   </div>
                 )}
@@ -620,10 +631,10 @@ export default async function FactoryDashboard({
           <TabsContent value="products">
             <Card>
               <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <CardTitle>Your Products</CardTitle>
+                <CardTitle>Vos Produits</CardTitle>
                 <Link href="/factory-dashboard/products/new">
                   <Button className="w-full sm:w-auto">
-                    <Package className="h-4 w-4 mr-2" /> Add New Product
+                    <Package className="h-4 w-4 mr-2" /> Ajouter un Nouveau Produit
                   </Button>
                 </Link>
               </CardHeader>
@@ -633,11 +644,11 @@ export default async function FactoryDashboard({
                     <TableHeader>
                       <TableRow>
                         <TableHead>Image</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Price</TableHead>
-                        <TableHead>Category</TableHead>
-                        <TableHead>Min Order</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>Nom</TableHead>
+                        <TableHead>Prix</TableHead>
+                        <TableHead>Catégorie</TableHead>
+                        <TableHead>Commande Min</TableHead>
+                        <TableHead>Statut</TableHead>
                         <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -670,7 +681,7 @@ export default async function FactoryDashboard({
                                   : "secondary"
                               }
                             >
-                              {product.status}
+                              {product.status === "active" ? "actif" : "inactif"}
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right">
@@ -679,7 +690,7 @@ export default async function FactoryDashboard({
                             >
                               <Button variant="outline" size="sm">
                                 <Edit className="h-4 w-4 mr-2" />
-                                Edit
+                                Modifier
                               </Button>
                             </Link>
                           </TableCell>
@@ -691,14 +702,13 @@ export default async function FactoryDashboard({
                   <div className="text-center py-12">
                     <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <h3 className="text-lg font-medium mb-2">
-                      No Products Yet
+                      Pas Encore de Produits
                     </h3>
                     <p className="text-muted-foreground max-w-md mx-auto mb-6">
-                      You haven't added any products to your catalog yet. Add
-                      your first product to start receiving orders.
+                      Vous n'avez pas encore ajouté de produits à votre catalogue. Ajoutez votre premier produit pour commencer à recevoir des commandes.
                     </p>
                     <Link href="/factory-dashboard/products/new">
-                      <Button>Add Your First Product</Button>
+                      <Button>Ajouter Votre Premier Produit</Button>
                     </Link>
                   </div>
                 )}

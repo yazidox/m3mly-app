@@ -69,7 +69,57 @@ export type TranslationKey =
   | "dashboard.status_pending"
   | "dashboard.status_processing"
   | "dashboard.status_completed"
-  | "dashboard.status_cancelled";
+  | "dashboard.status_cancelled"
+  | "factories.hero_tagline"
+  | "factories.hero_title"
+  | "factories.hero_title_highlight"
+  | "factories.hero_description"
+  | "factories.factories_count"
+  | "factories.search_placeholder"
+  | "factories.sort_button"
+  | "factories.filters_title"
+  | "factories.categories_title"
+  | "factories.view_more"
+  | "factories.location_title"
+  | "factories.moq_title"
+  | "factories.units_label"
+  | "factories.rating_title"
+  | "factories.reset_button"
+  | "factories.apply_button"
+  | "factories.load_more_button"
+  | "factories.no_factories_title"
+  | "factories.no_factories_description"
+  | "factories.reset_filters_button"
+  | "factory_products.back_to_profile"
+  | "factory_products.products_of"
+  | "factory_products.discover_products"
+  | "factory_products.no_products"
+  | "factory_products.no_products_description"
+  | "products.catalog_title"
+  | "products.discover_title"
+  | "products.discover_highlight"
+  | "products.description"
+  | "products.search_placeholder"
+  | "products.search_button"
+  | "products.filter_button"
+  | "products.view_factories"
+  | "products.back_to_admin"
+  | "products.categories_title"
+  | "products.all_products"
+  | "products.featured_products"
+  | "products.display_count"
+  | "products.in_category"
+  | "products.matching_search"
+  | "products.grid_view"
+  | "products.list_view"
+  | "products.no_products_title"
+  | "products.no_products_description"
+  | "products.view_all_products"
+  | "products.view_details"
+  | "products.min_order"
+  | "products.lead_time"
+  | "products.units"
+  | "products.days";
 
 type TranslationsType = {
   [key in Locale]: {
@@ -79,7 +129,7 @@ type TranslationsType = {
 
 export const translations: TranslationsType = {
   fr: {
-    "common.browse_factories": "Parcourir les usines",
+    "common.browse_factories": "Parcourir les produits",
     "common.how_it_works": "Comment ça marche",
     "common.pricing": "Tarification",
     "common.dashboard": "Tableau de bord",
@@ -149,9 +199,59 @@ export const translations: TranslationsType = {
     "dashboard.status_processing": "En traitement",
     "dashboard.status_completed": "Terminé",
     "dashboard.status_cancelled": "Annulé",
+    "factories.hero_tagline": "Trouvez votre partenaire de fabrication idéal",
+    "factories.hero_title": "Explorez nos",
+    "factories.hero_title_highlight": "usines",
+    "factories.hero_description": "Découvrez et connectez-vous avec les meilleurs fabricants de vêtements au Maroc, filtrés pour répondre à vos besoins spécifiques de production.",
+    "factories.factories_count": "Affichage de",
+    "factories.search_placeholder": "Rechercher des usines...",
+    "factories.sort_button": "Trier",
+    "factories.filters_title": "Filtres",
+    "factories.categories_title": "Catégories",
+    "factories.view_more": "Voir plus",
+    "factories.location_title": "Emplacement",
+    "factories.moq_title": "Quantité minimale de commande",
+    "factories.units_label": "unités",
+    "factories.rating_title": "Évaluation",
+    "factories.reset_button": "Réinitialiser",
+    "factories.apply_button": "Appliquer",
+    "factories.load_more_button": "Charger plus",
+    "factories.no_factories_title": "Aucune usine trouvée",
+    "factories.no_factories_description": "Il n'y a actuellement aucune usine disponible correspondant à vos critères. Essayez d'ajuster vos filtres ou revenez plus tard.",
+    "factories.reset_filters_button": "Réinitialiser les filtres",
+    "factory_products.back_to_profile": "Retour au profil de l'usine",
+    "factory_products.products_of": "Produits de",
+    "factory_products.discover_products": "Découvrez tous les produits disponibles de {factoryName} et commandez directement en ligne",
+    "factory_products.no_products": "Aucun produit disponible",
+    "factory_products.no_products_description": "Cette usine n'a pas encore ajouté de produits. Veuillez vérifier plus tard ou les contacter directement pour des commandes personnalisées.",
+    "products.catalog_title": "Catalogue de produits",
+    "products.discover_title": "Découvrez nos",
+    "products.discover_highlight": "vêtements",
+    "products.description": "Parcourez notre collection de vêtements de haute qualité provenant des meilleurs fabricants marocains à des prix imbattables.",
+    "products.search_placeholder": "Rechercher des produits...",
+    "products.search_button": "Rechercher",
+    "products.filter_button": "Filtrer",
+    "products.view_factories": "Voir les usines",
+    "products.back_to_admin": "Retour à l'administration",
+    "products.categories_title": "Catégories",
+    "products.all_products": "Tous les produits",
+    "products.featured_products": "Produits en vedette",
+    "products.display_count": "Affichage de",
+    "products.in_category": "dans",
+    "products.matching_search": "correspondant à",
+    "products.grid_view": "Grille",
+    "products.list_view": "Liste",
+    "products.no_products_title": "Aucun produit trouvé",
+    "products.no_products_description": "Il n'y a pas de produits disponibles pour le moment",
+    "products.view_all_products": "Voir tous les produits",
+    "products.view_details": "Voir détails",
+    "products.min_order": "Commande min",
+    "products.lead_time": "Délai",
+    "products.units": "unités",
+    "products.days": "jours",
   },
   ar: {
-    "common.browse_factories": "تصفح المصانع",
+    "common.browse_factories": "تصفح المنتجات",
     "common.how_it_works": "كيف يعمل",
     "common.pricing": "التسعير",
     "common.dashboard": "لوحة التحكم",
@@ -221,5 +321,55 @@ export const translations: TranslationsType = {
     "dashboard.status_processing": "قيد المعالجة",
     "dashboard.status_completed": "مكتمل",
     "dashboard.status_cancelled": "ملغي",
+    "factories.hero_tagline": "ابحث عن شريك التصنيع المثالي",
+    "factories.hero_title": "استكشف",
+    "factories.hero_title_highlight": "مصانعنا",
+    "factories.hero_description": "اكتشف وتواصل مع أفضل مصنعي الملابس في المغرب، مصنفين لتلبية احتياجات الإنتاج الخاصة بك.",
+    "factories.factories_count": "عرض",
+    "factories.search_placeholder": "البحث عن المصانع...",
+    "factories.sort_button": "فرز",
+    "factories.filters_title": "المرشحات",
+    "factories.categories_title": "الفئات",
+    "factories.view_more": "عرض المزيد",
+    "factories.location_title": "الموقع",
+    "factories.moq_title": "الحد الأدنى لكمية الطلب",
+    "factories.units_label": "وحدات",
+    "factories.rating_title": "التقييم",
+    "factories.reset_button": "إعادة تعيين",
+    "factories.apply_button": "تطبيق",
+    "factories.load_more_button": "تحميل المزيد",
+    "factories.no_factories_title": "لم يتم العثور على مصانع",
+    "factories.no_factories_description": "لا توجد حاليًا أي مصانع متاحة تطابق معاييرك. حاول ضبط المرشحات أو العودة لاحقًا.",
+    "factories.reset_filters_button": "إعادة تعيين المرشحات",
+    "factory_products.back_to_profile": "العودة إلى ملف المصنع",
+    "factory_products.products_of": "منتجات",
+    "factory_products.discover_products": "اكتشف جميع المنتجات المتاحة من {factoryName} واطلب مباشرة عبر الإنترنت",
+    "factory_products.no_products": "لا توجد منتجات متاحة",
+    "factory_products.no_products_description": "هذا المصنع لم يضف أي منتجات بعد. يرجى التحقق لاحقًا أو الاتصال بهم مباشرة للطلبات المخصصة.",
+    "products.catalog_title": "كتالوج المنتجات",
+    "products.discover_title": "اكتشف",
+    "products.discover_highlight": "ملابسنا",
+    "products.description": "تصفح مجموعتنا من الملابس عالية الجودة من أفضل المصنعين المغاربة بأسعار لا تقبل المنافسة.",
+    "products.search_placeholder": "البحث عن المنتجات...",
+    "products.search_button": "بحث",
+    "products.filter_button": "تصفية",
+    "products.view_factories": "عرض المصانع",
+    "products.back_to_admin": "العودة إلى الإدارة",
+    "products.categories_title": "الفئات",
+    "products.all_products": "جميع المنتجات",
+    "products.featured_products": "منتجات مميزة",
+    "products.display_count": "عرض",
+    "products.in_category": "في",
+    "products.matching_search": "مطابق لـ",
+    "products.grid_view": "شبكة",
+    "products.list_view": "قائمة",
+    "products.no_products_title": "لم يتم العثور على منتجات",
+    "products.no_products_description": "لا توجد منتجات متاحة حاليًا",
+    "products.view_all_products": "عرض جميع المنتجات",
+    "products.view_details": "عرض التفاصيل",
+    "products.min_order": "الحد الأدنى للطلب",
+    "products.lead_time": "مدة التسليم",
+    "products.units": "وحدات",
+    "products.days": "أيام",
   },
 };

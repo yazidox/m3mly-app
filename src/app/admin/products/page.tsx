@@ -29,12 +29,12 @@ export default async function ProductsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Products</h1>
-          <p className="text-muted-foreground">Manage factory products</p>
+          <h1 className="text-3xl font-bold mb-2">Produits</h1>
+          <p className="text-muted-foreground">Gérer les produits des usines</p>
         </div>
         <Link href="/admin/products/new">
           <Button className="flex items-center gap-2">
-            <Plus className="h-4 w-4" /> Add Product
+            <Plus className="h-4 w-4" /> Ajouter un Produit
           </Button>
         </Link>
       </div>
@@ -44,11 +44,11 @@ export default async function ProductsPage() {
           <TableHeader>
             <TableRow>
               <TableHead>Image</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Factory</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Nom</TableHead>
+              <TableHead>Usine</TableHead>
+              <TableHead>Prix</TableHead>
+              <TableHead>Catégorie</TableHead>
+              <TableHead>Statut</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -70,7 +70,7 @@ export default async function ProductsPage() {
                   </TableCell>
                   <TableCell className="font-medium">{product.name}</TableCell>
                   <TableCell>{product.factories?.name}</TableCell>
-                  <TableCell>${product.price}</TableCell>
+                  <TableCell> {product.price} MAD</TableCell>
                   <TableCell>{product.category}</TableCell>
                   <TableCell>
                     <Badge
@@ -78,7 +78,7 @@ export default async function ProductsPage() {
                         product.status === "active" ? "success" : "secondary"
                       }
                     >
-                      {product.status}
+                      {product.status === "active" ? "actif" : product.status}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
@@ -110,7 +110,7 @@ export default async function ProductsPage() {
                   colSpan={7}
                   className="text-center py-6 text-muted-foreground"
                 >
-                  No products found
+                  Aucun produit trouvé
                 </TableCell>
               </TableRow>
             )}

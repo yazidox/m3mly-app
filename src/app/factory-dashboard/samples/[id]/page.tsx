@@ -60,7 +60,7 @@ export default async function ManageSamplePage({
           className="inline-flex items-center text-muted-foreground hover:text-foreground mb-6"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Sample Requests
+          Retour aux Demandes d'Échantillons
         </Link>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -70,12 +70,12 @@ export default async function ManageSamplePage({
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <h1 className="text-2xl font-bold mb-2">
-                    Sample Request #{sample.id.substring(0, 8)}
+                    Demande d'Échantillon #{sample.id.substring(0, 8)}
                   </h1>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
                     <span className="text-muted-foreground">
-                      Requested on{" "}
+                      Demandé le{" "}
                       {new Date(sample.created_at).toLocaleDateString()}
                     </span>
                   </div>
@@ -92,12 +92,16 @@ export default async function ManageSamplePage({
                   }
                   className="text-sm py-1 px-3"
                 >
-                  {sample.status}
+                  {sample.status === "pending" ? "En attente" :
+                   sample.status === "processing" ? "En traitement" :
+                   sample.status === "shipped" ? "Expédié" :
+                   sample.status === "completed" ? "Terminé" :
+                   sample.status === "cancelled" ? "Annulé" : sample.status}
                 </Badge>
               </div>
 
               <div className="border-t border-border pt-6">
-                <h2 className="text-lg font-semibold mb-4">Product Details</h2>
+                <h2 className="text-lg font-semibold mb-4">Détails du Produit</h2>
                 <div className="flex items-start gap-4">
                   <div className="bg-muted rounded-md p-2 flex items-center justify-center">
                     <Package className="h-8 w-8 text-muted-foreground" />
@@ -105,14 +109,14 @@ export default async function ManageSamplePage({
                   <div>
                     <h3 className="font-medium">{sample.products?.name}</h3>
                     <div className="text-sm text-muted-foreground">
-                      Sample Quantity: {sample.quantity}
+                      Quantité d'Échantillon: {sample.quantity}
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="border-t border-border mt-6 pt-6">
-                <h2 className="text-lg font-semibold mb-4">Customer Details</h2>
+                <h2 className="text-lg font-semibold mb-4">Détails du Client</h2>
                 <div className="flex items-start gap-4">
                   <div className="bg-muted rounded-md p-2 flex items-center justify-center">
                     <User className="h-8 w-8 text-muted-foreground" />
@@ -131,7 +135,7 @@ export default async function ManageSamplePage({
                       </div>
                     </div>
                     <div>
-                      <div className="font-medium">Shipping Address</div>
+                      <div className="font-medium">Adresse de Livraison</div>
                       <div className="text-sm text-muted-foreground whitespace-pre-line">
                         {sample.shipping_address}
                       </div>
@@ -142,7 +146,7 @@ export default async function ManageSamplePage({
 
               {sample.notes && (
                 <div className="border-t border-border mt-6 pt-6">
-                  <h2 className="text-lg font-semibold mb-2">Request Notes</h2>
+                  <h2 className="text-lg font-semibold mb-2">Notes de la Demande</h2>
                   <p className="text-muted-foreground">{sample.notes}</p>
                 </div>
               )}
@@ -153,30 +157,30 @@ export default async function ManageSamplePage({
           <div className="md:col-span-1">
             <div className="bg-card rounded-xl border shadow-sm p-6 sticky top-24">
               <h2 className="text-lg font-semibold mb-4">
-                Update Sample Request Status
+                Mettre à Jour le Statut de la Demande
               </h2>
               <form action={updateSampleStatus} className="space-y-4">
                 <input type="hidden" name="sample_id" value={sample.id} />
 
                 <div className="space-y-2">
-                  <Label htmlFor="status">Status</Label>
+                  <Label htmlFor="status">Statut</Label>
                   <select
                     id="status"
                     name="status"
                     defaultValue={sample.status}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                    <option value="shipped">Shipped</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
+                    <option value="pending">En attente</option>
+                    <option value="processing">En traitement</option>
+                    <option value="shipped">Expédié</option>
+                    <option value="completed">Terminé</option>
+                    <option value="cancelled">Annulé</option>
                   </select>
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="estimated_delivery">
-                    Estimated Delivery Date
+                    Date de Livraison Estimée
                   </Label>
                   <Input
                     id="estimated_delivery"
@@ -193,18 +197,18 @@ export default async function ManageSamplePage({
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="notes">Notes to Customer</Label>
+                  <Label htmlFor="notes">Notes pour le Client</Label>
                   <Textarea
                     id="notes"
                     name="notes"
                     rows={4}
                     defaultValue={sample.factory_notes || ""}
-                    placeholder="Add any notes about the sample status, shipping details, etc."
+                    placeholder="Ajoutez des notes concernant le statut de l'échantillon, les détails d'expédition, etc."
                   />
                 </div>
 
                 <Button type="submit" className="w-full">
-                  Update Sample Request
+                  Mettre à Jour la Demande d'Échantillon
                 </Button>
               </form>
             </div>
