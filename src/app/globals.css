@@ -68,6 +68,56 @@
   }
 }
 
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Add offset for fixed header when scrolling to anchor links */
+:target {
+  scroll-margin-top: 5rem; /* Adjust this value based on your header height */
+}
+
+/* Animation keyframes */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Shadow glow effect */
+.shadow-glow {
+  box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.3);
+}
+
 @layer base {
   * {
     @apply border-border;

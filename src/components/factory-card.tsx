@@ -111,7 +111,7 @@ export default function FactoryCard({ factory }: FactoryCardProps) {
             <span className={cn("inline-block bg-primary/10 px-2 py-0.5 rounded-full text-xs text-primary", isRtl ? "ml-2" : "mr-2")}>{factory.location}</span>
             <span className="text-xs">{isRtl ? "الحد الأدنى للكمية:" : "QCM:"} {factory.minOrderQuantity}</span>
           </p>
-          <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex hidden flex-wrap gap-2 mb-4">
             {factory.specialties.map((specialty, index) => (
               <span
                 key={index}

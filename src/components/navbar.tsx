@@ -131,20 +131,7 @@ export default function Navbar() {
               className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
             ></span>
           </Link>
-          <Link
-            href="/#pricing"
-            className="text-foreground/80 hover:text-foreground font-medium transition-colors relative group"
-          >
-            <span className="flex items-center gap-1.5">
-              <ChevronDown
-                className={`h-4 w-4 text-primary/70 group-hover:text-primary transition-colors ${isRtl ? "ml-1.5" : "mr-1.5"}`}
-              />
-              {t("common.pricing")}
-            </span>
-            <span
-              className={`absolute -bottom-1 ${isRtl ? "right-0" : "left-0"} h-[2px] w-0 ${isRtl ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-primary to-accent transition-all duration-300 group-hover:w-full`}
-            ></span>
-          </Link>
+         
         </div>
 
         <div

@@ -177,7 +177,10 @@ export default async function GenerateInvoicePage({
                 </div>
               </div>
 
-              <form action={generateInvoice} className="space-y-4">
+              <form action={async (formData) => {
+                const result = await generateInvoice(formData);
+                // Handle the result if needed
+              }} className="space-y-4">
                 <input type="hidden" name="order_id" value={order.id} />
 
                 <div className="space-y-2">

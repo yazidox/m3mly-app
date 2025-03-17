@@ -39,14 +39,14 @@ export function HeroSection() {
 
       <div className="relative w-full">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
+          <div className="flex flex-col lg:flex-row items-center gap-12 mt-6 lg:mt-0">
             <div className="text-left max-w-2xl">
               <div className="mb-6 inline-flex items-center px-4 py-1.5 rounded-full bg-primary/15 text-primary text-sm font-medium backdrop-blur-sm border border-primary/20 shadow-glow animate-pulse">
                 <Sparkles className="w-4 h-4 mr-2" />
                 <span className="relative">
                   {isRtl
-                    ? "ثورة في صناعة الملابس"
-                    : "Révolutionner la fabrication de vêtements"}
+                    ? "ثورة في عالم التصنيع"
+                    : "Révolutionner le monde de la fabrication"}
                 </span>
               </div>
 
@@ -55,13 +55,13 @@ export function HeroSection() {
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent animate-text-shimmer relative after:absolute after:content-[''] after:bottom-0 after:left-0 after:w-full after:h-[6px] after:bg-gradient-to-r after:from-primary/30 after:to-accent/30 after:-rotate-1">
                   {isRtl ? "مصانع مغربية" : "usines marocaines"}
                 </span>{" "}
-                {isRtl ? "للملابس" : "de vêtements"}
+                {isRtl ? "متنوعة" : "diversifiées"}
               </h1>
 
               <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
                 {isRtl
-                  ? "اكتشف أفضل مصانع الملابس في المغرب. بسّط إنتاجك، قلل تكاليفك وحسّن جودة ملابسك مع منصتنا المبتكرة."
-                  : "Découvrez les meilleures usines de confection au Maroc. Simplifiez votre production, réduisez vos coûts et améliorez la qualité de vos vêtements avec notre plateforme innovante."}
+                  ? "اكتشف أفضل المصانع في المغرب. بسّط إنتاجك، قلل تكاليفك وحسّن جودة منتجاتك مع منصتنا المبتكرة."
+                  : "Découvrez les meilleures usines de production au Maroc. Simplifiez votre production, réduisez vos coûts et améliorez la qualité de vos produits avec notre plateforme innovante."}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-5 mb-12">
@@ -142,8 +142,8 @@ export function HeroSection() {
                     src="/images/factory-showcase.jpg"
                     alt={
                       isRtl
-                        ? "مصنع ملابس مغربي"
-                        : "Usine de vêtements marocaine"
+                        ? "مصنع مغربي"
+                        : "Usine marocaine"
                     }
                     width={600}
                     height={400}
@@ -385,7 +385,10 @@ export function HowItWorksSection() {
   ];
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section
+    
+    id="how-it-works"
+    className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-grid-pattern bg-[length:50px_50px] opacity-5" />
       <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 to-background" />
 

@@ -251,11 +251,9 @@ export default async function OrderPaymentPage({
                 <div>
                   <Label htmlFor="payment_method_type">Type de paiement</Label>
                   <Select
-                    name="payment_method_type"
                     defaultValue="bank_transfer"
-                    id="payment_method_type"
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Sélectionnez une méthode" />
                     </SelectTrigger>
                     <SelectContent>

@@ -12,12 +12,6 @@ export const createClient = async () => {
         get(name) {
           return cookieStore.get(name)?.value;
         },
-        getAll() {
-          return cookieStore.getAll().map(({ name, value }) => ({
-            name,
-            value,
-          }));
-        },
         set(name, value, options) {
           try {
             cookieStore.set(name, value, options);

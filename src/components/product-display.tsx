@@ -9,7 +9,7 @@ interface ProductDisplayProps {
 export function ProductDisplay({ product }: ProductDisplayProps) {
   return (
     <div className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-2 backdrop-blur-sm">
-      <div className="relative h-64 w-full overflow-hidden">
+      <div className="relative h-[700px] w-full overflow-hidden">
         <Image
           src={product.image || "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=800&q=80"}
           alt={product.name}

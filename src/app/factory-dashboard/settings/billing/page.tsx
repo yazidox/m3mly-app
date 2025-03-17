@@ -55,7 +55,7 @@ export default async function BillingSettingsPage() {
   };
 
   // Mock payment methods
-  const paymentMethods = [];
+  const paymentMethods: any[] = [];
 
   // Mock billing history
   const billingHistory = [

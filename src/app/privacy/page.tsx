@@ -208,4 +208,60 @@ export default function PrivacyPage() {
             </p>
           </div>
           
-          <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-border p-8
+          <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-border p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/20 mb-8">
+            <h2 className="text-2xl font-bold mb-6">9. Nous Contacter</h2>
+            
+            <p className="text-muted-foreground mb-6">
+              Si vous avez des questions, des préoccupations ou des demandes concernant cette Politique de Confidentialité ou nos pratiques en matière de données, veuillez nous contacter à:
+            </p>
+            
+            <div className="bg-secondary/50 p-6 rounded-lg border border-border/50 mb-6">
+              <p className="font-medium mb-2">M3mly</p>
+              <p className="text-muted-foreground mb-1">Email: privacy@m3mly.com</p>
+              <p className="text-muted-foreground mb-1">Téléphone: +212 522 123 456</p>
+              <p className="text-muted-foreground">Adresse: 123 Avenue Mohammed V, Casablanca, Maroc</p>
+            </div>
+            
+            <p className="text-muted-foreground">
+              Nous nous efforcerons de répondre à votre demande dans les meilleurs délais et conformément aux lois applicables.
+            </p>
+          </div>
+        </div>
+      </section>
+      
+      {/* CTA Section */}
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern bg-[length:50px_50px] opacity-5" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/20" />
+        
+        <div className="container mx-auto px-4 relative">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 tracking-tight">
+              Des Questions sur Notre Politique?
+            </h2>
+            
+            <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
+              Notre équipe est disponible pour répondre à toutes vos questions concernant la confidentialité et la protection de vos données.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg" className="group">
+                <Link href="/contact">
+                  Contactez-Nous
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link href="/">
+                  Retour à l'Accueil
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <Footer />
+    </div>
+  );
+}

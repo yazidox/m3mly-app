@@ -171,7 +171,7 @@ export const signInAction = async (formData: FormData) => {
   if (userData && userData.is_approved === false) {
     await supabase.auth.signOut();
     return encodedRedirect(
-      "info",
+      "error",
       "/sign-in",
       "Votre compte est en attente d'approbation. Notre équipe vous contactera bientôt par téléphone.",
     );

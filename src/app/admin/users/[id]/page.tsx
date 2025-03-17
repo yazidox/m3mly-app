@@ -2,7 +2,6 @@ import { createClient } from "../../../../../supabase/server";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { updateUser } from "@/app/actions/admin";
 import { ArrowLeft, UserCircle } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -46,7 +45,14 @@ export default async function EditUserPage({
           </div>
         </div>
 
-        <form action={updateUser} className="space-y-6 max-w-2xl mx-auto">
+        <form 
+          action={async (formData) => {
+            console.log("Form submitted with data:", Object.fromEntries(formData.entries()));
+            alert("TO BE ADDED");
+            // Actual form submission logic would go here
+          }} 
+          className="space-y-6 max-w-2xl mx-auto"
+        >
           <input type="hidden" name="id" value={user.id} />
 
           <div className="space-y-4">

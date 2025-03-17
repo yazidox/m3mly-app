@@ -194,7 +194,7 @@ export default async function SearchPage({
                         <div className="flex flex-wrap gap-1 mt-3">
                           {factory.specialties
                             ?.slice(0, 3)
-                            .map((specialty, index) => (
+                            .map((specialty: string, index: number) => (
                               <Badge
                                 key={index}
                                 variant="secondary"

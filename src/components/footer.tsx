@@ -279,7 +279,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/contact"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
                     <span>{isRtl ? "اتصل بنا" : "Contactez-nous"}</span>
@@ -290,7 +290,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/privacy"
                     className="text-muted-foreground hover:text-primary transition-colors relative group flex items-center"
                   >
                     <span>{isRtl ? "سياسة الخصوصية" : "Politique de confidentialité"}</span>

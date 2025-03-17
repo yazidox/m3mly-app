@@ -52,7 +52,7 @@ export default async function TeamSettingsPage() {
   ];
 
   // Mock pending invitations
-  const pendingInvitations = [];
+  const pendingInvitations: any[] = [];
 
   return (
     <div className="min-h-screen bg-background">

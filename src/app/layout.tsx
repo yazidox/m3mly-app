@@ -40,6 +40,9 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${lalezar.variable}`}
     >
+      <head>
+        <link rel="icon" href="/icon.png" />
+      </head>
       <Script src="https://api.tempolabs.ai/proxy-asset?url=https://storage.googleapis.com/tempo-public-assets/error-handling.js" />
       <body className={lalezar.className}>
         <ThemeProvider

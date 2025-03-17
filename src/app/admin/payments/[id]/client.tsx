@@ -40,7 +40,15 @@ export function PaymentActions({
     <>
       {status === "pending" && (
         <>
-          <form action={verifyPayment} className="w-full">
+          <form 
+            action={async (formData) => {
+              const result = await verifyPayment(formData);
+              if (result.redirectTo) {
+                window.location.href = result.redirectTo;
+              }
+            }} 
+            className="w-full"
+          >
             <input type="hidden" name="payment_id" value={paymentId} />
             {invoiceId && (
               <input type="hidden" name="invoice_id" value={invoiceId} />
@@ -54,7 +62,15 @@ export function PaymentActions({
             </Button>
           </form>
 
-          <form action={rejectPayment} className="w-full">
+          <form 
+            action={async (formData) => {
+              const result = await rejectPayment(formData);
+              if (result.redirectTo) {
+                window.location.href = result.redirectTo;
+              }
+            }} 
+            className="w-full"
+          >
             <input type="hidden" name="payment_id" value={paymentId} />
             <Button
               type="submit"
